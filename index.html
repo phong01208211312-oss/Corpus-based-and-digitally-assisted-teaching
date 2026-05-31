@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>成語解碼：有X無Y</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; }
+        
+        /* 3D 標題設計 (取代圖形 Logo) */
+        .title-3d {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 
+                2px 2px 0px #d1d9e6, 
+                4px 4px 0px #a3b8cc, 
+                6px 6px 10px rgba(0,0,0,0.2);
+            letter-spacing: 2px;
+        }
+
+        /* 語法按鈕區 */
+        .btn-container { text-align: center; margin-bottom: 20px; }
+        .pos-btn {
+            background-color: #fff; border: 2px solid #3498db; color: #3498db;
+            padding: 10px 20px; margin: 5px; border-radius: 25px; cursor: pointer;
+            font-size: 1.1rem; font-weight: bold; transition: all 0.3s;
+        }
+        .pos-btn:hover, .pos-btn.active { background-color: #3498db; color: #fff; }
+
+        /* 語料庫例句區 */
+        .corpus-box { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 800px; margin: 0 auto 15px; font-size: 1.2rem; line-height: 1.8; }
+        
+        /* 標籤預設樣式 */
+        .idiom { font-weight: bold; transition: background-color 0.3s, color 0.3s; padding: 2px 5px; border-radius: 5px; }
+        .tag { font-size: 0.8rem; vertical-align: super; color: #e74c3c; margin-left: 2px; display: none; }
+
+        /* 當點選特定語法時的高亮效果 */
+        .highlight-predicate .predicate { background-color: #f1c40f; color: #000; }
+        .highlight-predicate .predicate .tag { display: inline; }
+        
+        .highlight-adverbial .adverbial { background-color: #2ecc71; color: #fff; }
+        .highlight-adverbial .adverbial .tag { display: inline; }
+        
+        .highlight-attribute .attribute { background-color: #9b59b6; color: #fff; }
+        .highlight-attribute .attribute .tag { display: inline; }
+    </style>
+</head>
+<body>
+
+    <!-- 3D 標題 -->
+    <div class="title-3d">成語解碼：有 X 無 Y</div>
+
+    <!-- 語料庫過濾按鈕 -->
+    <div class="btn-container">
+        <button class="pos-btn" onclick="highlight('attribute')">定語</button>
+        <button class="pos-btn" onclick="highlight('predicate')">謂語</button>
+        <button class="pos-btn" onclick="highlight('adverbial')">狀語</button>
+        <button class="pos-btn" onclick="highlight('none')">清除高亮</button>
+    </div>
+
+    <!-- 語料庫例句呈現 -->
+    <div id="corpus-container">
+        <div class="corpus-box">
+            1. 孔夫子提倡<span class="idiom attribute">有教無類<span class="tag">[定語]</span></span>的教育精神，深深影響了後世。
+        </div>
+        <div class="corpus-box">
+            2. 他因為背後有高層撐腰，所以在公司裡總是<span class="idiom predicate">有恃無恐<span class="tag">[謂語]</span></span>。
+        </div>
+        <div class="corpus-box">
+            3. 老闆開會時<span class="idiom adverbial">有意無意<span class="tag">[狀語]</span></span>地提到了明年的裁員計畫。
+        </div>
+        <div class="corpus-box">
+            4. 出門在外，多帶點備用藥品總是<span class="idiom predicate">有備無患<span class="tag">[謂語]</span></span>。
+        </div>
+    </div>
+
+    <script>
+        function highlight(pos) {
+            const container = document.getElementById('corpus-container');
+            // 清除所有高亮 class
+            container.className = '';
+            
+            // 加入對應的語法高亮 class
+            if(pos !== 'none') {
+                container.classList.add('highlight-' + pos);
+            }
+        }
+    </script>
+</body>
+</html>
