@@ -72,14 +72,12 @@
 
     <div class="bg-layer"></div>
 
-    <!-- BGM (請確認路徑，建議將mp3放入同資料夾並改為 './kuuhaku_to_seizyaku.mp3') -->
     <audio id="bgm" loop>
-        <audio src="file:///Users/phongnghi/Downloads/123456.mp3" autoplay loop>
-        </audio>
+        <source src="file:///Users/phongnghi/Downloads/123456.mp3" type="audio/mpeg">
+    </audio>
 
     <button id="bgm-btn" onclick="toggleBGM()" style="display: none;">🔈</button>
 
-    <!-- 登入畫面 -->
     <div id="login-screen">
         <div class="login-box">
             <h2 style="color:#2c3e50; font-size: 1.8rem; margin-bottom:30px;">簡單學成語</h2>
@@ -91,18 +89,14 @@
         </div>
     </div>
 
-    <!-- 主應用畫面 -->
     <div id="main-app">
         <div class="title-3d">簡單學成語</div>
 
-        <!-- 模組一：成語總覽 (首頁) -->
         <div id="dashboard" class="section active">
             <h2 style="text-align:center; color:#2c3e50; margin-bottom: 30px;">「有X無Y」成語匯集</h2>
             <div class="dashboard-grid" id="dashboard-grid">
-                <!-- 動態生成成語按鈕 -->
-            </div>
+                </div>
             
-            <!-- 語法查詢器附加在主頁下方 -->
             <div style="margin-top: 50px; padding: 20px; background: #e8f8f5; border-radius: 10px; border: 2px solid #1abc9c;">
                 <h3>🔍 語法分析器 (詞性判斷)</h3>
                 <input type="text" id="syntax-input" placeholder="請輸入包含目標成語的句子..." style="width:70%; padding:10px; font-size:1.1rem; border-radius:5px; border:1px solid #ccc;">
@@ -111,13 +105,11 @@
             </div>
         </div>
 
-        <!-- 模組二：單一成語講解與測驗 -->
         <div id="idiom-detail" class="section">
             <button class="back-btn" onclick="switchTab('dashboard')">⬅ 返回主目錄</button>
             
             <div class="idiom-detail-header" id="detail-header">
-                <!-- 動態生成圖片與講解 -->
-            </div>
+                </div>
 
             <div class="quiz-area">
                 <h2>📝 隨堂練習 (共 10 題)</h2>
@@ -127,7 +119,6 @@
             </div>
         </div>
 
-        <!-- 模組三：後台管理 -->
         <div id="admin-panel" class="section">
             <h2>📊 學習者數據後台</h2>
             <button class="back-btn" onclick="switchTab('dashboard')">返回主目錄</button>
@@ -155,7 +146,7 @@
             "有眼無珠": { zhuyin: "ㄧㄡˇ ㄧㄢˇ ㄨˊ ㄓㄨ", pinyin: "yǒu yǎn wú zhū", literal: "長了眼睛卻沒有眼珠。", meta: "比喻沒有眼力，看不出人或事物的價值。", img: "https://i.ibb.co/BKZhjrVJ/image.png" }
         };
 
-        // 題庫設計 (結構示範，系統會從該成語陣列隨機抽10題)
+        // 題庫設計
         const questionBank = {
             "有備無患": [
                 { q: "颱風來臨前先準備好沙包，____。", options: ["有恃無恐", "有意無意", "有備無患", "有眼無珠"], ans: "有備無患", exp: "遇到災害前先做好準備，故選有備無患。" },
@@ -169,7 +160,6 @@
                 { q: "出國旅遊前先買好保險，____。", options: ["有備無患", "有恃無恐", "有眼無珠", "有意無意"], ans: "有備無患", exp: "買保險是預防突發狀況。" },
                 { q: "他把資料備份了三份，真是做到____了。", options: ["有意無意", "有氣無力", "有備無患", "有教無類"], ans: "有備無患", exp: "備份資料是為了防止檔案遺失。" }
             ],
-            // 由於篇幅限制，以下成語提供模板，您可依此格式擴充至 50 題
             "有恃無恐": [
                 { q: "他因為有總經理當靠山，在公司裡總是____。", options: ["有恃無恐", "有氣無力", "有眼無珠", "有備無患"], ans: "有恃無恐", exp: "有靠山就不害怕，形容有恃無恐。" },
                 { q: "歹徒自以為人質在手，____地向警方叫囂。", options: ["有教無類", "有恃無恐", "有意無意", "有備無患"], ans: "有恃無恐", exp: "有人質作為依靠而毫不畏懼。" },
