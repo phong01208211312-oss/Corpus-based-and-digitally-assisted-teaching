@@ -72,7 +72,7 @@
 
     <div class="bg-layer"></div>
 
-    <audio id="bgm" loop>
+    <audio id="bgm" loop preload="auto">
         <source src="file:///Users/phongnghi/Downloads/123456.mp3" type="audio/mpeg">
     </audio>
 
@@ -183,19 +183,26 @@
             ]
         };
 
-        // --- 介面控制邏輯 ---
+        // --- 介面控制與音樂邏輯 ---
         function startGame() {
             const nameInput = document.getElementById('username').value.trim();
             if(!nameInput) { alert("請先輸入名稱！"); return; }
             currentUser = nameInput;
             
-            // 嘗試播放音樂 (因為使用者剛點擊了按鈕，所以被允許)
+            // 嘗試播放音樂並偵測錯誤
             const audio = document.getElementById('bgm');
             audio.volume = 0.5;
-            audio.play().then(() => {
-                bgmPlaying = true;
-                document.getElementById('bgm-btn').innerText = "🔊";
-            }).catch(e => console.log("音樂播放需手動開啟"));
+            let playPromise = audio.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    bgmPlaying = true;
+                    document.getElementById('bgm-btn').innerText = "🔊";
+                }).catch(error => {
+                    console.error("音樂載入失敗:", error);
+                    alert("【系統提示】音樂無法播放 🔈\n\n因為瀏覽器安全限制，無法直接讀取您電腦內的 file:///... 路徑。\n\n若要正常播放音樂，請將 123456.mp3 檔案放到與這個網頁同一個資料夾中，然後將程式碼內的 src 改為相對路徑，例如：\n<source src=\"123456.mp3\" type=\"audio/mpeg\">");
+                });
+            }
 
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('main-app').style.display = 'block';
@@ -349,98 +356,4 @@
                 <h2 style="color:#2c3e50; text-align:center;">測驗結束！</h2>
                 <div style="text-align:center; font-size:3rem; font-weight:bold; color:#e74c3c; margin:20px 0;">${sessionScore} 分</div>
                 <div style="text-align:center;">
-                    <button onclick="startQuiz()" style="padding:10px 20px; font-size:1.2rem; background:#3498db; color:white; border:none; border-radius:5px; cursor:pointer; margin:5px;">重新挑戰</button>
-                    <button onclick="switchTab('dashboard')" style="padding:10px 20px; font-size:1.2rem; background:#95a5a6; color:white; border:none; border-radius:5px; cursor:pointer; margin:5px;">回主目錄</button>
-                </div>
-            `;
-        }
-
-        // --- 語法查詢器邏輯 ---
-        function analyzeSyntax() {
-            const text = document.getElementById('syntax-input').value;
-            const resBox = document.getElementById('query-result');
-            let foundIdiom = Object.keys(idiomsData).find(i => text.includes(i));
-            
-            if(!foundIdiom) { resBox.innerHTML = "<span style='color:#e74c3c'>未偵測到指定的成語！</span>"; return; }
-            
-            let role = "未知";
-            if (text.includes(foundIdiom + "的")) role = "[定語] (修飾名詞)";
-            else if (text.includes(foundIdiom + "地")) role = "[狀語] (修飾動詞)";
-            else if (text.endsWith(foundIdiom) || text.endsWith(foundIdiom+"。") || text.includes("是" + foundIdiom)) role = "[謂語] 或 [賓語]";
-            else if (text.includes("得" + foundIdiom)) role = "[補語] (補充狀態)";
-            else if (text.startsWith(foundIdiom)) role = "[主語]";
-            else role = "[謂語] (作核心動態描述)";
-
-            resBox.innerHTML = `目標成語：<span style="color:#2c3e50">${foundIdiom}</span><br>語法角色推測：<span style="color:#e67e22">${role}</span>`;
-        }
-
-        // --- 後台數據管理 ---
-        function initUserStats() {
-            let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
-            if(!db[currentUser]) {
-                db[currentUser] = { score: 0, stats: {} };
-                for(let key in idiomsData) db[currentUser].stats[key] = { correct: 0, wrong: 0 };
-                localStorage.setItem('idiomAppDB', JSON.stringify(db));
-            }
-        }
-
-        function recordStat(idiom, isCorrect) {
-            let db = JSON.parse(localStorage.getItem('idiomAppDB'));
-            if(isCorrect) db[currentUser].stats[idiom].correct++;
-            else db[currentUser].stats[idiom].wrong++;
-            localStorage.setItem('idiomAppDB', JSON.stringify(db));
-        }
-
-        function saveUserData() {
-            let db = JSON.parse(localStorage.getItem('idiomAppDB'));
-            db[currentUser].score += sessionScore; 
-            localStorage.setItem('idiomAppDB', JSON.stringify(db));
-        }
-
-        function showAdminLogin() {
-            let acc = prompt("請輸入管理者帳號：");
-            let pwd = prompt("請輸入密碼：");
-            if(acc === "admin_2026" && pwd === "@admin123") {
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('main-app').style.display = 'block';
-                document.getElementById('bgm-btn').style.display = 'block';
-                switchTab('admin-panel');
-                loadAdminData();
-            } else {
-                alert("帳號或密碼錯誤！");
-            }
-        }
-
-        function loadAdminData() {
-            let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
-            let tbody = document.getElementById('admin-table-body');
-            tbody.innerHTML = "";
-            
-            for(let user in db) {
-                let uData = db[user];
-                let maxCorrect = -1, bestIdiom = "無資料";
-                let maxWrong = -1, worstIdiom = "無資料";
-                
-                for(let idiom in uData.stats) {
-                    if(uData.stats[idiom].correct > maxCorrect && uData.stats[idiom].correct > 0) { maxCorrect = uData.stats[idiom].correct; bestIdiom = idiom; }
-                    if(uData.stats[idiom].wrong > maxWrong && uData.stats[idiom].wrong > 0) { maxWrong = uData.stats[idiom].wrong; worstIdiom = idiom; }
-                }
-
-                tbody.innerHTML += `<tr style="background:#fff;">
-                    <td>${user}</td>
-                    <td>${uData.score}</td>
-                    <td style="color:#27ae60; font-weight:bold;">${bestIdiom} ${maxCorrect > 0 ? `(${maxCorrect}次)` : ''}</td>
-                    <td style="color:#c0392b; font-weight:bold;">${worstIdiom} ${maxWrong > 0 ? `(${maxWrong}次)` : ''}</td>
-                </tr>`;
-            }
-        }
-
-        function clearData() {
-            if(confirm("確定要清除所有資料嗎？此動作無法復原。")) {
-                localStorage.removeItem('idiomAppDB');
-                loadAdminData();
-            }
-        }
-    </script>
-</body>
-</html>
+                    <button onclick
