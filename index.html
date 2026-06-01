@@ -73,7 +73,7 @@
     <div class="bg-layer"></div>
 
     <audio id="bgm" loop preload="auto">
-        <source src="file:///Users/phongnghi/Downloads/123456.mp3" type="audio/mpeg">
+        <source src="https://otologic.jp/sounds/bgm/pre/kuuhaku%20to%20seizyaku.mp3" type="audio/mpeg">
     </audio>
 
     <button id="bgm-btn" onclick="toggleBGM()" style="display: none;">🔈</button>
@@ -167,11 +167,11 @@
             ],
             "有教無類": [
                 { q: "孔子提倡「____」的精神，願意耐心教導任何學生。", options: ["有恃無恐", "有教無類", "有備無患", "有意無意"], ans: "有教無類", exp: "教育沒有階級之分。" },
-                { q: "一所好學校應該做到____，不放棄任何一個孩子。", options: ["有教無類", "有氣無力", "有眼無珠", "有備無患"], ans: "有教無類", exp: "平等待遇是教育的核心。" }
+                { q: "一所好學校應該做到____，不放棄任何一個孩子。", options: ["有教無類", "有氣無力", "有眼無珠", "有備無患"], ans: "有教無類", exp: "平等待遇是教育的核心。" },
             ],
             "有氣無力": [
                 { q: "生了一場大病後，他整天躺在床上____的。", options: ["有恃無恐", "有眼無珠", "有氣無力", "有教無類"], ans: "有氣無力", exp: "生病導致身體虛弱沒有力氣。" },
-                { q: "餓了三天三夜，他說話的聲音____。", options: ["有教無類", "有氣無力", "有備無患", "有意無意"], ans: "有氣無力", exp: "飢餓導致沒有力氣發聲。" }
+                { q: "餓了三天三夜，他說話的聲音____。", options: ["有教無類", "有氣無力", "有備無患", "有意無意"], ans: "有氣無力", exp: "飢餓導致沒有力氣發聲。" },
             ],
             "有意無意": [
                 { q: "他____地提起那件往事，似乎在試探我的反應。", options: ["有眼無珠", "有恃無恐", "有意無意", "有氣無力"], ans: "有意無意", exp: "表面不在意，其實暗中觀察。" },
@@ -189,7 +189,6 @@
             if(!nameInput) { alert("請先輸入名稱！"); return; }
             currentUser = nameInput;
             
-            // 嘗試播放音樂並偵測錯誤
             const audio = document.getElementById('bgm');
             audio.volume = 0.5;
             let playPromise = audio.play();
@@ -200,7 +199,6 @@
                     document.getElementById('bgm-btn').innerText = "🔊";
                 }).catch(error => {
                     console.error("音樂載入失敗:", error);
-                    alert("【系統提示】音樂無法播放 🔈\n\n因為瀏覽器安全限制，無法直接讀取您電腦內的 file:///... 路徑。\n\n若要正常播放音樂，請將 123456.mp3 檔案放到與這個網頁同一個資料夾中，然後將程式碼內的 src 改為相對路徑，例如：\n<source src=\"123456.mp3\" type=\"audio/mpeg\">");
                 });
             }
 
@@ -247,7 +245,6 @@
             currentActiveIdiom = idiomName;
             const data = idiomsData[idiomName];
             
-            // 渲染頂部圖片與解說 (集中對稱)
             document.getElementById('detail-header').innerHTML = `
                 <img src="${data.img}" alt="${idiomName}">
                 <div style="max-width: 600px; margin: 0 auto;">
@@ -259,7 +256,6 @@
                 </div>
             `;
             
-            // 重置測驗區塊
             document.getElementById('quiz-container').innerHTML = `
                 <p>本測驗將隨機抽取 10 題，每題有 3 次作答機會。錯第 3 次將不計分並公布詳解。</p>
                 <button onclick="startQuiz()" style="padding:12px 30px; font-size:1.2rem; background:#27ae60; color:white; border:none; border-radius:8px; cursor:pointer;">開始測驗</button>
@@ -269,9 +265,7 @@
         }
 
         function startQuiz() {
-            // 從該成語題庫抽取最多 10 題 (如果題庫不足10題則全取)
             let pool = [...questionBank[currentActiveIdiom]];
-            // 補充假題目以便測試
             while(pool.length < 10) { pool.push(pool[0]); } 
 
             let shuffled = pool.sort(() => 0.5 - Math.random());
@@ -306,7 +300,6 @@
             const feedbackBox = document.getElementById('q-feedback');
             
             if(selected === qData.ans) {
-                // 答對
                 btnElement.style.background = "#2ecc71";
                 btnElement.style.color = "white";
                 feedbackBox.className = "quiz-feedback";
@@ -318,14 +311,12 @@
                 recordStat(currentActiveIdiom, true);
                 lockOptions();
             } else {
-                // 答錯
                 currentQAttempts++;
                 btnElement.style.background = "#e74c3c";
                 btnElement.style.color = "white";
                 btnElement.disabled = true;
                 
                 if(currentQAttempts >= 3) {
-                    // 錯3次，公布答案
                     feedbackBox.className = "quiz-feedback feedback-error";
                     feedbackBox.innerHTML = `❌ 錯誤 3 次！<br>正確答案是：<strong>${qData.ans}</strong><br><span style="font-size:1rem; font-weight:normal;">解析：${qData.exp}</span>`;
                     feedbackBox.style.display = "block";
@@ -350,7 +341,6 @@
             showQuestion();
         }
 
-        /* ----- 這裡就是您原本遺失斷掉的地方 ----- */
         function endQuiz() {
             saveUserData();
             document.getElementById('quiz-container').innerHTML = `
