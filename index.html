@@ -167,11 +167,11 @@
             ],
             "有教無類": [
                 { q: "孔子提倡「____」的精神，願意耐心教導任何學生。", options: ["有恃無恐", "有教無類", "有備無患", "有意無意"], ans: "有教無類", exp: "教育沒有階級之分。" },
-                { q: "一所好學校應該做到____，不放棄任何一個孩子。", options: ["有教無類", "有氣無力", "有眼無珠", "有備無患"], ans: "有教無類", exp: "平等待遇是教育的核心。" },
+                { q: "一所好學校應該做到____，不放棄任何一個孩子。", options: ["有教無類", "有氣無力", "有眼無珠", "有備無患"], ans: "有教無類", exp: "平等待遇是教育的核心。" }
             ],
             "有氣無力": [
                 { q: "生了一場大病後，他整天躺在床上____的。", options: ["有恃無恐", "有眼無珠", "有氣無力", "有教無類"], ans: "有氣無力", exp: "生病導致身體虛弱沒有力氣。" },
-                { q: "餓了三天三夜，他說話的聲音____。", options: ["有教無類", "有氣無力", "有備無患", "有意無意"], ans: "有氣無力", exp: "飢餓導致沒有力氣發聲。" },
+                { q: "餓了三天三夜，他說話的聲音____。", options: ["有教無類", "有氣無力", "有備無患", "有意無意"], ans: "有氣無力", exp: "飢餓導致沒有力氣發聲。" }
             ],
             "有意無意": [
                 { q: "他____地提起那件往事，似乎在試探我的反應。", options: ["有眼無珠", "有恃無恐", "有意無意", "有氣無力"], ans: "有意無意", exp: "表面不在意，其實暗中觀察。" },
@@ -271,7 +271,7 @@
         function startQuiz() {
             // 從該成語題庫抽取最多 10 題 (如果題庫不足10題則全取)
             let pool = [...questionBank[currentActiveIdiom]];
-            // 補充假題目以便測試 (若您的題庫達50題，則移除此行)
+            // 補充假題目以便測試
             while(pool.length < 10) { pool.push(pool[0]); } 
 
             let shuffled = pool.sort(() => 0.5 - Math.random());
@@ -350,10 +350,105 @@
             showQuestion();
         }
 
+        /* ----- 這裡就是您原本遺失斷掉的地方 ----- */
         function endQuiz() {
             saveUserData();
             document.getElementById('quiz-container').innerHTML = `
                 <h2 style="color:#2c3e50; text-align:center;">測驗結束！</h2>
                 <div style="text-align:center; font-size:3rem; font-weight:bold; color:#e74c3c; margin:20px 0;">${sessionScore} 分</div>
                 <div style="text-align:center;">
-                    <button onclick
+                    <button onclick="startQuiz()" style="padding:10px 20px; font-size:1.2rem; background:#3498db; color:white; border:none; border-radius:5px; cursor:pointer; margin:5px;">重新挑戰</button>
+                    <button onclick="switchTab('dashboard')" style="padding:10px 20px; font-size:1.2rem; background:#95a5a6; color:white; border:none; border-radius:5px; cursor:pointer; margin:5px;">回主目錄</button>
+                </div>
+            `;
+        }
+
+        // --- 語法查詢器邏輯 ---
+        function analyzeSyntax() {
+            const text = document.getElementById('syntax-input').value;
+            const resBox = document.getElementById('query-result');
+            let foundIdiom = Object.keys(idiomsData).find(i => text.includes(i));
+            
+            if(!foundIdiom) { resBox.innerHTML = "<span style='color:#e74c3c'>未偵測到指定的成語！</span>"; return; }
+            
+            let role = "未知";
+            if (text.includes(foundIdiom + "的")) role = "[定語] (修飾名詞)";
+            else if (text.includes(foundIdiom + "地")) role = "[狀語] (修飾動詞)";
+            else if (text.endsWith(foundIdiom) || text.endsWith(foundIdiom+"。") || text.includes("是" + foundIdiom)) role = "[謂語] 或 [賓語]";
+            else if (text.includes("得" + foundIdiom)) role = "[補語] (補充狀態)";
+            else if (text.startsWith(foundIdiom)) role = "[主語]";
+            else role = "[謂語] (作核心動態描述)";
+
+            resBox.innerHTML = `目標成語：<span style="color:#2c3e50">${foundIdiom}</span><br>語法角色推測：<span style="color:#e67e22">${role}</span>`;
+        }
+
+        // --- 後台數據管理 ---
+        function initUserStats() {
+            let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
+            if(!db[currentUser]) {
+                db[currentUser] = { score: 0, stats: {} };
+                for(let key in idiomsData) db[currentUser].stats[key] = { correct: 0, wrong: 0 };
+                localStorage.setItem('idiomAppDB', JSON.stringify(db));
+            }
+        }
+
+        function recordStat(idiom, isCorrect) {
+            let db = JSON.parse(localStorage.getItem('idiomAppDB'));
+            if(isCorrect) db[currentUser].stats[idiom].correct++;
+            else db[currentUser].stats[idiom].wrong++;
+            localStorage.setItem('idiomAppDB', JSON.stringify(db));
+        }
+
+        function saveUserData() {
+            let db = JSON.parse(localStorage.getItem('idiomAppDB'));
+            db[currentUser].score += sessionScore; 
+            localStorage.setItem('idiomAppDB', JSON.stringify(db));
+        }
+
+        function showAdminLogin() {
+            let acc = prompt("請輸入管理者帳號：");
+            let pwd = prompt("請輸入密碼：");
+            if(acc === "admin_2026" && pwd === "@admin123") {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-app').style.display = 'block';
+                document.getElementById('bgm-btn').style.display = 'block';
+                switchTab('admin-panel');
+                loadAdminData();
+            } else {
+                alert("帳號或密碼錯誤！");
+            }
+        }
+
+        function loadAdminData() {
+            let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
+            let tbody = document.getElementById('admin-table-body');
+            tbody.innerHTML = "";
+            
+            for(let user in db) {
+                let uData = db[user];
+                let maxCorrect = -1, bestIdiom = "無資料";
+                let maxWrong = -1, worstIdiom = "無資料";
+                
+                for(let idiom in uData.stats) {
+                    if(uData.stats[idiom].correct > maxCorrect && uData.stats[idiom].correct > 0) { maxCorrect = uData.stats[idiom].correct; bestIdiom = idiom; }
+                    if(uData.stats[idiom].wrong > maxWrong && uData.stats[idiom].wrong > 0) { maxWrong = uData.stats[idiom].wrong; worstIdiom = idiom; }
+                }
+
+                tbody.innerHTML += `<tr style="background:#fff;">
+                    <td>${user}</td>
+                    <td>${uData.score}</td>
+                    <td style="color:#27ae60; font-weight:bold;">${bestIdiom} ${maxCorrect > 0 ? `(${maxCorrect}次)` : ''}</td>
+                    <td style="color:#c0392b; font-weight:bold;">${worstIdiom} ${maxWrong > 0 ? `(${maxWrong}次)` : ''}</td>
+                </tr>`;
+            }
+        }
+
+        function clearData() {
+            if(confirm("確定要清除所有資料嗎？此動作無法復原。")) {
+                localStorage.removeItem('idiomAppDB');
+                loadAdminData();
+            }
+        }
+    </script>
+</body>
+</html>
