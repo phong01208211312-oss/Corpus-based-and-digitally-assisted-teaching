@@ -10,7 +10,8 @@
         
         .bg-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            background-image: url('https://i.ibb.co/zVJHDDtc/Gemini-Generated-Image-wnn7e2wnn7e2wnn7.png');
+            /* 已更新為最新的背景圖 */
+            background-image: url('https://i.ibb.co/YT82HPYv/Gemini-Generated-Image-wkgvbwwkgvbwwkgv.png');
             background-size: cover; background-position: center; background-attachment: fixed; filter: brightness(0.9);
         }
 
@@ -76,7 +77,7 @@
         .finale-btn.unlocked { opacity: 1; pointer-events: auto; animation: unlock-pulse 2s infinite; }
         @keyframes unlock-pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
 
-        /* 統一平面資訊表設計 (符合 5.40.41.jpg) */
+        /* 統一平面資訊表設計 */
         .training-header { text-align: center; margin-bottom: 25px;}
         .training-header img { display: block; margin: 0 auto 20px auto; border-radius: 12px; max-width: 85%; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
         .training-title { font-size: 3rem; color: #8e44ad; font-family: '標楷體', serif; font-weight: bold; margin-bottom: 20px; }
@@ -136,7 +137,6 @@
     <div id="bgm-btn" class="music-btn" onclick="toggleBGM()" title="開啟/關閉音樂">🎵</div>
     <div class="settings-btn" onclick="showAdminLogin()" title="系統後台">⚙️</div>
 
-    <!-- 登入畫面 -->
     <div id="login-screen">
         <div class="main-title">簡單學成語</div>
         <div class="sub-title">Learn Taiwanese Mandarin Easily</div>
@@ -152,19 +152,15 @@
         </div>
     </div>
 
-    <!-- 學習主畫面 -->
     <div id="main-app">
-        <!-- 主目錄 -->
         <div id="dashboard" class="section active">
             <div class="main-title" style="font-size: 4rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">「有X無Y」成語匯集</div>
             <p style="text-align:center; font-size:1.3rem; color:#34495e; font-weight:bold;">請點擊下方成語開始造句特訓，全數完成即可解鎖大挑戰！</p>
             <div class="dashboard-grid" id="dashboard-grid">
-                <!-- 動態生成卡片 -->
-            </div>
+                </div>
             
             <button id="grand-finale-btn" class="finale-btn" onclick="startGrandFinale()">🔥 總體大練習 (未解鎖)</button>
             
-            <!-- 語法分析器 -->
             <div style="margin-top: 50px; padding: 25px; background: #e8f8f5; border-radius: 15px; border: 2px solid #1abc9c; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
                 <h3 style="margin-top:0; color:#16a085;">🔍 語法分析器 (POS Analyzer)</h3>
                 <input type="text" id="syntax-input" placeholder="請輸入包含目標成語的句子..." style="width:75%; padding:12px; font-size:1.1rem; border-radius:5px; border:1px solid #ccc;">
@@ -173,13 +169,11 @@
             </div>
         </div>
 
-        <!-- 單一成語造句特訓區 -->
         <div id="training-section" class="section">
             <button class="back-btn" onclick="switchTab('dashboard')">⬅ 返回主目錄 (Back)</button>
             <div id="training-content"></div>
         </div>
 
-        <!-- 總體大練習區 -->
         <div id="finale-section" class="section">
             <h2 style="text-align:center; color:#e74c3c; font-size: 2.2rem; margin-top:0;">🔥 總體大練習：情境挑戰</h2>
             <div class="quiz-area">
@@ -194,7 +188,6 @@
             </div>
         </div>
 
-        <!-- 最終結算畫面 -->
         <div id="result-section" class="section">
             <h2 style="text-align:center; color:#2c3e50; font-size:2.8rem;" id="final-name-title">🎉 恭喜完成所有挑戰！</h2>
             <div style="text-align:center; font-size:1.4rem; color:#7f8c8d; margin-bottom: 20px;">造句特訓 (30分) + 情境大測驗 (70分)</div>
@@ -205,7 +198,6 @@
             </div>
         </div>
 
-        <!-- 後台管理 -->
         <div id="admin-panel" class="section">
             <h2 style="margin-top:0;">⚙️ 學習者數據後台</h2>
             <button class="back-btn" onclick="switchTab('dashboard')">返回主目錄</button>
@@ -218,7 +210,6 @@
         </div>
     </div>
 
-    <!-- 模態框：排行榜 -->
     <div id="leaderboard-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('leaderboard-modal')">&times;</span>
@@ -240,7 +231,7 @@
         let sentenceScore = 0;
         let finaleScore = 0;
 
-        // 含注音、拼音、字面義、隱喻義及英文輔助說明的教學資料
+        // 含注音、拼音、字面義、隱喻義及英文輔助說明的教學資料 (精簡至3個例句)
         const trainingData = [
             {
                 name: "有備無患", img: "https://i.ibb.co/kVyRBfWJ/image.png",
@@ -347,8 +338,8 @@
                 audio.play().catch(e => console.log("需使用者互動後播放"));
             }
 
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('main-app').classList.add('active');
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-app').style.display = 'block';
             
             initUserStats();
             renderDashboard();
@@ -427,7 +418,7 @@
                     <h4>📚 語料庫真實例句 (Authentic Examples)</h4>
                     <ul>${examplesHTML}</ul>
                     <div style="text-align: right; margin-top: 15px;">
-                        <a href="https://phong01208211312-oss.github.io/Idiom-Corpus-chengyuyuliaoku/" target="_blank" style="display:inline-block; padding:10px 20px; background:#3498db; color:white; text-decoration:none; border-radius:5px; font-weight:bold; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">🔍 查閱更多語料</a>
+                        <a href="https://phong01208211312-oss.github.io/Idiom-Corpus-chengyuyuliaoku/" target="_blank" class="corpus-btn">🔍 查閱更多語料</a>
                     </div>
                 </div>
 
@@ -664,8 +655,8 @@
         function showAdminLogin() {
             let pwd = prompt("⚙️ 進入系統後台\n\n請輸入管理者密碼 (Password: @admin123)：");
             if(pwd === "@admin123") {
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('main-app').classList.add('active');
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-app').style.display = 'block';
                 switchTab('admin-panel');
                 
                 let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
