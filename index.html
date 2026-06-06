@@ -5,46 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🏮簡單學成語✨</title>
     <style>
-        /* 全局與背景設定 */
-        body, html { margin: 0; padding: 0; font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; height: 100%; overflow-x: hidden; background-color: #2c3e50;}
-        
-        .bg-layer {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+       /* 預設主題與變數 */
+        :root { 
+            --edu-primary: #4A90E2; --edu-secondary: #FFD200; --edu-accent: #FF5A5F; --edu-success: #20b2aa; 
+            --text-dark: #333; --box-bg: #F0F7FF;
+        }
+
+        /* 全頁背景設定：覆蓋最底層 */
+        body { 
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; 
+            margin: 0; padding: 0; display: flex; justify-content: center; min-height: 100vh; align-items: flex-start;
+            background-color: #2c3e50;
             background-image: url('https://i.ibb.co/zVJHDDtc/Gemini-Generated-Image-wnn7e2wnn7e2wnn7.png');
-            background-size: cover; background-position: center; background-attachment: fixed; filter: brightness(0.9);
+            background-size: cover; 
+            background-position: center; 
+            background-attachment: fixed;
+            background-repeat: no-repeat;
         }
-
-        /* 首頁標題 (標楷體、3D立體風格) */
-        .main-title {
-            font-family: 'Kaiti TC', 'KaiTi', '標楷體', serif;
-            font-size: 4.5rem; font-weight: bold; color: #FFD700; text-align: center; margin-bottom: 10px;
-            text-shadow: 2px 2px 0px #b8860b, 4px 4px 0px #8b6508, 6px 6px 15px rgba(0,0,0,0.7);
-            letter-spacing: 4px; z-index: 10;
+        
+        #app { width: 100%; max-width: 900px; position: relative; min-height: 100vh; display: flex; flex-direction: column; }
+        .hidden { display: none !important; }
+        
+        /* ---------------- 首頁 (Login Screen) 沉浸式設計 ---------------- */
+        #login-screen { text-align: center; margin-top: 10vh; padding: 20px; display: flex; flex-direction: column; align-items: center; width: 100%;}
+        
+        /* 3D立體風格標題 */
+        .main-title { 
+            font-family: 'Kaiti TC', 'KaiTi', '標楷體', serif; 
+            font-size: 4.5rem; 
+            color: #FFD700; 
+            margin: 0 0 10px 0; 
+            font-weight: bold;
+            letter-spacing: 4px;
+            text-shadow: 
+                2px 2px 0px #b8860b, 
+                4px 4px 0px #8b6508, 
+                6px 6px 15px rgba(0,0,0,0.7); 
         }
-        .sub-title { text-align: center; font-size: 1.3rem; color: #f8fafc; margin-bottom: 35px; letter-spacing: 1px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); font-weight: bold;}
-
-        /* 登入介面 (毛玻璃設計) */
-        #login-screen { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px;}
+        .sub-title { font-size: 1.3rem; color: #f8fafc; margin-bottom: 35px; letter-spacing: 1px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); font-weight: bold;}
+        
+        /* 毛玻璃卡片 */
         .login-card {
-            background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border-radius: 20px; padding: 40px 30px; width: 100%; max-width: 400px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6); text-align: center;
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 35px 30px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            text-align: left;
         }
-        .login-card label { color: #e2e8f0; font-size: 1.1rem; font-weight: bold; margin-bottom: 15px; display: block; }
+        
+        .login-card label { color: #e2e8f0; font-size: 1rem; font-weight: bold; margin-bottom: 8px; display: block; }
         .login-card input {
             width: 100%; padding: 14px 15px; margin-bottom: 25px;
-            background: rgba(15, 23, 42, 0.7); color: white; border: 1px solid #64748b; border-radius: 10px;
-            font-size: 1.1rem; box-sizing: border-box; outline: none; transition: 0.3s; text-align: center;
+            background: rgba(15, 23, 42, 0.7); color: white;
+            border: 1px solid #64748b; border-radius: 10px;
+            font-size: 1.05rem; box-sizing: border-box; outline: none; transition: 0.3s;
+            text-align: center;
         }
         .login-card input:focus { border-color: #F6D365; background: rgba(15, 23, 42, 0.9); }
         .login-card input::placeholder { color: #94a3b8; }
         
-        .btn-group { display: flex; flex-direction: column; gap: 15px; }
-        .btn-start-main { background: linear-gradient(45deg, #FF512F, #DD2476); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(221, 36, 118, 0.5); }
+        .btn-group { display: flex; gap: 15px; margin-bottom: 15px;}
+        
+        /* 按鈕漸層設計 */
+        .btn-start-main { flex: 1; background: linear-gradient(45deg, #FF512F, #DD2476); color: white; border: none; padding: 15px 5px; border-radius: 12px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(221, 36, 118, 0.5); text-align: center;}
         .btn-start-main:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(221, 36, 118, 0.7); }
-        .btn-start-mini { background: linear-gradient(45deg, #f39c12, #d35400); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.5); }
-        .btn-start-mini:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(230, 126, 34, 0.7); }
+        
+        .btn-start-mini { flex: 1; background: linear-gradient(45deg, #11998e, #38ef7d); color: white; border: none; padding: 15px 5px; border-radius: 12px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(17, 153, 142, 0.5); text-align: center;}
+        .btn-start-mini:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(17, 153, 142, 0.7); }
 
         /* 音樂與設定按鈕 */
         .music-btn, .settings-btn { 
