@@ -5,104 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🏮簡單學成語✨</title>
     <style>
-        /* 預設主題與變數 */
-        :root { 
-            --edu-primary: #4A90E2; --edu-secondary: #FFD200; --edu-accent: #FF5A5F; --edu-success: #20b2aa; 
-            --text-dark: #333; --box-bg: #F0F7FF;
+        /* 全局與背景設定 */
+        body, html { margin: 0; padding: 0; font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; height: 100%; overflow-x: hidden; background-color: #2c3e50;}
+        
+        .bg-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background-image: url('https://i.ibb.co/zVJHDDtc/Gemini-Generated-Image-wnn7e2wnn7e2wnn7.png');
+            background-size: cover; background-position: center; background-attachment: fixed; filter: brightness(0.9);
         }
 
-        /* 全頁背景設定：覆蓋最底層 */
-        body { 
-            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; 
-            margin: 0; padding: 0; display: flex; justify-content: center; min-height: 100vh; align-items: flex-start;
-            background-color: #2c3e50;
-            background-image: url('https://i.ibb.co/zVJHDDtc/Gemini-Generated-Image-wnn7e2wnn7e2wnn7.png');
-            background-size: cover; 
-            background-position: center; 
-            background-attachment: fixed;
-            background-repeat: no-repeat;
+        /* 首頁標題 (標楷體、3D立體風格) */
+        .main-title {
+            font-family: 'Kaiti TC', 'KaiTi', '標楷體', serif;
+            font-size: 4.5rem; font-weight: bold; color: #FFD700; text-align: center; margin-bottom: 10px;
+            text-shadow: 2px 2px 0px #b8860b, 4px 4px 0px #8b6508, 6px 6px 15px rgba(0,0,0,0.7);
+            letter-spacing: 4px; z-index: 10;
         }
-        
-        #app { width: 100%; max-width: 900px; position: relative; min-height: 100vh; display: flex; flex-direction: column; }
-        .hidden { display: none !important; }
-        
-        /* ---------------- 首頁 (Login Screen) 沉浸式設計 ---------------- */
-        #login-screen { text-align: center; margin-top: 10vh; padding: 20px; display: flex; flex-direction: column; align-items: center; width: 100%;}
-        
-        /* 3D立體風格標題 */
-        .main-title { 
-            font-family: 'Kaiti TC', 'KaiTi', '標楷體', serif; 
-            font-size: 4.5rem; 
-            color: #FFD700; 
-            margin: 0 0 10px 0; 
-            font-weight: bold;
-            letter-spacing: 4px;
-            text-shadow: 
-                2px 2px 0px #b8860b, 
-                4px 4px 0px #8b6508, 
-                6px 6px 15px rgba(0,0,0,0.7); 
-        }
-        .sub-title { font-size: 1.3rem; color: #f8fafc; margin-bottom: 35px; letter-spacing: 1px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); font-weight: bold;}
-        
-        /* 毛玻璃卡片 */
+        .sub-title { text-align: center; font-size: 1.3rem; color: #f8fafc; margin-bottom: 35px; letter-spacing: 1px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); font-weight: bold;}
+
+        /* 登入介面 (毛玻璃設計) */
+        #login-screen { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px;}
         .login-card {
-            background: rgba(30, 41, 59, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 35px 30px;
-            width: 100%;
-            max-width: 480px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-            text-align: left;
+            background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px; padding: 40px 30px; width: 100%; max-width: 400px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6); text-align: center;
         }
-        
-        .login-card label { color: #e2e8f0; font-size: 1rem; font-weight: bold; margin-bottom: 8px; display: block; }
+        .login-card label { color: #e2e8f0; font-size: 1.1rem; font-weight: bold; margin-bottom: 15px; display: block; }
         .login-card input {
             width: 100%; padding: 14px 15px; margin-bottom: 25px;
-            background: rgba(15, 23, 42, 0.7); color: white;
-            border: 1px solid #64748b; border-radius: 10px;
-            font-size: 1.05rem; box-sizing: border-box; outline: none; transition: 0.3s;
-            text-align: center;
+            background: rgba(15, 23, 42, 0.7); color: white; border: 1px solid #64748b; border-radius: 10px;
+            font-size: 1.1rem; box-sizing: border-box; outline: none; transition: 0.3s; text-align: center;
         }
         .login-card input:focus { border-color: #F6D365; background: rgba(15, 23, 42, 0.9); }
         .login-card input::placeholder { color: #94a3b8; }
         
-        .btn-group { display: flex; gap: 15px; margin-bottom: 15px;}
-        
-        /* 按鈕漸層設計 */
-        .btn-start-main { flex: 1; background: linear-gradient(45deg, #FF512F, #DD2476); color: white; border: none; padding: 15px 5px; border-radius: 12px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(221, 36, 118, 0.5); text-align: center;}
+        .btn-group { display: flex; flex-direction: column; gap: 15px; }
+        .btn-start-main { background: linear-gradient(45deg, #FF512F, #DD2476); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(221, 36, 118, 0.5); }
         .btn-start-main:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(221, 36, 118, 0.7); }
-        
-        .btn-start-mini { flex: 1; background: linear-gradient(45deg, #11998e, #38ef7d); color: white; border: none; padding: 15px 5px; border-radius: 12px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(17, 153, 142, 0.5); text-align: center;}
-        .btn-start-mini:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(17, 153, 142, 0.7); }
+        .btn-start-mini { background: linear-gradient(45deg, #f39c12, #d35400); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.5); }
+        .btn-start-mini:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(230, 126, 34, 0.7); }
 
-        /* 音樂控制與後台設定按鈕 */
-        .music-btn { 
-            position: fixed; top: 20px; right: 20px; font-size: 2.2rem; cursor: pointer; z-index: 100; 
-            background: #fff; border-radius: 50%; width: 65px; height: 65px; display: flex; align-items: center; justify-content: center; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 4px solid #bdc3c7; transition: all 0.3s;
+        /* 音樂與設定按鈕 */
+        .music-btn, .settings-btn { 
+            position: fixed; right: 20px; font-size: 2rem; cursor: pointer; z-index: 100; 
+            background: rgba(255,255,255,0.9); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: all 0.3s;
         }
-        .music-btn.playing {
-            border-color: #f1c40f; color: #e74c3c;
-            animation: pulse-ring 2s infinite, spin-slow 8s linear infinite;
-        }
+        .music-btn { top: 20px; border: 3px solid #bdc3c7; }
+        .settings-btn { bottom: 20px; }
+        .music-btn.playing { border-color: #f1c40f; color: #e74c3c; animation: pulse-ring 2s infinite, spin-slow 8s linear infinite; }
+        .settings-btn:hover { background: #fff; transform: rotate(90deg); }
+        
         @keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(241, 196, 15, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(241, 196, 15, 0); } 100% { box-shadow: 0 0 0 0 rgba(241, 196, 15, 0); } }
         @keyframes spin-slow { 100% { transform: rotate(360deg); } }
-        
-        .settings-btn {
-            position: fixed; bottom: 20px; right: 20px; font-size: 2rem; cursor: pointer; z-index: 100;
-            background: rgba(255,255,255,0.8); border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3); transition: 0.3s;
-        }
-        .settings-btn:hover { background: #fff; transform: rotate(90deg); }
 
-        /* ---------------- 主學習介面設定 ---------------- */
-        .section { display: none; width: 100%; max-width: 900px; margin: 20px auto; background: rgba(255, 255, 255, 0.95); padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); box-sizing: border-box;}
+        /* 內容容器 */
+        #main-app { display: none; min-height: 100vh; padding: 20px; box-sizing: border-box; background: rgba(255, 255, 255, 0.85); }
+        .section { display: none; max-width: 900px; margin: 0 auto; background: rgba(255, 255, 255, 0.95); padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
         .section.active { display: block; }
 
         /* 主目錄按鈕 */
-        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 30px;}
         .idiom-card-btn { background: #34495e; color: #f1c40f; padding: 20px; text-align: center; border-radius: 10px; cursor: pointer; font-size: 1.8rem; font-family: '標楷體', serif; font-weight: bold; transition: transform 0.2s, background 0.3s; border: 2px solid #2c3e50; position: relative;}
         .idiom-card-btn:hover { transform: translateY(-5px); background: #2c3e50; color: #fff;}
         .idiom-card-btn.completed { background: #27ae60; color: #fff; border-color: #2ecc71; }
@@ -112,27 +76,28 @@
         .finale-btn.unlocked { opacity: 1; pointer-events: auto; animation: unlock-pulse 2s infinite; }
         @keyframes unlock-pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
 
-        /* 造句特訓與講解區塊 */
-        .training-header { text-align: center; margin-bottom: 20px; border-bottom: 2px dashed #bdc3c7; padding-bottom: 20px;}
-        .training-header img { display: block; margin: 0 auto 15px auto; border-radius: 10px; max-width: 80%; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-        .training-title { font-size: 3rem; color: #8e44ad; font-family: '標楷體', serif; font-weight: bold; margin-bottom: 15px; }
+        /* 統一平面資訊表設計 (符合 5.40.41.jpg) */
+        .training-header { text-align: center; margin-bottom: 25px;}
+        .training-header img { display: block; margin: 0 auto 20px auto; border-radius: 12px; max-width: 85%; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .training-title { font-size: 3rem; color: #8e44ad; font-family: '標楷體', serif; font-weight: bold; margin-bottom: 20px; }
         
-        /* 表格化呈現：注音、拼音、字面義、隱喻義 */
-        .info-table { max-width: 600px; margin: 0 auto 20px auto; background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .data-row { display: flex; padding: 10px 0; border-bottom: 1px solid #eee; text-align: left; align-items: center;}
+        .info-table { max-width: 750px; margin: 0 auto 30px auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border: 1px solid #eaeaea;}
+        .data-row { display: flex; padding: 12px 0; border-bottom: 1px solid #f0f0f0; text-align: left; align-items: flex-start;}
         .data-row:last-child { border-bottom: none; }
-        .data-label { width: 110px; font-weight: bold; color: #fff; background: #8e44ad; text-align: center; padding: 6px; border-radius: 5px; margin-right: 15px; flex-shrink: 0;}
-        .data-content { flex: 1; font-size: 1.15rem; color: #333; line-height: 1.5;}
-
-        .training-def { font-size: 1.2rem; color: #34495e; margin: 15px 0; background: #fdfefe; padding: 15px; border-radius: 5px; border-left: 6px solid #3498db; text-align: left; line-height: 1.5;}
-        .en-note { display: block; font-size: 1rem; color: #7f8c8d; font-style: italic; margin-top: 5px; }
+        .data-label { width: 120px; font-weight: bold; color: #fff; background: #8e44ad; text-align: center; padding: 8px; border-radius: 6px; margin-right: 20px; flex-shrink: 0; font-size: 1.1rem; align-self: flex-start;}
+        .data-content { flex: 1; font-size: 1.15rem; color: #2c3e50; line-height: 1.6; align-self: center;}
+        .en-note { display: block; font-size: 0.95rem; color: #7f8c8d; font-style: italic; margin-top: 4px; }
         
-        .corpus-examples { background: #fdfefe; padding: 20px; border-radius: 8px; border: 1px solid #d5d8dc; margin-bottom: 20px;}
-        .corpus-examples h4 { margin-top: 0; color: #16a085; border-bottom: 2px solid #16a085; padding-bottom: 8px;}
-        .corpus-examples ul { padding-left: 20px; margin: 0; line-height: 1.8; font-size: 1.15rem; color: #2c3e50;}
+        .corpus-examples { background: #fdfefe; padding: 25px; border-radius: 12px; border: 1px solid #16a085; margin-bottom: 25px; box-shadow: 0 4px 10px rgba(22, 160, 133, 0.1);}
+        .corpus-examples h4 { margin-top: 0; color: #16a085; border-bottom: 2px solid #16a085; padding-bottom: 10px; font-size: 1.3rem;}
+        .corpus-examples ul { padding-left: 25px; margin: 0; line-height: 1.8; font-size: 1.15rem; color: #2c3e50;}
         .highlight-idiom { color: #e74c3c; font-weight: bold; }
 
-        .writing-area { background: #ecf0f1; padding: 20px; border-radius: 10px; margin-top: 20px;}
+        .corpus-btn { display: inline-block; padding: 10px 20px; background: #2980b9; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 1.1rem; transition: 0.2s; box-shadow: 0 3px 6px rgba(41, 128, 185, 0.4);}
+        .corpus-btn:hover { background: #2471a3; transform: translateY(-2px); color: white;}
+
+        .writing-area { background: #ecf0f1; padding: 25px; border-radius: 12px; margin-top: 20px; border-left: 6px solid #34495e;}
+        .writing-area h3 { margin-top: 0; color: #2c3e50;}
         .writing-area textarea { width: 100%; height: 120px; padding: 15px; font-size: 1.2rem; border-radius: 8px; border: 2px solid #bdc3c7; box-sizing: border-box; resize: vertical;}
         .writing-area button { display: block; width: 100%; background: #27ae60; color: white; border: none; padding: 15px; font-size: 1.3rem; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 15px; transition: 0.2s; box-shadow: 0 4px 6px rgba(39, 174, 96, 0.4);}
         .writing-area button:hover { background: #2196f3; box-shadow: 0 4px 6px rgba(33, 150, 243, 0.4);}
@@ -162,6 +127,8 @@
 </head>
 <body>
 
+    <div class="bg-layer"></div>
+
     <audio id="bgm" loop preload="auto">
         <source src="https://otologic.jp/sounds/bgm/pre/kuuhaku%20to%20seizyaku.mp3" type="audio/mpeg">
     </audio>
@@ -169,44 +136,50 @@
     <div id="bgm-btn" class="music-btn" onclick="toggleBGM()" title="開啟/關閉音樂">🎵</div>
     <div class="settings-btn" onclick="showAdminLogin()" title="系統後台">⚙️</div>
 
-    <div id="app">
-        <div id="login-screen">
-            <h1 class="main-title">簡單學成語</h1>
-            <div class="sub-title">Learn Taiwanese Mandarin Easily</div>
+    <!-- 登入畫面 -->
+    <div id="login-screen">
+        <div class="main-title">簡單學成語</div>
+        <div class="sub-title">Learn Taiwanese Mandarin Easily</div>
+        
+        <div class="login-card">
+            <label for="username">👤 Your Name / 您的名字：</label>
+            <input type="text" id="username" placeholder="Enter your name..." autocomplete="off">
             
-            <div class="login-card">
-                <label for="username">請輸入您的姓名 (Enter your name)</label>
-                <input type="text" id="username" placeholder="Name..." autocomplete="off">
-                
-                <div class="btn-group">
-                    <button class="btn-start-main" onclick="startGame()">▶ 開始學習 Start</button>
-                    <button class="btn-start-mini" onclick="openLeaderboard()">🏆 排名榜 Rank</button>
-                </div>
+            <div class="btn-group">
+                <button class="btn-start-main" onclick="startGame()">🚀 開始學習 Start</button>
+                <button class="btn-start-mini leaderboard-btn" onclick="openLeaderboard()">🏆 學習排名榜 Leaderboard</button>
             </div>
         </div>
+    </div>
 
-        <div id="main-app" class="section">
-            <h1 class="main-title" style="color: #2c3e50; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">「有X無Y」成語匯集</h1>
-            <p style="text-align:center; font-size:1.2rem; color:#34495e; font-weight:bold;">請點擊下方成語開始特訓，全數完成即可解鎖大挑戰！</p>
+    <!-- 學習主畫面 -->
+    <div id="main-app">
+        <!-- 主目錄 -->
+        <div id="dashboard" class="section active">
+            <div class="main-title" style="font-size: 4rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">「有X無Y」成語匯集</div>
+            <p style="text-align:center; font-size:1.3rem; color:#34495e; font-weight:bold;">請點擊下方成語開始造句特訓，全數完成即可解鎖大挑戰！</p>
             <div class="dashboard-grid" id="dashboard-grid">
-                </div>
+                <!-- 動態生成卡片 -->
+            </div>
             
             <button id="grand-finale-btn" class="finale-btn" onclick="startGrandFinale()">🔥 總體大練習 (未解鎖)</button>
             
-            <div style="margin-top: 40px; padding: 25px; background: #e8f8f5; border-radius: 15px; border: 2px solid #1abc9c; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+            <!-- 語法分析器 -->
+            <div style="margin-top: 50px; padding: 25px; background: #e8f8f5; border-radius: 15px; border: 2px solid #1abc9c; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
                 <h3 style="margin-top:0; color:#16a085;">🔍 語法分析器 (POS Analyzer)</h3>
-                <p style="color:#7f8c8d; margin-bottom:10px;">輸入包含目標成語的句子，分析其在句中的詞性角色。</p>
-                <input type="text" id="syntax-input" placeholder="例如：這真是個有備無患的好方法..." style="width:75%; padding:12px; font-size:1.1rem; border-radius:5px; border:1px solid #ccc;">
+                <input type="text" id="syntax-input" placeholder="請輸入包含目標成語的句子..." style="width:75%; padding:12px; font-size:1.1rem; border-radius:5px; border:1px solid #ccc;">
                 <button onclick="analyzeSyntax()" style="padding:12px 25px; font-size:1.1rem; background:#1abc9c; color:white; border:none; border-radius:5px; cursor:pointer; font-weight:bold;">分析 Analyze</button>
-                <div id="query-result" style="margin-top:15px; font-weight:bold; color:#2c3e50; font-size:1.2rem; line-height: 1.5;"></div>
+                <div id="query-result" style="margin-top:15px; font-weight:bold; color:#2c3e50; font-size:1.2rem; line-height: 1.6;"></div>
             </div>
         </div>
 
+        <!-- 單一成語造句特訓區 -->
         <div id="training-section" class="section">
-            <button class="back-btn" onclick="switchTab('main-app')">⬅ 返回主目錄 (Back)</button>
+            <button class="back-btn" onclick="switchTab('dashboard')">⬅ 返回主目錄 (Back)</button>
             <div id="training-content"></div>
         </div>
 
+        <!-- 總體大練習區 -->
         <div id="finale-section" class="section">
             <h2 style="text-align:center; color:#e74c3c; font-size: 2.2rem; margin-top:0;">🔥 總體大練習：情境挑戰</h2>
             <div class="quiz-area">
@@ -221,34 +194,37 @@
             </div>
         </div>
 
+        <!-- 最終結算畫面 -->
         <div id="result-section" class="section">
-            <h2 style="text-align:center; color:#2c3e50; font-size:2.5rem;" id="final-name-title">🎉 恭喜完成所有挑戰！</h2>
-            <div style="text-align:center; font-size:1.2rem; color:#7f8c8d; margin-bottom: 20px;">造句特訓 (30分) + 情境大測驗 (70分)</div>
+            <h2 style="text-align:center; color:#2c3e50; font-size:2.8rem;" id="final-name-title">🎉 恭喜完成所有挑戰！</h2>
+            <div style="text-align:center; font-size:1.4rem; color:#7f8c8d; margin-bottom: 20px;">造句特訓 (30分) + 情境大測驗 (70分)</div>
             <div style="text-align:center; font-size:6rem; font-weight:bold; color:#e74c3c; margin:20px 0; text-shadow: 3px 3px 0px #fadbd8;" id="final-score-display">0 / 100</div>
-            <div id="final-encouragement" style="text-align:center; font-size:1.5rem; color:#27ae60; font-weight:bold; margin-bottom: 30px; line-height:1.5;"></div>
+            <div id="final-encouragement" style="text-align:center; font-size:1.5rem; color:#27ae60; font-weight:bold; margin-bottom: 40px; line-height:1.6;"></div>
             <div style="text-align:center;">
                 <button onclick="location.reload()" style="padding:15px 40px; font-size:1.3rem; background:#3498db; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:bold; box-shadow: 0 4px 10px rgba(52, 152, 219, 0.4);">🏠 返回首頁 (Home)</button>
             </div>
         </div>
 
+        <!-- 後台管理 -->
         <div id="admin-panel" class="section">
             <h2 style="margin-top:0;">⚙️ 學習者數據後台</h2>
-            <button class="back-btn" onclick="switchTab('main-app')">返回主目錄</button>
-            <button onclick="downloadSentencesAsTxt()" style="background: #27ae60; color: white; padding:10px 15px; border:none; border-radius:5px; cursor:pointer; margin-right: 10px; font-weight:bold;">📥 下載造句語料庫 (.txt)</button>
+            <button class="back-btn" onclick="switchTab('dashboard')">返回主目錄</button>
+            <button onclick="downloadSentencesAsTxt()" style="background: #27ae60; color: white; padding:10px 20px; border:none; border-radius:5px; cursor:pointer; margin-right: 10px; font-weight:bold; font-size:1.1rem;">📥 下載造句語料庫 (.txt)</button>
             <button onclick="clearData()" style="background: #e74c3c; color: white; padding:10px 15px; border:none; border-radius:5px; cursor:pointer; float:right; font-weight:bold;">🗑️ 清除所有資料</button>
             <table class="admin-table">
-                <thead><tr><th>學習者名稱</th><th>總分數</th></tr></thead>
+                <thead><tr><th>學習者名稱 Name</th><th>總分數 Total Score</th></tr></thead>
                 <tbody id="admin-table-body"></tbody>
             </table>
         </div>
     </div>
 
+    <!-- 模態框：排行榜 -->
     <div id="leaderboard-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('leaderboard-modal')">&times;</span>
             <h2 style="text-align:center; color:#e67e22; margin-top:0;">🏆 學習排名榜 Leaderboard</h2>
             <table class="admin-table">
-                <thead><tr><th>排名</th><th>學習者 Name</th><th>累計總分 Score</th></tr></thead>
+                <thead><tr><th>排名 Rank</th><th>學習者 Name</th><th>累計總分 Score</th></tr></thead>
                 <tbody id="leaderboard-body"></tbody>
             </table>
         </div>
@@ -260,9 +236,9 @@
         let isUserMuted = localStorage.getItem('idiomAppMuted') === 'true';
         let bgmPlaying = false;
 
-        let completedIdioms = []; // 紀錄已完成造句的成語索引
-        let sentenceScore = 0;    // 造句總分 (滿分30)
-        let finaleScore = 0;      // 大練習總分 (滿分70)
+        let completedIdioms = [];
+        let sentenceScore = 0;
+        let finaleScore = 0;
 
         // 含注音、拼音、字面義、隱喻義及英文輔助說明的教學資料
         const trainingData = [
@@ -270,84 +246,72 @@
                 name: "有備無患", img: "https://i.ibb.co/kVyRBfWJ/image.png",
                 zhuyin: "ㄧㄡˇ ㄅㄟˋ ㄨˊ ㄏㄨㄢˋ", pinyin: "yǒu bèi wú huàn",
                 literal: "只要有準備，就不會有後患。", meta: "比喻事先做好準備，就能避免災禍。",
-                def: "事先做好準備，就能避免災禍。", enDef: "Preparedness averts peril.",
+                enDef: "Preparedness averts peril.",
                 collocation: "常用於提醒事前防範。常接「做到～」、「抱著～的想法」。", enCollocation: "Often used to advise people to make preparations in advance.",
                 examples: [
                     "從事這份工作，也許終其一生不會遇到，但<span class='highlight-idiom'>有備無患</span>，多一分準備也是好的。",
                     "病情嚴重的那一天，為了<span class='highlight-idiom'>有備無患</span>，就翻箱倒櫃找出了現金。",
-                    "未雨綢繆才能<span class='highlight-idiom'>有備無患</span>，幫助個人落實學習目標的執行。",
-                    "只要<span class='highlight-idiom'>有備無患</span>，就能「柳暗花明又一村」。",
-                    "我舒服的跑著，抱著「<span class='highlight-idiom'>有備無患</span>」的想法來對應。"
+                    "未雨綢繆才能<span class='highlight-idiom'>有備無患</span>，幫助個人落實學習目標的執行。"
                 ]
             },
             {
                 name: "有恃無恐", img: "https://i.ibb.co/rKNPVsN9/image.png",
                 zhuyin: "ㄧㄡˇ ㄕˋ ㄨˊ ㄎㄨㄥˇ", pinyin: "yǒu shì wú kǒng",
                 literal: "有依靠而沒有恐懼。", meta: "形容有依靠而無所顧忌。",
-                def: "形容有依靠而無所顧忌。", enDef: "To feel secure and act recklessly because one has backing.",
+                enDef: "To feel secure and act recklessly because one has backing.",
                 collocation: "常用於形容仗勢欺人。常接「地 + 動詞」、「顯得～」。", enCollocation: "Used to describe someone acting arrogantly due to strong support.",
                 examples: [
                     "那些<span class='highlight-idiom'>有恃無恐</span>的孩子，竟然對著教師挑釁。",
                     "父母親又替他開罪，孩子就<span class='highlight-idiom'>有恃無恐</span>，變本加厲。",
-                    "生產者和消費者之間不公平，也是廠商<span class='highlight-idiom'>有恃無恐</span>的主因。",
-                    "既然他可以視而不見而照樣吸菸，當然是<span class='highlight-idiom'>有恃無恐</span>。",
-                    "仗恃著有錢而法院又輕判，因而<span class='highlight-idiom'>有恃無恐</span>。"
+                    "生產者和消費者之間不公平，也是廠商<span class='highlight-idiom'>有恃無恐</span>的主因。"
                 ]
             },
             {
                 name: "有教無類", img: "https://i.ibb.co/qFWVFTLp/image.png",
                 zhuyin: "ㄧㄡˇ ㄐㄧㄠˋ ㄨˊ ㄌㄟˋ", pinyin: "yǒu jiào wú lèi",
                 literal: "教育不分對象的類別。", meta: "指施教的對象沒有貧富、貴賤、智愚、善惡之分。",
-                def: "教育不分對象的階級、貧富、貴賤。", enDef: "Education for everyone, irrespective of background.",
+                enDef: "Education for everyone, irrespective of background.",
                 collocation: "形容教育公平。常接「～的精神」、「做到～」。", enCollocation: "Describes equal educational opportunities for all.",
                 examples: [
                     "沒有預設立場的教師，才能發揮<span class='highlight-idiom'>有教無類</span>的精神。",
                     "胸懷愛護之心，才能做到<span class='highlight-idiom'>有教無類</span>。",
-                    "孔子是萬世師表，<span class='highlight-idiom'>有教無類</span>，每個中國人的生命中都留有孔子。",
-                    "也從許多同學的改變中，體會到「<span class='highlight-idiom'>有教無類</span>」的深意。",
-                    "傳統，而其中尤以仁愛為本、<span class='highlight-idiom'>有教無類</span>、因材施教。"
+                    "孔子是萬世師表，<span class='highlight-idiom'>有教無類</span>，每個中國人的生命中都留有孔子。"
                 ]
             },
             {
                 name: "有氣無力", img: "https://i.ibb.co/TxCKwgR4/image.png",
                 zhuyin: "ㄧㄡˇ ㄑㄧˋ ㄨˊ ㄌㄧˋ", pinyin: "yǒu qì wú lì",
                 literal: "有呼吸但沒有力氣。", meta: "形容精神不振，虛弱無力的樣子。",
-                def: "形容精神不振，虛弱無力的樣子。", enDef: "Faint and feeble; lacking energy.",
+                enDef: "Faint and feeble; lacking energy.",
                 collocation: "形容極度疲憊。常接「地 + 動詞 (如說、躺)」。", enCollocation: "Used to describe extreme physical exhaustion or lack of spirit.",
                 examples: [
                     "他連續高燒了三天，整個人顯得<span class='highlight-idiom'>有氣無力</span>的。",
                     "剛跑完馬拉松，參賽者們紛紛<span class='highlight-idiom'>有氣無力</span>地喘著粗氣。",
-                    "手術過後，病人躺在病床上，<span class='highlight-idiom'>有氣無力</span>地向家屬點了點頭。",
-                    "餓了整整一天，他現在連走路都<span class='highlight-idiom'>有氣無力</span>。",
-                    "經歷了一場大病，他看起來面色蒼白，說話也<span class='highlight-idiom'>有氣無力</span>。"
+                    "手術過後，病人躺在病床上，<span class='highlight-idiom'>有氣無力</span>地向家屬點了點頭。"
                 ]
             },
             {
                 name: "有意無意", img: "https://i.ibb.co/N61GDv9f/image.png",
                 zhuyin: "ㄧㄡˇ ㄧˋ ㄨˊ ㄧˋ", pinyin: "yǒu yì wú yì",
                 literal: "又像是有意，又像是無意。", meta: "形容不是特意，或存心不讓人明顯看出來的樣子。",
-                def: "形容不是特意，或存心不讓人明顯看出來的樣子。", enDef: "Seemingly unintentionally; half-consciously.",
+                enDef: "Seemingly unintentionally; half-consciously.",
                 collocation: "形容似有若無的舉動。常接「地 + 動詞 (如看、透露)」。", enCollocation: "Describes actions done subtly or without making it obvious.",
                 examples: [
                     "常常在她面前<span class='highlight-idiom'>有意無意</span>談自己當年的嫁妝多麼豐盛。",
                     "甚至提早到演講對象聚集的地方，<span class='highlight-idiom'>有意無意</span>地聽聽他們的話題。",
-                    "跟朋友相處時會<span class='highlight-idiom'>有意無意</span>地比較別人的先生或太太。",
-                    "許多父母<span class='highlight-idiom'>有意無意</span>地讓他們的子女忘記中文。",
-                    "而王太太卻又<span class='highlight-idiom'>有意無意</span>地將椅子挪向約翰。"
+                    "跟朋友相處時會<span class='highlight-idiom'>有意無意</span>地比較別人的先生或太太。"
                 ]
             },
             {
                 name: "有眼無珠", img: "https://i.ibb.co/BKZhjrVJ/image.png",
                 zhuyin: "ㄧㄡˇ ㄧㄢˇ ㄨˊ ㄓㄨ", pinyin: "yǒu yǎn wú zhū",
                 literal: "長了眼睛卻沒有眼珠。", meta: "比喻沒有眼力，看不出人或事物的價值。",
-                def: "比喻沒有眼力，看不出人或事物的真實價值。", enDef: "Having eyes but no pupils; blind to someone's true worth.",
+                enDef: "Having eyes but no pupils; blind to someone's true worth.",
                 collocation: "形容識人不清（多帶貶義或自嘲）。常接「真是～」。", enCollocation: "Used as an insult or self-deprecation for failing to recognize value.",
                 examples: [
                     "那位嫁到劇務的小姐，也是屬於「<span class='highlight-idiom'>有眼無珠</span>」之類。",
                     "這份罪是上帝的懲罰，那個<span class='highlight-idiom'>有眼無珠</span>的上帝，不要也罷。",
-                    "不見綠葉，但聞奇香，<span class='highlight-idiom'>有眼無珠</span>，憾得不值。",
-                    "害怕婚姻，免得<span class='highlight-idiom'>有眼無珠</span>像《紅樓夢》中的賈迎春。",
-                    "客老爺要上朝當大官，恕小人<span class='highlight-idiom'>有眼無珠</span>，一時冒犯老爺！"
+                    "不見綠葉，但聞奇香，<span class='highlight-idiom'>有眼無珠</span>，憾得不值。"
                 ]
             }
         ];
@@ -449,24 +413,22 @@
                     <div class="info-table">
                         <div class="data-row"><div class="data-label">注 音</div><div class="data-content">${data.zhuyin}</div></div>
                         <div class="data-row"><div class="data-label">拼 音</div><div class="data-content">${data.pinyin}</div></div>
-                        <div class="data-row"><div class="data-label">字 面 義</div><div class="data-content">${data.literal}</div></div>
-                        <div class="data-row" style="border-bottom:none;"><div class="data-label">隱 喻 義</div><div class="data-content">${data.meta}</div></div>
-                    </div>
-
-                    <div class="training-def">
-                        <strong>💡 簡短釋義 (Meaning)：</strong>${data.def}
-                        <span class="en-note">${data.enDef}</span>
-                    </div>
-                    
-                    <div class="training-def" style="background:#e8f8f5; border-color:#1abc9c;">
-                        <strong>🔗 常見搭配/情境 (Usage)：</strong>${data.collocation}
-                        <span class="en-note">${data.enCollocation}</span>
+                        <div class="data-row"><div class="data-label">字面義</div><div class="data-content">${data.literal}</div></div>
+                        <div class="data-row"><div class="data-label">隱喻義</div><div class="data-content">${data.meta}</div></div>
+                        <div class="data-row"><div class="data-label">英文義</div><div class="data-content">${data.enDef}</div></div>
+                        <div class="data-row" style="border-bottom:none;">
+                            <div class="data-label" style="background:#1abc9c;">常見搭配</div>
+                            <div class="data-content">${data.collocation}<br><span class="en-note">${data.enCollocation}</span></div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="corpus-examples">
                     <h4>📚 語料庫真實例句 (Authentic Examples)</h4>
                     <ul>${examplesHTML}</ul>
+                    <div style="text-align: right; margin-top: 15px;">
+                        <a href="https://phong01208211312-oss.github.io/Idiom-Corpus-chengyuyuliaoku/" target="_blank" style="display:inline-block; padding:10px 20px; background:#3498db; color:white; text-decoration:none; border-radius:5px; font-weight:bold; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">🔍 查閱更多語料</a>
+                    </div>
                 </div>
 
                 <div class="writing-area">
