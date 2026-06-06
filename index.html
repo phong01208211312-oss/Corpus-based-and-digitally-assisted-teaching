@@ -10,8 +10,8 @@
         
         .bg-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            /* 已更新為最新的背景圖 */
-            background-image: url('https://ibb.co/Swr7GGZT');
+            /* 已修正為 imgbb 的直接圖片連結格式 */
+            background-image: url('https://i.ibb.co/Swr7GGZT/image.jpg');
             background-size: cover; background-position: center; filter: brightness(0.9);
         }
 
@@ -72,7 +72,13 @@
         .training-header { text-align: center; margin-bottom: 20px; border-bottom: 2px dashed #bdc3c7; padding-bottom: 20px;}
         .training-header img { display: block; margin: 0 auto 15px auto; border-radius: 10px; max-width: 80%; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
         .training-title { font-size: 2.8rem; color: #8e44ad; font-weight: bold; margin-bottom: 10px; }
-        .training-def { font-size: 1.2rem; color: #34495e; margin-bottom: 10px; background: #fdfefe; padding: 15px; border-radius: 5px; border-left: 6px solid #3498db; text-align: left; line-height: 1.5;}
+        
+        /* 表格化呈現：注音、拼音、字面義、隱喻義 */
+        .data-row { display: flex; padding: 10px 0; border-bottom: 1px solid #eee; text-align: left;}
+        .data-label { width: 110px; font-weight: bold; color: #fff; background: #8e44ad; text-align: center; padding: 6px; border-radius: 5px; margin-right: 15px; flex-shrink: 0;}
+        .data-content { flex: 1; align-self: center; font-size: 1.15rem; color: #333; line-height: 1.5;}
+
+        .training-def { font-size: 1.2rem; color: #34495e; margin: 15px 0; background: #fdfefe; padding: 15px; border-radius: 5px; border-left: 6px solid #3498db; text-align: left; line-height: 1.5;}
         .en-note { display: block; font-size: 1rem; color: #7f8c8d; font-style: italic; margin-top: 5px; }
         
         .corpus-examples { background: #fdfefe; padding: 20px; border-radius: 8px; border: 1px solid #d5d8dc; margin-bottom: 20px;}
@@ -176,6 +182,7 @@
         <div id="admin-panel" class="section">
             <h2>⚙️ 學習者數據後台</h2>
             <button class="back-btn" onclick="switchTab('dashboard')">返回主目錄</button>
+            <button onclick="downloadSentencesAsTxt()" style="background: #27ae60; color: white; padding:10px 15px; border:none; border-radius:5px; cursor:pointer; margin-right: 10px;">📥 下載造句語料庫 (.txt)</button>
             <button onclick="clearData()" style="background: red; color: white; padding:10px; border:none; border-radius:5px; cursor:pointer; float:right;">清除所有資料</button>
             <table class="admin-table">
                 <thead><tr><th>學習者名稱</th><th>總分數</th></tr></thead>
@@ -205,10 +212,12 @@
         let sentenceScore = 0;    // 造句總分 (滿分30)
         let finaleScore = 0;      // 大練習總分 (滿分70)
 
-        // 含英文輔助說明的教學資料
+        // 含注音、拼音、字面義、隱喻義及英文輔助說明的教學資料
         const trainingData = [
             {
                 name: "有備無患", img: "https://i.ibb.co/kVyRBfWJ/image.png",
+                zhuyin: "ㄧㄡˇ ㄅㄟˋ ㄨˊ ㄏㄨㄢˋ", pinyin: "yǒu bèi wú huàn",
+                literal: "只要有準備，就不會有後患。", meta: "比喻事先做好準備，就能避免災禍。",
                 def: "事先做好準備，就能避免災禍。", enDef: "Preparedness averts peril.",
                 collocation: "常用於提醒事前防範。常接「做到～」、「抱著～的想法」。", enCollocation: "Often used to advise people to make preparations in advance.",
                 examples: [
@@ -221,6 +230,8 @@
             },
             {
                 name: "有恃無恐", img: "https://i.ibb.co/rKNPVsN9/image.png",
+                zhuyin: "ㄧㄡˇ ㄕˋ ㄨˊ ㄎㄨㄥˇ", pinyin: "yǒu shì wú kǒng",
+                literal: "有依靠而沒有恐懼。", meta: "形容有依靠而無所顧忌。",
                 def: "形容有依靠而無所顧忌。", enDef: "To feel secure and act recklessly because one has backing.",
                 collocation: "常用於形容仗勢欺人。常接「地 + 動詞」、「顯得～」。", enCollocation: "Used to describe someone acting arrogantly due to strong support.",
                 examples: [
@@ -233,6 +244,8 @@
             },
             {
                 name: "有教無類", img: "https://i.ibb.co/qFWVFTLp/image.png",
+                zhuyin: "ㄧㄡˇ ㄐㄧㄠˋ ㄨˊ ㄌㄟˋ", pinyin: "yǒu jiào wú lèi",
+                literal: "教育不分對象的類別。", meta: "指施教的對象沒有貧富、貴賤、智愚、善惡之分。",
                 def: "教育不分對象的階級、貧富、貴賤。", enDef: "Education for everyone, irrespective of background.",
                 collocation: "形容教育公平。常接「～的精神」、「做到～」。", enCollocation: "Describes equal educational opportunities for all.",
                 examples: [
@@ -245,6 +258,8 @@
             },
             {
                 name: "有氣無力", img: "https://i.ibb.co/TxCKwgR4/image.png",
+                zhuyin: "ㄧㄡˇ ㄑㄧˋ ㄨˊ ㄌㄧˋ", pinyin: "yǒu qì wú lì",
+                literal: "有呼吸但沒有力氣。", meta: "形容精神不振，虛弱無力的樣子。",
                 def: "形容精神不振，虛弱無力的樣子。", enDef: "Faint and feeble; lacking energy.",
                 collocation: "形容極度疲憊。常接「地 + 動詞 (如說、躺)」。", enCollocation: "Used to describe extreme physical exhaustion or lack of spirit.",
                 examples: [
@@ -257,6 +272,8 @@
             },
             {
                 name: "有意無意", img: "https://i.ibb.co/N61GDv9f/image.png",
+                zhuyin: "ㄧㄡˇ ㄧˋ ㄨˊ ㄧˋ", pinyin: "yǒu yì wú yì",
+                literal: "又像是有意，又像是無意。", meta: "形容不是特意，或存心不讓人明顯看出來的樣子。",
                 def: "形容不是特意，或存心不讓人明顯看出來的樣子。", enDef: "Seemingly unintentionally; half-consciously.",
                 collocation: "形容似有若無的舉動。常接「地 + 動詞 (如看、透露)」。", enCollocation: "Describes actions done subtly or without making it obvious.",
                 examples: [
@@ -269,6 +286,8 @@
             },
             {
                 name: "有眼無珠", img: "https://i.ibb.co/BKZhjrVJ/image.png",
+                zhuyin: "ㄧㄡˇ ㄧㄢˇ ㄨˊ ㄓㄨ", pinyin: "yǒu yǎn wú zhū",
+                literal: "長了眼睛卻沒有眼珠。", meta: "比喻沒有眼力，看不出人或事物的價值。",
                 def: "比喻沒有眼力，看不出人或事物的真實價值。", enDef: "Having eyes but no pupils; blind to someone's true worth.",
                 collocation: "形容識人不清（多帶貶義或自嘲）。常接「真是～」。", enCollocation: "Used as an insult or self-deprecation for failing to recognize value.",
                 examples: [
@@ -349,7 +368,6 @@
                 grid.innerHTML += `<div class="idiom-card-btn ${isDone}" onclick="openTraining(${index})">${index + 1}. ${data.name}</div>`;
             });
 
-            // 檢查是否全數完成以解鎖大練習
             const finaleBtn = document.getElementById('grand-finale-btn');
             if(completedIdioms.length === trainingData.length) {
                 finaleBtn.classList.add('unlocked');
@@ -368,7 +386,6 @@
             let examplesHTML = "";
             data.examples.forEach(ex => { examplesHTML += `<li>${ex}</li>`; });
 
-            // 若已完成，顯示提示
             let doneMsg = completedIdioms.includes(index) ? `<div style="background:#d5f5e3; color:#27ae60; padding:10px; text-align:center; font-weight:bold; border-radius:5px; margin-bottom:15px;">✅ 您已完成過此成語的造句練習。</div>` : "";
 
             contentBox.innerHTML = `
@@ -377,6 +394,13 @@
                     <img src="${data.img}" alt="${data.name}">
                     <div class="training-title">${data.name}</div>
                     
+                    <div style="max-width: 600px; margin: 0 auto; background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px;">
+                        <div class="data-row"><div class="data-label">注 音</div><div class="data-content">${data.zhuyin}</div></div>
+                        <div class="data-row"><div class="data-label">拼 音</div><div class="data-content">${data.pinyin}</div></div>
+                        <div class="data-row"><div class="data-label">字 面 義</div><div class="data-content">${data.literal}</div></div>
+                        <div class="data-row" style="border-bottom:none;"><div class="data-label">隱 喻 義</div><div class="data-content">${data.meta}</div></div>
+                    </div>
+
                     <div class="training-def">
                         <strong>💡 簡短釋義 (Meaning)：</strong>${data.def}
                         <span class="en-note">${data.enDef}</span>
@@ -420,7 +444,6 @@
             let score = 0;
             let fbHTML = "";
 
-            // AI 模擬批改邏輯
             if(!input.includes(data.name)) {
                 score = 1;
                 fbHTML = `
@@ -459,7 +482,9 @@
                 }
             }
 
-            // 若尚未完成過，才計入總分與紀錄
+            // 儲存句子至語料庫記錄
+            saveLearnerSentence(data.name, input);
+
             if(!completedIdioms.includes(currentTrainIdx)) {
                 sentenceScore += score;
                 completedIdioms.push(currentTrainIdx);
@@ -469,8 +494,6 @@
             feedbackBox.style.display = "block";
             
             let nextBtn = document.getElementById('next-train-btn');
-            
-            // 決定下一步按鈕文字
             if(completedIdioms.length === trainingData.length) {
                 nextBtn.innerText = "🌟 解鎖總體大練習！返回主頁";
                 nextBtn.style.background = "#e67e22";
@@ -491,7 +514,6 @@
         let finaleQuizList = [];
 
         function startGrandFinale() {
-            // 隨機打亂 10 題
             finaleQuizList = [...finaleQuestions].sort(() => 0.5 - Math.random());
             currentFinaleIdx = 0;
             finaleScore = 0;
@@ -521,7 +543,6 @@
         function checkFinaleAnswer(selected, btnElement) {
             const qData = finaleQuizList[currentFinaleIdx];
             const feedbackBox = document.getElementById('finale-feedback');
-            const optionsBox = document.getElementById('finale-options');
             
             if(selected === qData.ans) {
                 btnElement.style.background = "#2ecc71"; btnElement.style.color = "white";
@@ -547,7 +568,6 @@
                     feedbackBox.style.display = "block";
                 }
             }
-            // 即時更新分數
             document.getElementById('finale-score-display').innerText = `⭐ 得分：${finaleScore} 分`;
         }
 
@@ -564,8 +584,7 @@
 
         // --- 結算與紀錄 ---
         function endOverallSequence() {
-            let totalCombinedScore = sentenceScore + finaleScore; // 滿分 30 + 70 = 100
-            
+            let totalCombinedScore = sentenceScore + finaleScore;
             saveUserData(totalCombinedScore);
             
             document.getElementById('final-name-title').innerText = `🎉 恭喜 ${currentUser} 完成所有挑戰！`;
@@ -580,11 +599,11 @@
             switchTab('result-section');
         }
 
-        // --- 排行榜與模態框邏輯 ---
+        // --- 排行榜 ---
         function openLeaderboard() {
             let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
             let usersArray = [];
-            for(let user in db) { usersArray.push({name: user, score: db[user].score}); }
+            for(let user in db) { usersArray.push({name: user, score: db[user].score || 0}); }
             usersArray.sort((a, b) => b.score - a.score);
 
             let tbody = document.getElementById('leaderboard-body');
@@ -604,19 +623,26 @@
             document.getElementById(modalId).style.display = "none";
         }
 
-        // --- 後台數據 ---
+        // --- 後台數據管理與下載語料庫 ---
         function initUserStats() {
             let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
             if(!db[currentUser]) {
-                db[currentUser] = { score: 0 };
+                db[currentUser] = { score: 0, sentences: {} };
                 localStorage.setItem('idiomAppDB', JSON.stringify(db));
             }
         }
 
+        function saveLearnerSentence(idiom, sentence) {
+            let db = JSON.parse(localStorage.getItem('idiomAppDB'));
+            if (!db[currentUser].sentences) db[currentUser].sentences = {};
+            if (!db[currentUser].sentences[idiom]) db[currentUser].sentences[idiom] = [];
+            db[currentUser].sentences[idiom].push(sentence);
+            localStorage.setItem('idiomAppDB', JSON.stringify(db));
+        }
+
         function saveUserData(finalTotal) {
             let db = JSON.parse(localStorage.getItem('idiomAppDB'));
-            // 取最高分紀錄
-            if(finalTotal > db[currentUser].score) {
+            if(finalTotal > (db[currentUser].score || 0)) {
                 db[currentUser].score = finalTotal; 
             }
             localStorage.setItem('idiomAppDB', JSON.stringify(db));
@@ -633,21 +659,63 @@
                 let tbody = document.getElementById('admin-table-body');
                 tbody.innerHTML = "";
                 for(let user in db) {
-                    tbody.innerHTML += `<tr><td style="font-weight:bold;">${user}</td><td style="color:#e67e22; font-weight:bold;">${db[user].score} 分</td></tr>`;
+                    tbody.innerHTML += `<tr><td style="font-weight:bold;">${user}</td><td style="color:#e67e22; font-weight:bold;">${db[user].score || 0} 分</td></tr>`;
                 }
             } else if(pwd !== null) {
                 alert("密碼錯誤！");
             }
         }
 
+        function downloadSentencesAsTxt() {
+            let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
+            let content = "【學習者造句紀錄語料庫】\n\n";
+            let corpusByIdiom = {};
+
+            // 將各學習者的句子依成語分類集中
+            for(let user in db) {
+                if(db[user].sentences) {
+                    for(let idiom in db[user].sentences) {
+                        if(!corpusByIdiom[idiom]) corpusByIdiom[idiom] = [];
+                        db[user].sentences[idiom].forEach(sentence => {
+                            corpusByIdiom[idiom].push(`[${user}] ${sentence}`);
+                        });
+                    }
+                }
+            }
+
+            // 格式化輸出
+            let hasData = false;
+            for(let idiom in corpusByIdiom) {
+                hasData = true;
+                content += `====================\n▶ 成語：${idiom}\n====================\n`;
+                corpusByIdiom[idiom].forEach(s => { content += s + "\n"; });
+                content += "\n";
+            }
+
+            if(!hasData) {
+                alert("目前還沒有學習者留下造句紀錄喔！");
+                return;
+            }
+
+            // 建立 Blob 並下載
+            let blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+            let url = URL.createObjectURL(blob);
+            let a = document.createElement("a");
+            a.href = url;
+            a.download = "學生造句語料庫.txt";
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
         function clearData() {
-            if(confirm("⚠️ 警告！確定要清除所有紀錄嗎？此動作無法復原。")) {
+            if(confirm("⚠️ 警告！確定要清除所有學習者的成績與造句紀錄嗎？此動作無法復原。")) {
                 localStorage.removeItem('idiomAppDB');
                 document.getElementById('admin-table-body').innerHTML = "";
+                alert("資料已全部清除！");
             }
         }
 
-        // --- 語法分析器 (保留於主頁) ---
+        // --- 語法分析器 ---
         function analyzeSyntax() {
             const text = document.getElementById('syntax-input').value;
             const resBox = document.getElementById('query-result');
