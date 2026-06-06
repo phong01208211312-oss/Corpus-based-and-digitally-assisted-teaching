@@ -10,7 +10,7 @@
         
         .bg-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            /* 已更換為最新指定背景圖 */
+            /* 已更新為最新的背景圖 */
             background-image: url('https://i.ibb.co/YT82HPYv/Gemini-Generated-Image-wkgvbwwkgvbwwkgv.png');
             background-size: cover; background-position: center; filter: brightness(0.9);
         }
@@ -34,7 +34,7 @@
         .leaderboard-btn { background: #e67e22 !important; }
         .leaderboard-btn:hover { background: #d35400 !important; }
 
-        /* 音樂控制按鈕 */
+        /* 音樂控制與後台設定按鈕 */
         .music-btn { 
             position: fixed; top: 20px; right: 20px; font-size: 2.2rem; cursor: pointer; z-index: 100; 
             background: #fff; border-radius: 50%; width: 65px; height: 65px; display: flex; align-items: center; justify-content: center; 
@@ -46,8 +46,6 @@
         }
         @keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(241, 196, 15, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(241, 196, 15, 0); } 100% { box-shadow: 0 0 0 0 rgba(241, 196, 15, 0); } }
         @keyframes spin-slow { 100% { transform: rotate(360deg); } }
-
-        /* 右下角設定(後台)按鈕 */
         .settings-btn {
             position: fixed; bottom: 20px; right: 20px; font-size: 2rem; cursor: pointer; z-index: 100;
             background: rgba(255,255,255,0.8); border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3); transition: 0.3s;
@@ -61,34 +59,41 @@
 
         /* 主目錄按鈕 */
         .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-        .idiom-card-btn { background: #34495e; color: #f1c40f; padding: 20px; text-align: center; border-radius: 10px; cursor: pointer; font-size: 1.8rem; font-family: '標楷體', serif; font-weight: bold; transition: transform 0.2s, background 0.3s; border: 2px solid #2c3e50;}
+        .idiom-card-btn { background: #34495e; color: #f1c40f; padding: 20px; text-align: center; border-radius: 10px; cursor: pointer; font-size: 1.8rem; font-family: '標楷體', serif; font-weight: bold; transition: transform 0.2s, background 0.3s; border: 2px solid #2c3e50; position: relative;}
         .idiom-card-btn:hover { transform: translateY(-5px); background: #2c3e50; color: #fff;}
-        .start-training-btn { grid-column: 1 / -1; background: #e74c3c; color: white; border: none; padding: 20px; font-size: 1.8rem; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 20px; box-shadow: 0 5px 15px rgba(231,76,60,0.4); transition: 0.3s;}
-        .start-training-btn:hover { background: #c0392b; transform: translateY(-3px);}
+        .idiom-card-btn.completed { background: #27ae60; color: #fff; border-color: #2ecc71; }
+        .idiom-card-btn.completed::after { content: "✅"; position: absolute; top: -10px; right: -10px; font-size: 1.5rem; background: #fff; border-radius: 50%; }
 
-        /* 情境造句特訓區塊 */
+        .finale-btn { grid-column: 1 / -1; background: #e74c3c; color: white; border: none; padding: 20px; font-size: 1.8rem; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 20px; box-shadow: 0 5px 15px rgba(231,76,60,0.4); transition: 0.3s; opacity: 0.5; pointer-events: none;}
+        .finale-btn.unlocked { opacity: 1; pointer-events: auto; animation: unlock-pulse 2s infinite; }
+        @keyframes unlock-pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+
+        /* 造句特訓與講解區塊 */
         .training-header { text-align: center; margin-bottom: 20px; border-bottom: 2px dashed #bdc3c7; padding-bottom: 20px;}
         .training-header img { display: block; margin: 0 auto 15px auto; border-radius: 10px; max-width: 80%; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-        .training-title { font-size: 2.5rem; color: #8e44ad; font-weight: bold; margin-bottom: 10px; }
-        .training-def { font-size: 1.2rem; color: #34495e; margin-bottom: 10px; background: #f0f3f4; padding: 10px; border-radius: 5px; border-left: 5px solid #3498db;}
+        .training-title { font-size: 2.8rem; color: #8e44ad; font-weight: bold; margin-bottom: 10px; }
+        .training-def { font-size: 1.2rem; color: #34495e; margin-bottom: 10px; background: #fdfefe; padding: 15px; border-radius: 5px; border-left: 6px solid #3498db; text-align: left; line-height: 1.5;}
+        .en-note { display: block; font-size: 1rem; color: #7f8c8d; font-style: italic; margin-top: 5px; }
         
         .corpus-examples { background: #fdfefe; padding: 20px; border-radius: 8px; border: 1px solid #d5d8dc; margin-bottom: 20px;}
         .corpus-examples h4 { margin-top: 0; color: #16a085; border-bottom: 1px solid #16a085; padding-bottom: 5px;}
-        .corpus-examples ul { padding-left: 20px; margin: 0; line-height: 1.6; font-size: 1.1rem; color: #2c3e50;}
-        .corpus-examples li { margin-bottom: 8px; }
+        .corpus-examples ul { padding-left: 20px; margin: 0; line-height: 1.8; font-size: 1.15rem; color: #2c3e50;}
         .highlight-idiom { color: #e74c3c; font-weight: bold; }
 
         .writing-area { background: #ecf0f1; padding: 20px; border-radius: 10px; margin-top: 20px;}
-        .writing-area h3 { margin-top: 0; color: #2980b9;}
         .writing-area textarea { width: 100%; height: 100px; padding: 15px; font-size: 1.2rem; border-radius: 8px; border: 2px solid #bdc3c7; box-sizing: border-box; resize: vertical;}
         .writing-area button { display: block; width: 100%; background: #27ae60; color: white; border: none; padding: 15px; font-size: 1.3rem; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 15px; transition: 0.2s;}
-        .writing-area button:hover { background: #2196f3; }
-
+        
         .feedback-box { display: none; background: #fff; padding: 20px; border-radius: 8px; border-left: 8px solid #f1c40f; margin-top: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); font-size: 1.15rem; line-height: 1.6;}
         
-        .next-btn { display: none; width: 100%; background: #9b59b6; color: white; border: none; padding: 15px; font-size: 1.3rem; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 15px; transition: 0.2s;}
-        .next-btn:hover { background: #8e44ad; }
-
+        /* 大測驗區塊 */
+        .quiz-area { background: #fff; padding: 25px; border-radius: 10px; border: 2px solid #e74c3c; box-shadow: 0 5px 15px rgba(0,0,0,0.1);}
+        .quiz-status { font-weight: bold; color: #7f8c8d; margin-bottom: 15px; font-size: 1.2rem; display: flex; justify-content: space-between;}
+        .quiz-question { margin-bottom: 20px; font-size: 1.3rem; font-weight: bold; color: #2c3e50; line-height: 1.6; background: #fdf2e9; padding: 15px; border-radius: 8px;}
+        .quiz-options button { display: block; width: 100%; text-align: left; padding: 12px; margin: 8px 0; font-size: 1.2rem; border: 2px solid #bdc3c7; background: #fff; border-radius: 8px; cursor: pointer; transition: 0.2s;}
+        .quiz-options button:hover { background: #d6eaf8; border-color: #3498db; }
+        
+        .next-btn { display: none; width: 100%; background: #9b59b6; color: white; border: none; padding: 15px; font-size: 1.3rem; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 20px;}
         .back-btn { background: #95a5a6; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 1.1rem; margin-bottom: 20px;}
 
         /* 表格與模態框 */
@@ -97,7 +102,7 @@
         .admin-table th { background: #34495e; color: white; }
         
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 200; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;}
-        .modal-content { background: #fff; padding: 30px; border-radius: 15px; width: 100%; max-width: 700px; max-height: 85vh; overflow-y: auto; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5);}
+        .modal-content { background: #fff; padding: 30px; border-radius: 15px; width: 100%; max-width: 600px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5);}
         .close-modal { position: absolute; top: 15px; right: 20px; font-size: 2rem; cursor: pointer; color: #7f8c8d; }
     </style>
 </head>
@@ -110,10 +115,8 @@
     </audio>
 
     <div id="bgm-btn" class="music-btn" onclick="toggleBGM()" title="開啟/關閉音樂">🎵</div>
-
     <div class="settings-btn" onclick="showAdminLogin()" title="系統後台">⚙️</div>
 
-    <!-- 登入與排行榜畫面 -->
     <div id="login-screen">
         <div class="main-title">🏮簡單學成語✨</div>
         <div class="login-box">
@@ -124,68 +127,69 @@
         </div>
     </div>
 
-    <!-- 學習主畫面 -->
     <div id="main-app">
-        <!-- 模組一：成語總覽 (首頁) -->
         <div id="dashboard" class="section active">
             <div class="main-title" style="font-size: 3.5rem;">🏮簡單學成語✨</div>
-            <h2 style="text-align:center; color:#2c3e50; margin-bottom: 30px;">「有X無Y」成語匯集</h2>
+            <p style="text-align:center; font-size:1.2rem; color:#2c3e50;">請點擊下方成語開始造句特訓，全部完成後即可解鎖「總體大練習」！</p>
             <div class="dashboard-grid" id="dashboard-grid">
-                <!-- 動態生成卡片 -->
-            </div>
+                </div>
             
-            <button class="start-training-btn" onclick="startTrainingSequence()">👉 開始情境造句特訓</button>
+            <button id="grand-finale-btn" class="finale-btn" onclick="startGrandFinale()">🔥 總體大練習 (未解鎖)</button>
             
-            <div style="margin-top: 50px; padding: 25px; background: #e8f8f5; border-radius: 15px; border: 2px solid #1abc9c; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+            <div style="margin-top: 50px; padding: 25px; background: #e8f8f5; border-radius: 15px; border: 2px solid #1abc9c;">
                 <h3 style="margin-top:0; color:#16a085;">🔍 語法分析器 (詞性判斷)</h3>
                 <input type="text" id="syntax-input" placeholder="請輸入包含目標成語的句子..." style="width:75%; padding:12px; font-size:1.1rem; border-radius:5px; border:1px solid #ccc;">
                 <button onclick="analyzeSyntax()" style="padding:12px 25px; font-size:1.1rem; background:#1abc9c; color:white; border:none; border-radius:5px; cursor:pointer; font-weight:bold;">分析</button>
-                <div id="query-result" style="margin-top:15px; font-weight:bold; color:#2c3e50; font-size:1.2rem; line-height: 1.6;"></div>
+                <div id="query-result" style="margin-top:15px; font-weight:bold; color:#2c3e50; font-size:1.2rem;"></div>
             </div>
         </div>
 
-        <!-- 模組二：造句特訓區 -->
         <div id="training-section" class="section">
             <button class="back-btn" onclick="switchTab('dashboard')">⬅ 返回主目錄</button>
-            
-            <div id="training-content">
-                <!-- JS 動態生成造句內容 -->
+            <div id="training-content"></div>
+        </div>
+
+        <div id="finale-section" class="section">
+            <h2 style="text-align:center; color:#e74c3c; font-size: 2.2rem;">🔥 總體大練習：情境挑戰</h2>
+            <div class="quiz-area">
+                <div class="quiz-status">
+                    <span id="finale-progress">📝 題目： 1 / 10</span>
+                    <span id="finale-score-display" style="color:#e67e22;">⭐ 得分：0 分</span>
+                </div>
+                <div id="finale-question" class="quiz-question"></div>
+                <div class="quiz-options" id="finale-options"></div>
+                <div id="finale-feedback" class="feedback-box"></div>
+                <button id="finale-next-btn" class="next-btn" onclick="nextFinaleQuestion()">下一題 ➡</button>
             </div>
         </div>
 
-        <!-- 模組三：結算畫面 -->
         <div id="result-section" class="section">
-            <h2 style="text-align:center; color:#2c3e50; font-size:2.5rem;">🎉 特訓完成！</h2>
-            <div style="text-align:center; font-size:5rem; font-weight:bold; color:#e74c3c; margin:20px 0; text-shadow: 2px 2px 0px #fadbd8;" id="final-score-display">0 分</div>
-            <div id="final-encouragement" style="text-align:center; font-size:1.5rem; color:#27ae60; font-weight:bold; margin-bottom: 30px;"></div>
+            <h2 style="text-align:center; color:#2c3e50; font-size:2.5rem;" id="final-name-title">🎉 恭喜完成所有挑戰！</h2>
+            <div style="text-align:center; font-size:1.2rem; color:#7f8c8d;">造句特訓 (30分) + 情境大測驗 (70分)</div>
+            <div style="text-align:center; font-size:5rem; font-weight:bold; color:#e74c3c; margin:20px 0; text-shadow: 2px 2px 0px #fadbd8;" id="final-score-display">0 / 100 分</div>
+            <div id="final-encouragement" style="text-align:center; font-size:1.5rem; color:#27ae60; font-weight:bold; margin-bottom: 30px; line-height:1.5;"></div>
             <div style="text-align:center;">
-                <button onclick="switchTab('dashboard')" style="padding:15px 30px; font-size:1.3rem; background:#3498db; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">🏠 回到主頁</button>
+                <button onclick="location.reload()" style="padding:15px 30px; font-size:1.3rem; background:#3498db; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">🏠 返回首頁</button>
             </div>
         </div>
 
-        <!-- 模組四：後台管理 -->
         <div id="admin-panel" class="section">
             <h2>⚙️ 學習者數據後台</h2>
             <button class="back-btn" onclick="switchTab('dashboard')">返回主目錄</button>
             <button onclick="clearData()" style="background: red; color: white; padding:10px; border:none; border-radius:5px; cursor:pointer; float:right;">清除所有資料</button>
             <table class="admin-table">
-                <thead>
-                    <tr><th>學習者名稱</th><th>總分數</th></tr>
-                </thead>
+                <thead><tr><th>學習者名稱</th><th>總分數</th></tr></thead>
                 <tbody id="admin-table-body"></tbody>
             </table>
         </div>
     </div>
 
-    <!-- 模態框：排行榜 -->
     <div id="leaderboard-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('leaderboard-modal')">&times;</span>
             <h2 style="text-align:center; color:#e67e22;">🏆 學習排名榜</h2>
             <table class="admin-table">
-                <thead>
-                    <tr><th>排名</th><th>學習者</th><th>累計總分</th></tr>
-                </thead>
+                <thead><tr><th>排名</th><th>學習者</th><th>累計總分</th></tr></thead>
                 <tbody id="leaderboard-body"></tbody>
             </table>
         </div>
@@ -194,110 +198,108 @@
     <script>
         // --- 核心資料區 ---
         let currentUser = "";
-        
-        // 讀取音樂狀態設定 (統一管理)
         let isUserMuted = localStorage.getItem('idiomAppMuted') === 'true';
         let bgmPlaying = false;
 
+        let completedIdioms = []; // 紀錄已完成造句的成語索引
+        let sentenceScore = 0;    // 造句總分 (滿分30)
+        let finaleScore = 0;      // 大練習總分 (滿分70)
+
+        // 含英文輔助說明的教學資料
         const trainingData = [
             {
-                name: "有備無患",
-                img: "https://i.ibb.co/kVyRBfWJ/image.png",
-                def: "事先做好準備，就能避免災禍。",
-                collocation: "常接「做到～」、「抱著～的想法」，用於形容事前防範。",
+                name: "有備無患", img: "https://i.ibb.co/kVyRBfWJ/image.png",
+                def: "事先做好準備，就能避免災禍。", enDef: "Preparedness averts peril.",
+                collocation: "常用於提醒事前防範。常接「做到～」、「抱著～的想法」。", enCollocation: "Often used to advise people to make preparations in advance.",
                 examples: [
-                    "從事這份工作，也許終其一生不會遇到自殺當事人，但<span class='highlight-idiom'>有備無患</span>，多一分準備也是好的。[cite: 6]",
-                    "病情嚴重的那一天，柏楊夫人為了<span class='highlight-idiom'>有備無患</span>，就翻箱倒櫃找出了我那一萬元。[cite: 6]",
-                    "未雨綢繆才能<span class='highlight-idiom'>有備無患</span>，幫助個人落實學習目標的執行。[cite: 6]",
-                    "只要<span class='highlight-idiom'>有備無患</span>，就能「柳暗花明又一村」。[cite: 6]",
-                    "我舒服的跑著，抱著「<span class='highlight-idiom'>有備無患</span>」的想法來對應。[cite: 6]"
+                    "從事這份工作，也許終其一生不會遇到，但<span class='highlight-idiom'>有備無患</span>，多一分準備也是好的。",
+                    "病情嚴重的那一天，為了<span class='highlight-idiom'>有備無患</span>，就翻箱倒櫃找出了現金。",
+                    "未雨綢繆才能<span class='highlight-idiom'>有備無患</span>，幫助個人落實學習目標的執行。",
+                    "只要<span class='highlight-idiom'>有備無患</span>，就能「柳暗花明又一村」。",
+                    "我舒服的跑著，抱著「<span class='highlight-idiom'>有備無患</span>」的想法來對應。"
                 ]
             },
             {
-                name: "有恃無恐",
-                img: "https://i.ibb.co/rKNPVsN9/image.png",
-                def: "形容有依靠而無所顧忌。",
-                collocation: "常接「地 + 動詞 (如說、做)」、「顯得～」，形容仗勢欺人、無所畏懼。",
+                name: "有恃無恐", img: "https://i.ibb.co/rKNPVsN9/image.png",
+                def: "形容有依靠而無所顧忌。", enDef: "To feel secure and act recklessly because one has backing.",
+                collocation: "常用於形容仗勢欺人。常接「地 + 動詞」、「顯得～」。", enCollocation: "Used to describe someone acting arrogantly due to strong support.",
                 examples: [
-                    "偏差的青少年，面臨前所未有的窘境；那些<span class='highlight-idiom'>有恃無恐</span>的孩子，竟然對著教師挑釁。[cite: 3]",
-                    "受罰，父母親又替他開罪，孩子就<span class='highlight-idiom'>有恃無恐</span>，變本加厲。[cite: 3]",
-                    "生產者和消費者之間不公平，也是廠商<span class='highlight-idiom'>有恃無恐</span>的主因。[cite: 3]",
-                    "既然他可以視而不見而照樣吸菸，當然是<span class='highlight-idiom'>有恃無恐</span>。[cite: 3]",
-                    "仗恃著有錢而法院又輕判，因而<span class='highlight-idiom'>有恃無恐</span>。[cite: 3]"
+                    "那些<span class='highlight-idiom'>有恃無恐</span>的孩子，竟然對著教師挑釁。",
+                    "父母親又替他開罪，孩子就<span class='highlight-idiom'>有恃無恐</span>，變本加厲。",
+                    "生產者和消費者之間不公平，也是廠商<span class='highlight-idiom'>有恃無恐</span>的主因。",
+                    "既然他可以視而不見而照樣吸菸，當然是<span class='highlight-idiom'>有恃無恐</span>。",
+                    "仗恃著有錢而法院又輕判，因而<span class='highlight-idiom'>有恃無恐</span>。"
                 ]
             },
             {
-                name: "有教無類",
-                img: "https://i.ibb.co/qFWVFTLp/image.png",
-                def: "教育不分對象的階級、貧富、貴賤。",
-                collocation: "常接「～的精神」、「做到～」，形容教育公平。",
+                name: "有教無類", img: "https://i.ibb.co/qFWVFTLp/image.png",
+                def: "教育不分對象的階級、貧富、貴賤。", enDef: "Education for everyone, irrespective of background.",
+                collocation: "形容教育公平。常接「～的精神」、「做到～」。", enCollocation: "Describes equal educational opportunities for all.",
                 examples: [
-                    "沒有預設立場的教師，才能發揮<span class='highlight-idiom'>有教無類</span>的精神。[cite: 4]",
-                    "循循善誘；胸懷愛護之心，才能做到<span class='highlight-idiom'>有教無類</span>。[cite: 4]",
-                    "孔子是萬世師表，<span class='highlight-idiom'>有教無類</span>，每個中國人的生命中都留有孔子。[cite: 4]",
-                    "也從許多同學的改變中，體會到「<span class='highlight-idiom'>有教無類</span>、朽木可雕」的深意。[cite: 4]",
-                    "傳統，而其中尤以仁愛為本、<span class='highlight-idiom'>有教無類</span>、因材施教。[cite: 4]"
+                    "沒有預設立場的教師，才能發揮<span class='highlight-idiom'>有教無類</span>的精神。",
+                    "胸懷愛護之心，才能做到<span class='highlight-idiom'>有教無類</span>。",
+                    "孔子是萬世師表，<span class='highlight-idiom'>有教無類</span>，每個中國人的生命中都留有孔子。",
+                    "也從許多同學的改變中，體會到「<span class='highlight-idiom'>有教無類</span>」的深意。",
+                    "傳統，而其中尤以仁愛為本、<span class='highlight-idiom'>有教無類</span>、因材施教。"
                 ]
             },
             {
-                name: "有氣無力",
-                img: "https://i.ibb.co/TxCKwgR4/image.png",
-                def: "形容精神不振，虛弱無力的樣子。",
-                collocation: "常接「地 + 動詞 (如說、躺、喘氣)」，形容極度疲憊。",
+                name: "有氣無力", img: "https://i.ibb.co/TxCKwgR4/image.png",
+                def: "形容精神不振，虛弱無力的樣子。", enDef: "Faint and feeble; lacking energy.",
+                collocation: "形容極度疲憊。常接「地 + 動詞 (如說、躺)」。", enCollocation: "Used to describe extreme physical exhaustion or lack of spirit.",
                 examples: [
-                    "他連續高燒了三天，整個人顯得<span class='highlight-idiom'>有氣無力</span>的。[cite: 8]",
-                    "剛跑完馬拉松，參賽者們紛紛癱坐在地上，<span class='highlight-idiom'>有氣無力</span>地喘著粗氣。[cite: 8]",
-                    "手術過後，病人躺在病床上，<span class='highlight-idiom'>有氣無力</span>地向家屬點了點頭。[cite: 8]",
-                    "餓了整整一天，他現在連走路都<span class='highlight-idiom'>有氣無力</span>。[cite: 8]",
-                    "經歷了一場大病，他看起來面色蒼白，<span class='highlight-idiom'>有氣無力</span>。[cite: 8]"
+                    "他連續高燒了三天，整個人顯得<span class='highlight-idiom'>有氣無力</span>的。",
+                    "剛跑完馬拉松，參賽者們紛紛<span class='highlight-idiom'>有氣無力</span>地喘著粗氣。",
+                    "手術過後，病人躺在病床上，<span class='highlight-idiom'>有氣無力</span>地向家屬點了點頭。",
+                    "餓了整整一天，他現在連走路都<span class='highlight-idiom'>有氣無力</span>。",
+                    "經歷了一場大病，他看起來面色蒼白，說話也<span class='highlight-idiom'>有氣無力</span>。"
                 ]
             },
             {
-                name: "有意無意",
-                img: "https://i.ibb.co/N61GDv9f/image.png",
-                def: "形容不是特意，或存心不讓人明顯看出來的樣子。",
-                collocation: "常接「地 + 動詞 (如看、說、透露)」，形容似有若無的舉動。",
+                name: "有意無意", img: "https://i.ibb.co/N61GDv9f/image.png",
+                def: "形容不是特意，或存心不讓人明顯看出來的樣子。", enDef: "Seemingly unintentionally; half-consciously.",
+                collocation: "形容似有若無的舉動。常接「地 + 動詞 (如看、透露)」。", enCollocation: "Describes actions done subtly or without making it obvious.",
                 examples: [
-                    "妯娌是一個集團，常常在她面前<span class='highlight-idiom'>有意無意</span>談自己當年的嫁妝多麼多麼豐盛。[cite: 7]",
-                    "有時甚至提早到演講對象經常聚集的地方，<span class='highlight-idiom'>有意無意</span>地聽聽他們之間談論的是什麼話題？[cite: 7]",
-                    "開始接觸別人，因此跟朋友相處時會<span class='highlight-idiom'>有意無意</span>地比較別人的先生或太太。[cite: 7]",
-                    "許多父母<span class='highlight-idiom'>有意無意</span>地讓他們的子女忘記中文。[cite: 7]",
-                    "而王太太卻又<span class='highlight-idiom'>有意無意</span>地將椅子挪向約翰。[cite: 7]"
+                    "常常在她面前<span class='highlight-idiom'>有意無意</span>談自己當年的嫁妝多麼豐盛。",
+                    "甚至提早到演講對象聚集的地方，<span class='highlight-idiom'>有意無意</span>地聽聽他們的話題。",
+                    "跟朋友相處時會<span class='highlight-idiom'>有意無意</span>地比較別人的先生或太太。",
+                    "許多父母<span class='highlight-idiom'>有意無意</span>地讓他們的子女忘記中文。",
+                    "而王太太卻又<span class='highlight-idiom'>有意無意</span>地將椅子挪向約翰。"
                 ]
             },
             {
-                name: "有眼無珠",
-                img: "https://i.ibb.co/BKZhjrVJ/image.png",
-                def: "比喻沒有眼力，看不出人或事物的真實價值。",
-                collocation: "常接「真是～」、「罵人～」，形容識人不清。",
+                name: "有眼無珠", img: "https://i.ibb.co/BKZhjrVJ/image.png",
+                def: "比喻沒有眼力，看不出人或事物的真實價值。", enDef: "Having eyes but no pupils; blind to someone's true worth.",
+                collocation: "形容識人不清（多帶貶義或自嘲）。常接「真是～」。", enCollocation: "Used as an insult or self-deprecation for failing to recognize value.",
                 examples: [
-                    "那位嫁到劇務的小姐，也是屬於「<span class='highlight-idiom'>有眼無珠</span>」之類。[cite: 5]",
-                    "這份罪是上帝的懲罰，那個<span class='highlight-idiom'>有眼無珠</span>的上帝，不要也罷。[cite: 5]",
-                    "不見綠葉，但聞奇香，<span class='highlight-idiom'>有眼無珠</span>，憾得不值。[cite: 5]",
-                    "現代女性選擇獨身、害怕婚姻，免得<span class='highlight-idiom'>有眼無珠</span>像《紅樓夢》中的賈迎春。[cite: 5]",
-                    "客老爺要上朝廷當大官，恕小人<span class='highlight-idiom'>有眼無珠</span>，一時多多冒犯老爺！[cite: 5]"
+                    "那位嫁到劇務的小姐，也是屬於「<span class='highlight-idiom'>有眼無珠</span>」之類。",
+                    "這份罪是上帝的懲罰，那個<span class='highlight-idiom'>有眼無珠</span>的上帝，不要也罷。",
+                    "不見綠葉，但聞奇香，<span class='highlight-idiom'>有眼無珠</span>，憾得不值。",
+                    "害怕婚姻，免得<span class='highlight-idiom'>有眼無珠</span>像《紅樓夢》中的賈迎春。",
+                    "客老爺要上朝當大官，恕小人<span class='highlight-idiom'>有眼無珠</span>，一時冒犯老爺！"
                 ]
             }
         ];
 
-        // --- 介面控制與音樂邏輯 ---
-        
-        // 網頁載入時初始化音樂狀態
+        // 總體大練習情境題庫 (10題)
+        const finaleQuestions = [
+            { q: "李經理因為董事長是他的親戚，在公司經常遲到早退，對同事頤指氣使，大家都覺得他真是____。", ans: "有恃無恐", options: ["有恃無恐", "有備無患", "有教無類", "有意無意"] },
+            { q: "登山隊長要求隊員多帶兩瓶水和急救包，他說山裡天氣變化大，多帶一點總是____。", ans: "有備無患", options: ["有眼無珠", "有備無患", "有氣無力", "有恃無恐"] },
+            { q: "面試官____地問了小陳關於週末加班的看法，其實是在測試他對高強度工作的接受度。", ans: "有意無意", options: ["有意無意", "有教無類", "有眼無珠", "有備無患"] },
+            { q: "跑完馬拉松後，他整個人癱坐在地上，____地接過工作人員遞來的水，連一句謝謝都說不出來。", ans: "有氣無力", options: ["有氣無力", "有恃無恐", "有眼無珠", "有意無意"] },
+            { q: "孔子在兩千多年前就提倡____的觀念，無論是貴族還是平民，只要願意學習，他都樂於教導。", ans: "有教無類", options: ["有教無類", "有備無患", "有氣無力", "有恃無恐"] },
+            { q: "那位骨董商沒看出這幅畫是名家真跡，竟以低價賤賣了，事後才懊悔自己真是____。", ans: "有眼無珠", options: ["有眼無珠", "有意無意", "有氣無力", "有教無類"] },
+            { q: "政府為了防範颱風帶來的災情，提早在各低窪地區部署了抽水機，這就是____的最佳示範。", ans: "有備無患", options: ["有備無患", "有恃無恐", "有意無意", "有眼無珠"] },
+            { q: "那群小混混以為巷子裡沒有監視器，便____地砸破了路邊車輛的車窗。", ans: "有恃無恐", options: ["有教無類", "有氣無力", "有恃無恐", "有備無患"] },
+            { q: "生了重病後，他連續三天吃不下飯，連講話的聲音聽起來都____的。", ans: "有氣無力", options: ["有意無意", "有氣無力", "有眼無珠", "有恃無恐"] },
+            { q: "婆婆看著媳婦買回來的新衣服，____地說了一句：「現在的年輕人真捨得花錢啊。」", ans: "有意無意", options: ["有意無意", "有備無患", "有教無類", "有眼無珠"] }
+        ];
+
+        // --- 初始化與音樂邏輯 ---
         window.addEventListener('DOMContentLoaded', () => {
-            const audio = document.getElementById('bgm');
-            audio.volume = 0.5;
             const btn = document.getElementById('bgm-btn');
-            
-            if (!isUserMuted) {
-                // 嘗試自動播放
-                audio.play().then(() => {
-                    bgmPlaying = true;
-                    btn.classList.add('playing');
-                }).catch(e => { console.log("等待使用者互動後播放"); });
-            } else {
-                btn.classList.remove('playing');
-            }
-            renderDashboard();
+            if (!isUserMuted) { btn.classList.add('playing'); } 
+            else { btn.classList.remove('playing'); }
         });
 
         function startGame() {
@@ -306,34 +308,29 @@
             currentUser = nameInput;
             
             const audio = document.getElementById('bgm');
-            // 如果使用者沒有設定過靜音，進入時確保播放
             if(!isUserMuted) {
-                audio.play().then(() => {
-                    bgmPlaying = true;
-                    document.getElementById('bgm-btn').classList.add('playing');
-                }).catch(e => console.log("無法自動播放"));
+                audio.play().catch(e => console.log("等待使用者互動"));
             }
 
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('main-app').style.display = 'block';
             
             initUserStats();
+            renderDashboard();
         }
 
         function toggleBGM() {
             const audio = document.getElementById('bgm');
             const btn = document.getElementById('bgm-btn');
-            if(bgmPlaying) { 
+            if(bgmPlaying || !audio.paused) { 
                 audio.pause(); 
                 btn.classList.remove('playing');
-                bgmPlaying = false;
-                isUserMuted = true;
+                bgmPlaying = false; isUserMuted = true;
                 localStorage.setItem('idiomAppMuted', 'true');
             } else { 
                 audio.play(); 
                 btn.classList.add('playing');
-                bgmPlaying = true;
-                isUserMuted = false;
+                bgmPlaying = true; isUserMuted = false;
                 localStorage.setItem('idiomAppMuted', 'false');
             }
         }
@@ -348,51 +345,65 @@
             const grid = document.getElementById('dashboard-grid');
             grid.innerHTML = "";
             trainingData.forEach((data, index) => {
-                grid.innerHTML += `<div class="idiom-card-btn">${index + 1}. ${data.name}</div>`;
+                let isDone = completedIdioms.includes(index) ? "completed" : "";
+                grid.innerHTML += `<div class="idiom-card-btn ${isDone}" onclick="openTraining(${index})">${index + 1}. ${data.name}</div>`;
             });
+
+            // 檢查是否全數完成以解鎖大練習
+            const finaleBtn = document.getElementById('grand-finale-btn');
+            if(completedIdioms.length === trainingData.length) {
+                finaleBtn.classList.add('unlocked');
+                finaleBtn.innerText = "🔥 進入總體大練習！";
+            }
         }
 
-        // --- 造句特訓系統 ---
+        // --- 單一成語造句特訓 ---
         let currentTrainIdx = 0;
-        let sessionTotalScore = 0;
 
-        function startTrainingSequence() {
-            currentTrainIdx = 0;
-            sessionTotalScore = 0;
-            loadTrainingUI();
-            switchTab('training-section');
-        }
-
-        function loadTrainingUI() {
-            const data = trainingData[currentTrainIdx];
+        function openTraining(index) {
+            currentTrainIdx = index;
+            const data = trainingData[index];
             const contentBox = document.getElementById('training-content');
             
             let examplesHTML = "";
             data.examples.forEach(ex => { examplesHTML += `<li>${ex}</li>`; });
 
+            // 若已完成，顯示提示
+            let doneMsg = completedIdioms.includes(index) ? `<div style="background:#d5f5e3; color:#27ae60; padding:10px; text-align:center; font-weight:bold; border-radius:5px; margin-bottom:15px;">✅ 您已完成過此成語的造句練習。</div>` : "";
+
             contentBox.innerHTML = `
+                ${doneMsg}
                 <div class="training-header">
                     <img src="${data.img}" alt="${data.name}">
                     <div class="training-title">${data.name}</div>
-                    <div class="training-def"><strong>💡 簡短釋義：</strong>${data.def}</div>
-                    <div class="training-def" style="background:#e8f8f5; border-color:#1abc9c;"><strong>🔗 常見搭配/情境：</strong>${data.collocation}</div>
+                    
+                    <div class="training-def">
+                        <strong>💡 簡短釋義 (Meaning)：</strong>${data.def}
+                        <span class="en-note">${data.enDef}</span>
+                    </div>
+                    
+                    <div class="training-def" style="background:#e8f8f5; border-color:#1abc9c;">
+                        <strong>🔗 常見搭配/情境 (Usage)：</strong>${data.collocation}
+                        <span class="en-note">${data.enCollocation}</span>
+                    </div>
                 </div>
 
                 <div class="corpus-examples">
-                    <h4>📚 語料庫真實例句</h4>
+                    <h4>📚 語料庫真實例句 (Authentic Examples)</h4>
                     <ul>${examplesHTML}</ul>
                 </div>
 
                 <div class="writing-area">
-                    <h3>✍️ 換你大展身手！</h3>
-                    <p style="color:#7f8c8d; margin-top:0;">請參考上方例句，結合自己的生活經驗，用「<strong>${data.name}</strong>」造一個完整的句子：</p>
+                    <h3>✍️ 換你大展身手！ (Your Turn)</h3>
+                    <p style="color:#7f8c8d; margin-top:0;">請參考上方例句，結合生活經驗，用「<strong>${data.name}</strong>」造一個完整的句子：</p>
                     <textarea id="sentence-input" placeholder="請在此輸入您的造句..."></textarea>
-                    <button id="submit-sentence-btn" onclick="submitSentence()">送出造句</button>
+                    <button id="submit-sentence-btn" onclick="submitSentence()">📤 送出造句</button>
                     
                     <div id="feedback-box" class="feedback-box"></div>
-                    <button id="next-train-btn" class="next-btn" onclick="nextTraining()">進入下一個成語 ➡</button>
+                    <button id="next-train-btn" class="next-btn" onclick="goToNextAction()">進入下一步 ➡</button>
                 </div>
             `;
+            switchTab('training-section');
         }
 
         function submitSentence() {
@@ -415,10 +426,9 @@
                 fbHTML = `
                     <div style="color:#c0392b;"><strong>❌ 批改與修正：</strong>你好像沒有用到「${data.name}」喔！<br><em>建議修正：請嘗試把成語加入句子中。</em></div>
                     <div style="color:#e67e22; margin-top:10px; font-size:1.4rem;"><strong>🏆 評分： ${score} / 5 分</strong></div>
-                    <div style="color:#27ae60; margin-top:10px;"><strong>💡 給你的鼓勵：</strong>萬事起頭難，再看一次上面的例句，相信你一定能寫出來的！加油！</div>
+                    <div style="color:#27ae60; margin-top:10px;"><strong>💡 給你的鼓勵：</strong>萬事起頭難，再看一次上面的例句，相信你一定能寫出來的！</div>
                 `;
             } else {
-                // 檢查是否抄襲例句
                 let isTooSimilar = data.examples.some(ex => {
                     let cleanEx = ex.replace(/[，。！「」\[\]a-zA-Z:0-9\s]/g, "");
                     let cleanIn = input.replace(/[，。！「」\s]/g, "");
@@ -428,87 +438,149 @@
                 if(isTooSimilar && input.length < 20) {
                     score = 3;
                     fbHTML = `
-                        <div style="color:#c0392b;"><strong>⚠️ 批改與修正：</strong>語法正確，但這句話跟例句太相似了喔！<br><em>建議修正：請試著替換主詞或情境，寫出你獨一無二的句子。</em></div>
+                        <div style="color:#c0392b;"><strong>⚠️ 批改與修正：</strong>語法正確，但這句話跟例句太相似了喔！<br><em>建議修正：試著替換主詞或情境，寫出你獨一無二的句子。</em></div>
                         <div style="color:#e67e22; margin-top:10px; font-size:1.4rem;"><strong>🏆 評分： ${score} / 5 分</strong></div>
-                        <div style="color:#27ae60; margin-top:10px;"><strong>💡 給你的鼓勵：</strong>你已經掌握了基本用法，試著結合自己的生活經驗，一定能造出更棒的句子！</div>
+                        <div style="color:#27ae60; margin-top:10px;"><strong>💡 給你的鼓勵：</strong>你已經掌握了基本用法，試著結合自己的生活經驗會更棒！</div>
                     `;
                 } else if(input.length < data.name.length + 6) {
                     score = 2;
                     fbHTML = `
-                        <div style="color:#c0392b;"><strong>⚠️ 批改與修正：</strong>句子有點太短，無法完整表達情境。<br><em>建議修正：建議加入發生這件事的原因或結果，例如：因為...所以${data.name}。</em></div>
+                        <div style="color:#c0392b;"><strong>⚠️ 批改與修正：</strong>句子有點太短，無法完整表達情境。<br><em>建議修正：加入發生這件事的原因或結果，例如：因為...所以${data.name}。</em></div>
                         <div style="color:#e67e22; margin-top:10px; font-size:1.4rem;"><strong>🏆 評分： ${score} / 5 分</strong></div>
-                        <div style="color:#27ae60; margin-top:10px;"><strong>💡 給你的鼓勵：</strong>成語就像調味料，要加在豐富的食材（情境）裡才美味喔！下次試試看多寫一點！</div>
+                        <div style="color:#27ae60; margin-top:10px;"><strong>💡 給你的鼓勵：</strong>成語就像調味料，要加在豐富的情境裡才美味喔！下次多寫一點！</div>
                     `;
                 } else {
                     score = 5;
                     fbHTML = `
-                        <div style="color:#2c3e50;"><strong>✨ 批改與修正：</strong>句子非常通順，情境也很完整，無需修正！</div>
+                        <div style="color:#2c3e50;"><strong>✨ 批改與修正：</strong>句子非常通順，情境也很完整，完美！</div>
                         <div style="color:#e67e22; margin-top:10px; font-size:1.4rem;"><strong>🏆 評分： ${score} / 5 分</strong></div>
-                        <div style="color:#27ae60; margin-top:10px;"><strong>💡 給你的鼓勵：</strong>太厲害了！你對這個成語的掌握度非常高，繼續保持這個語感！</div>
+                        <div style="color:#27ae60; margin-top:10px;"><strong>💡 給你的鼓勵：</strong>太厲害了！你對這個成語的掌握度非常高，繼續保持！</div>
                     `;
                 }
             }
 
-            sessionTotalScore += score;
+            // 若尚未完成過，才計入總分與紀錄
+            if(!completedIdioms.includes(currentTrainIdx)) {
+                sentenceScore += score;
+                completedIdioms.push(currentTrainIdx);
+            }
+
             feedbackBox.innerHTML = fbHTML;
             feedbackBox.style.display = "block";
             
             let nextBtn = document.getElementById('next-train-btn');
-            if(currentTrainIdx === trainingData.length - 1) {
-                nextBtn.innerText = "完成特訓！查看總成績 🏆";
+            
+            // 決定下一步按鈕文字
+            if(completedIdioms.length === trainingData.length) {
+                nextBtn.innerText = "🌟 解鎖總體大練習！返回主頁";
                 nextBtn.style.background = "#e67e22";
+            } else {
+                nextBtn.innerText = "✅ 返回主目錄，挑戰下一個！";
             }
             nextBtn.style.display = "block";
         }
 
-        function nextTraining() {
-            currentTrainIdx++;
-            if(currentTrainIdx < trainingData.length) {
-                loadTrainingUI();
-                window.scrollTo(0,0);
-            } else {
-                finishTraining();
-            }
+        function goToNextAction() {
+            renderDashboard();
+            switchTab('dashboard');
         }
 
-        function finishTraining() {
-            saveUserData();
-            document.getElementById('final-score-display').innerText = `${sessionTotalScore} / 30 分`;
+        // --- 總體大練習 (Grand Finale) ---
+        let currentFinaleIdx = 0;
+        let currentQAttempts = 0;
+        let finaleQuizList = [];
+
+        function startGrandFinale() {
+            // 隨機打亂 10 題
+            finaleQuizList = [...finaleQuestions].sort(() => 0.5 - Math.random());
+            currentFinaleIdx = 0;
+            finaleScore = 0;
+            showFinaleQuestion();
+            switchTab('finale-section');
+        }
+
+        function showFinaleQuestion() {
+            if(currentFinaleIdx >= finaleQuizList.length) { endOverallSequence(); return; }
+            currentQAttempts = 0;
+            const qData = finaleQuizList[currentFinaleIdx];
+            
+            document.getElementById('finale-progress').innerText = `📝 題目： ${currentFinaleIdx + 1} / 10`;
+            document.getElementById('finale-score-display').innerText = `⭐ 得分：${finaleScore} 分`;
+            document.getElementById('finale-question').innerText = qData.q;
+            document.getElementById('finale-feedback').style.display = 'none';
+            document.getElementById('finale-next-btn').style.display = 'none';
+
+            let opts = [...qData.options].sort(() => 0.5 - Math.random());
+            let optionsHtml = "";
+            opts.forEach(opt => {
+                optionsHtml += `<button onclick="checkFinaleAnswer('${opt}', this)">${opt}</button>`;
+            });
+            document.getElementById('finale-options').innerHTML = optionsHtml;
+        }
+
+        function checkFinaleAnswer(selected, btnElement) {
+            const qData = finaleQuizList[currentFinaleIdx];
+            const feedbackBox = document.getElementById('finale-feedback');
+            const optionsBox = document.getElementById('finale-options');
+            
+            if(selected === qData.ans) {
+                btnElement.style.background = "#2ecc71"; btnElement.style.color = "white";
+                feedbackBox.className = "feedback-box";
+                feedbackBox.style.background = "#d5f5e3"; feedbackBox.style.color = "#27ae60";
+                feedbackBox.innerHTML = `✅ 答對了！獲得 7 分。`;
+                feedbackBox.style.display = "block";
+                finaleScore += 7;
+                lockFinaleOptions();
+            } else {
+                currentQAttempts++;
+                btnElement.style.background = "#e74c3c"; btnElement.style.color = "white";
+                btnElement.disabled = true;
+                
+                if(currentQAttempts >= 3) {
+                    feedbackBox.className = "feedback-box feedback-error";
+                    feedbackBox.innerHTML = `❌ 錯誤已達 3 次！本題 0 分。<br>正確答案是：<strong>${qData.ans}</strong>`;
+                    feedbackBox.style.display = "block";
+                    lockFinaleOptions();
+                } else {
+                    feedbackBox.className = "feedback-box feedback-error";
+                    feedbackBox.innerHTML = `❌ 答錯了！還剩 ${3 - currentQAttempts} 次機會。`;
+                    feedbackBox.style.display = "block";
+                }
+            }
+            // 即時更新分數
+            document.getElementById('finale-score-display').innerText = `⭐ 得分：${finaleScore} 分`;
+        }
+
+        function lockFinaleOptions() {
+            const btns = document.getElementById('finale-options').querySelectorAll('button');
+            btns.forEach(b => b.disabled = true);
+            document.getElementById('finale-next-btn').style.display = "block";
+        }
+
+        function nextFinaleQuestion() {
+            currentFinaleIdx++;
+            showFinaleQuestion();
+        }
+
+        // --- 結算與紀錄 ---
+        function endOverallSequence() {
+            let totalCombinedScore = sentenceScore + finaleScore; // 滿分 30 + 70 = 100
+            
+            saveUserData(totalCombinedScore);
+            
+            document.getElementById('final-name-title').innerText = `🎉 恭喜 ${currentUser} 完成所有挑戰！`;
+            document.getElementById('final-score-display').innerText = `${totalCombinedScore} / 100 分`;
             
             let encMsg = "";
-            if(sessionTotalScore >= 25) encMsg = `太棒了，${currentUser}！你簡直是成語大師，繼續保持優秀的學習熱情！`;
-            else if(sessionTotalScore >= 15) encMsg = `做得很不錯喔，${currentUser}！只要多加練習，一定能把成語用得更生動自然！`;
-            else encMsg = `不要氣餒，${currentUser}！語言學習本來就需要時間累積，再多看幾次例句，下次一定會更好！`;
+            if(totalCombinedScore >= 90) encMsg = `太卓越了！你對這 6 個中高級成語的掌握已達到爐火純青的境界，繼續保持！✨`;
+            else if(totalCombinedScore >= 70) encMsg = `表現得很不錯喔！你已經能靈活運用這些成語了，只要再多複習一下細節就完美了！💪`;
+            else encMsg = `辛苦了！學習成語就像爬山，雖然過程充滿挑戰，但只要多看例句、多練習，下次一定會大躍進的！🧗`;
             
             document.getElementById('final-encouragement').innerText = encMsg;
             switchTab('result-section');
         }
 
-        // --- 語法查詢器 ---
-        function analyzeSyntax() {
-            const text = document.getElementById('syntax-input').value;
-            const resBox = document.getElementById('query-result');
-            
-            let foundIdiom = trainingData.find(i => text.includes(i.name));
-            
-            if(!foundIdiom) { 
-                resBox.innerHTML = "<span style='color:#e74c3c'>未偵測到指定的成語喔！請檢查句子。</span>"; 
-                return; 
-            }
-            
-            let idiomName = foundIdiom.name;
-            let role = "未知";
-            if (text.includes(idiomName + "的")) role = "[定語] (修飾名詞)";
-            else if (text.includes(idiomName + "地")) role = "[狀語] (修飾動詞)";
-            else if (text.endsWith(idiomName) || text.endsWith(idiomName+"。") || text.includes("是" + idiomName)) role = "[謂語] 或 [賓語]";
-            else if (text.includes("得" + idiomName)) role = "[補語] (補充狀態)";
-            else if (text.startsWith(idiomName)) role = "[主語]";
-            else role = "[謂語] (作核心動態描述)";
-
-            resBox.innerHTML = `✅ 目標成語：<span style="color:#8e44ad; font-size:1.4rem;">${idiomName}</span><br>📌 語法角色推測：<span style="color:#d35400; font-size:1.4rem;">${role}</span>`;
-        }
-
-        // --- 模態框與排行榜邏輯 ---
+        // --- 排行榜與模態框邏輯 ---
         function openLeaderboard() {
             let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
             let usersArray = [];
@@ -532,7 +604,7 @@
             document.getElementById(modalId).style.display = "none";
         }
 
-        // --- 後台數據管理 ---
+        // --- 後台數據 ---
         function initUserStats() {
             let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
             if(!db[currentUser]) {
@@ -541,9 +613,12 @@
             }
         }
 
-        function saveUserData() {
+        function saveUserData(finalTotal) {
             let db = JSON.parse(localStorage.getItem('idiomAppDB'));
-            db[currentUser].score += sessionTotalScore; 
+            // 取最高分紀錄
+            if(finalTotal > db[currentUser].score) {
+                db[currentUser].score = finalTotal; 
+            }
             localStorage.setItem('idiomAppDB', JSON.stringify(db));
         }
 
@@ -552,32 +627,47 @@
             if(pwd === "@admin123") {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('main-app').style.display = 'block';
-                document.getElementById('bgm-btn').style.display = 'flex';
                 switchTab('admin-panel');
-                loadAdminData();
+                
+                let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
+                let tbody = document.getElementById('admin-table-body');
+                tbody.innerHTML = "";
+                for(let user in db) {
+                    tbody.innerHTML += `<tr><td style="font-weight:bold;">${user}</td><td style="color:#e67e22; font-weight:bold;">${db[user].score} 分</td></tr>`;
+                }
             } else if(pwd !== null) {
                 alert("密碼錯誤！");
             }
         }
 
-        function loadAdminData() {
-            let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
-            let tbody = document.getElementById('admin-table-body');
-            tbody.innerHTML = "";
-            
-            for(let user in db) {
-                tbody.innerHTML += `<tr>
-                    <td style="font-weight:bold;">${user}</td>
-                    <td style="color:#2c3e50; font-size:1.2rem; font-weight:bold;">${db[user].score} 分</td>
-                </tr>`;
+        function clearData() {
+            if(confirm("⚠️ 警告！確定要清除所有紀錄嗎？此動作無法復原。")) {
+                localStorage.removeItem('idiomAppDB');
+                document.getElementById('admin-table-body').innerHTML = "";
             }
         }
 
-        function clearData() {
-            if(confirm("⚠️ 警告！確定要清除所有學習者的分數與資料嗎？此動作無法復原。")) {
-                localStorage.removeItem('idiomAppDB');
-                loadAdminData();
+        // --- 語法分析器 (保留於主頁) ---
+        function analyzeSyntax() {
+            const text = document.getElementById('syntax-input').value;
+            const resBox = document.getElementById('query-result');
+            let foundIdiom = trainingData.find(i => text.includes(i.name));
+            
+            if(!foundIdiom) { 
+                resBox.innerHTML = "<span style='color:#e74c3c'>未偵測到指定的成語喔！請檢查句子。</span>"; 
+                return; 
             }
+            
+            let idiomName = foundIdiom.name;
+            let role = "未知";
+            if (text.includes(idiomName + "的")) role = "[定語] (修飾名詞)";
+            else if (text.includes(idiomName + "地")) role = "[狀語] (修飾動詞)";
+            else if (text.endsWith(idiomName) || text.endsWith(idiomName+"。") || text.includes("是" + idiomName)) role = "[謂語] 或 [賓語]";
+            else if (text.includes("得" + idiomName)) role = "[補語] (補充狀態)";
+            else if (text.startsWith(idiomName)) role = "[主語]";
+            else role = "[謂語] (作核心動態描述)";
+
+            resBox.innerHTML = `✅ 目標成語：<span style="color:#8e44ad; font-size:1.4rem;">${idiomName}</span><br>📌 語法角色推測：<span style="color:#d35400; font-size:1.4rem;">${role}</span>`;
         }
     </script>
 </body>
