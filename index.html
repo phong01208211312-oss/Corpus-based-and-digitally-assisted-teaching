@@ -10,6 +10,7 @@
         
         .bg-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            /* 背景圖網址已嚴格保留不變 */
             background-image: url('https://i.ibb.co/zVJHDDtc/Gemini-Generated-Image-wnn7e2wnn7e2wnn7.png');
             background-size: cover; background-position: center; background-attachment: fixed; filter: brightness(0.9);
         }
@@ -60,13 +61,8 @@
         @keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(241, 196, 15, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(241, 196, 15, 0); } 100% { box-shadow: 0 0 0 0 rgba(241, 196, 15, 0); } }
         @keyframes spin-slow { 100% { transform: rotate(360deg); } }
 
-        /* --- 修正畫面的顯示/隱藏邏輯 --- */
+        /* 內容容器 */
         #main-app { display: none; min-height: 100vh; padding: 20px; box-sizing: border-box; background: rgba(255, 255, 255, 0.85); }
-        
-        /* 讓主畫面加上 active 後能正確顯示 */
-        #main-app.active { display: block; }
-        #login-screen.hidden { display: none !important; }
-
         .section { display: none; max-width: 900px; margin: 0 auto; background: rgba(255, 255, 255, 0.95); padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
         .section.active { display: block; }
 
@@ -235,7 +231,7 @@
         let sentenceScore = 0;
         let finaleScore = 0;
 
-        // 含注音、拼音、字面義、隱喻義及英文輔助說明的教學資料
+        // 含注音、拼音、字面義、隱喻義及英文輔助說明的教學資料 (精簡至3個例句)
         const trainingData = [
             {
                 name: "有備無患", img: "https://i.ibb.co/kVyRBfWJ/image.png",
@@ -342,9 +338,8 @@
                 audio.play().catch(e => console.log("需使用者互動後播放"));
             }
 
-            // 修改這裡：正確加上 / 移除 Class 來控制顯示
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('main-app').classList.add('active');
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-app').style.display = 'block';
             
             initUserStats();
             renderDashboard();
@@ -660,8 +655,8 @@
         function showAdminLogin() {
             let pwd = prompt("⚙️ 進入系統後台\n\n請輸入管理者密碼 (Password: @admin123)：");
             if(pwd === "@admin123") {
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('main-app').classList.add('active');
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-app').style.display = 'block';
                 switchTab('admin-panel');
                 
                 let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
