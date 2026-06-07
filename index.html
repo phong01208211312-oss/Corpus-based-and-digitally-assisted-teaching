@@ -10,7 +10,8 @@
         
         .bg-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            background-image: url('https://i.ibb.co/YT82HPYv/Gemini-Generated-Image-wkgvbwwkgvbwwkgv.png');
+            /* 背景圖片已更新 */
+            background-image: url('https://i.ibb.co/zVJHDDtc/Gemini-Generated-Image-wnn7e2wnn7e2wnn7.png');
             background-size: cover; background-position: center; background-attachment: fixed; filter: brightness(0.9);
         }
 
@@ -25,6 +26,9 @@
 
         /* 登入介面 */
         #login-screen { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px;}
+        /* 新增：用於隱藏登入畫面的類別 */
+        #login-screen.hidden { display: none !important; }
+
         .login-card {
             background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
@@ -66,6 +70,9 @@
 
         /* 內容容器 */
         #main-app { display: none; min-height: 100vh; padding: 20px; box-sizing: border-box; background: rgba(255, 255, 255, 0.85); }
+        /* 新增：用於顯示主程式區塊的類別 */
+        #main-app.active { display: block !important; }
+        
         .section { display: none; max-width: 900px; margin: 0 auto; background: rgba(255, 255, 255, 0.95); padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
         .section.active { display: block; }
 
