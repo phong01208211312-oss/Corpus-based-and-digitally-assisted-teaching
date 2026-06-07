@@ -6,31 +6,12 @@
     <title>🏮簡單學成語✨</title>
     <style>
         /* 全局與背景設定 */
-        body, html { 
-            margin: 0; 
-            padding: 0; 
-            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; 
-            height: 100%; 
-            overflow-x: hidden; 
-            /* 【修正重點 1】將原本的 #2c3e50 移除，改為透明，避免遮擋背景層 */
-            background-color: transparent; 
-        }
+        body, html { margin: 0; padding: 0; font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; height: 100%; overflow-x: hidden; background-color: #2c3e50;}
         
         .bg-layer {
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            z-index: -1;
-            /* 【修正重點 2】將備用底色放在這裡 */
-            background-color: #2c3e50;
-            /* 背景圖網址已嚴格保留不變 */
-            background-image: url('https://i.ibb.co/zVJHDDtc/Gemini-Generated-Image-wnn7e2wnn7e2wnn7.png');
-            background-size: cover; 
-            background-position: center; 
-            background-attachment: fixed; 
-            filter: brightness(0.9);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background-image: url('https://i.ibb.co/YT82HPYv/Gemini-Generated-Image-wkgvbwwkgvbwwkgv.png');
+            background-size: cover; background-position: center; background-attachment: fixed; filter: brightness(0.9);
         }
 
         /* 首頁標題 (標楷體、3D立體風格) */
@@ -42,7 +23,7 @@
         }
         .sub-title { text-align: center; font-size: 1.3rem; color: #f8fafc; margin-bottom: 35px; letter-spacing: 1px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); font-weight: bold;}
 
-        /* 登入介面 (毛玻璃設計) */
+        /* 登入介面 */
         #login-screen { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px;}
         .login-card {
             background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255, 255, 255, 0.2);
@@ -51,7 +32,7 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.6); text-align: center;
         }
         .login-card label { color: #e2e8f0; font-size: 1.1rem; font-weight: bold; margin-bottom: 15px; display: block; }
-        .login-card input {
+        .login-card input[type="text"] {
             width: 100%; padding: 14px 15px; margin-bottom: 25px;
             background: rgba(15, 23, 42, 0.7); color: white; border: 1px solid #64748b; border-radius: 10px;
             font-size: 1.1rem; box-sizing: border-box; outline: none; transition: 0.3s; text-align: center;
@@ -59,9 +40,13 @@
         .login-card input:focus { border-color: #F6D365; background: rgba(15, 23, 42, 0.9); }
         .login-card input::placeholder { color: #94a3b8; }
         
-        .btn-group { display: flex; flex-direction: column; gap: 15px; }
+        .btn-group { display: flex; flex-direction: column; gap: 12px; }
         .btn-start-main { background: linear-gradient(45deg, #FF512F, #DD2476); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(221, 36, 118, 0.5); }
         .btn-start-main:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(221, 36, 118, 0.7); }
+        
+        .btn-start-voice { background: linear-gradient(45deg, #8E2DE2, #4A00E0); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(74, 0, 224, 0.5); }
+        .btn-start-voice:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(74, 0, 224, 0.7); }
+
         .btn-start-mini { background: linear-gradient(45deg, #f39c12, #d35400); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.5); }
         .btn-start-mini:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(230, 126, 34, 0.7); }
 
@@ -91,9 +76,11 @@
         .idiom-card-btn.completed { background: #27ae60; color: #fff; border-color: #2ecc71; }
         .idiom-card-btn.completed::after { content: "✅"; position: absolute; top: -10px; right: -10px; font-size: 1.5rem; background: #fff; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2);}
 
-        .finale-btn { grid-column: 1 / -1; background: #e74c3c; color: white; border: none; padding: 20px; font-size: 1.8rem; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 20px; box-shadow: 0 5px 15px rgba(231,76,60,0.4); transition: 0.3s; opacity: 0.5; pointer-events: none;}
+        /* 測驗按鈕居中設計 */
+        .finale-btn-container { text-align: center; margin-top: 30px; }
+        .finale-btn { display: inline-block; background: #e74c3c; color: white; border: none; padding: 20px 40px; font-size: 1.8rem; border-radius: 50px; cursor: pointer; font-weight: bold; box-shadow: 0 5px 15px rgba(231,76,60,0.4); transition: 0.3s; opacity: 0.5; pointer-events: none;}
         .finale-btn.unlocked { opacity: 1; pointer-events: auto; animation: unlock-pulse 2s infinite; }
-        @keyframes unlock-pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        @keyframes unlock-pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
         /* 統一平面資訊表設計 */
         .training-header { text-align: center; margin-bottom: 25px;}
@@ -111,7 +98,6 @@
         .corpus-examples h4 { margin-top: 0; color: #16a085; border-bottom: 2px solid #16a085; padding-bottom: 10px; font-size: 1.3rem;}
         .corpus-examples ul { padding-left: 25px; margin: 0; line-height: 1.8; font-size: 1.15rem; color: #2c3e50;}
         .highlight-idiom { color: #e74c3c; font-weight: bold; }
-
         .corpus-btn { display: inline-block; padding: 10px 20px; background: #2980b9; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 1.1rem; transition: 0.2s; box-shadow: 0 3px 6px rgba(41, 128, 185, 0.4);}
         .corpus-btn:hover { background: #2471a3; transform: translateY(-2px); color: white;}
 
@@ -142,6 +128,14 @@
         .modal-content { background: #fff; padding: 30px; border-radius: 15px; width: 100%; max-width: 600px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5);}
         .close-modal { position: absolute; top: 15px; right: 20px; font-size: 2rem; cursor: pointer; color: #7f8c8d; }
         .close-modal:hover { color: #e74c3c; }
+
+        /* 單一刪除按鈕 */
+        .btn-delete-single { background: #e74c3c; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.9rem; transition: 0.2s;}
+        .btn-delete-single:hover { background: #c0392b; }
+        
+        /* AI語音診斷框 */
+        .ai-feedback-container { background: #f4f6f7; padding: 15px; border-radius: 8px; border-left: 5px solid #8e44ad; text-align: left; margin-top: 15px; display: none; }
+        .ai-feedback-container pre { background: #fff; padding: 10px; border: 1px solid #ddd; border-radius: 5px; overflow-x: auto; white-space: pre-wrap; font-size: 1rem; color: #2c3e50; }
     </style>
 </head>
 <body>
@@ -153,7 +147,16 @@
     </audio>
 
     <div id="bgm-btn" class="music-btn" onclick="toggleBGM()" title="開啟/關閉音樂">🎵</div>
-    <div class="settings-btn" onclick="showAdminLogin()" title="系統後台">⚙️</div>
+    <div class="settings-btn" onclick="openAdminLoginModal()" title="系統後台">⚙️</div>
+
+    <div id="admin-login-modal" class="modal">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <span class="close-modal" onclick="closeModal('admin-login-modal')">&times;</span>
+            <h2 style="color:#2c3e50; margin-top:0;">⚙️ 系統後台登入</h2>
+            <input type="password" id="admin-pwd-input" placeholder="請輸入密碼..." style="width: 80%; padding: 12px; font-size: 1.1rem; margin: 20px 0; border: 2px solid #bdc3c7; border-radius: 8px; text-align:center;">
+            <button onclick="verifyAdmin()" style="padding: 12px 30px; background: #3498db; color: white; font-size: 1.1rem; border: none; border-radius: 8px; cursor: pointer; font-weight:bold; width: 80%;">登入</button>
+        </div>
+    </div>
 
     <div id="login-screen">
         <div class="main-title">簡單學成語</div>
@@ -165,7 +168,36 @@
             
             <div class="btn-group">
                 <button class="btn-start-main" onclick="startGame()">🚀 開始學習 Start</button>
+                <button class="btn-start-voice" onclick="openVoicePracticeModal()">🎤 語音練習 Voice Practice</button>
                 <button class="btn-start-mini leaderboard-btn" onclick="openLeaderboard()">🏆 學習排名榜 Leaderboard</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="voice-modal" class="modal">
+        <div class="modal-content" style="max-width: 650px; text-align: center;">
+            <span class="close-modal" onclick="closeModal('voice-modal')">&times;</span>
+            <h2 style="color:#8e44ad; margin-top:0;">🎤 語音發音診斷</h2>
+            <p style="color:#7f8c8d;">請選擇成語，點擊麥克風後大聲朗讀，AI 教師將為您診斷發音與變調。</p>
+            
+            <select id="voice-target-idiom" style="padding:10px; font-size:1.2rem; margin-bottom:20px; border-radius:5px;">
+                <option value="有備無患">有備無患 (yǒu bèi wú huàn)</option>
+                <option value="有恃無恐">有恃無恐 (yǒu shì wú kǒng)</option>
+                <option value="有教無類">有教無類 (yǒu jiào wú lèi)</option>
+                <option value="有氣無力">有氣無力 (yǒu qì wú lì)</option>
+                <option value="有意無意">有意無意 (yǒu yì wú yì)</option>
+                <option value="有眼無珠">有眼無珠 (yǒu yǎn wú zhū)</option>
+            </select>
+            <br>
+            <button id="record-btn" onclick="startRecording()" style="background:#e74c3c; color:white; border:none; padding:15px 30px; font-size:1.2rem; border-radius:50px; cursor:pointer; font-weight:bold; box-shadow:0 4px 10px rgba(231,76,60,0.4);"><span id="record-status">🎙️ 點擊開始錄音</span></button>
+            
+            <div style="margin-top:20px; font-size:1.1rem; color:#2c3e50;">
+                <strong>辨識結果：</strong> <span id="voice-recognized-text" style="color:#e67e22;">尚未錄音</span>
+            </div>
+
+            <div id="ai-feedback-panel" class="ai-feedback-container">
+                <h4 style="color:#2c3e50; margin-top:0;">📝 AI 診斷回饋 (JSON格式)：</h4>
+                <pre id="ai-json-output"></pre>
             </div>
         </div>
     </div>
@@ -177,7 +209,9 @@
             <div class="dashboard-grid" id="dashboard-grid">
                 </div>
             
-            <button id="grand-finale-btn" class="finale-btn" onclick="startGrandFinale()">🔥 總體大練習 (未解鎖)</button>
+            <div class="finale-btn-container">
+                <button id="grand-finale-btn" class="finale-btn" onclick="startGrandFinale()">🔥 成語測驗 - Idiom Quiz (未解鎖)</button>
+            </div>
             
             <div style="margin-top: 50px; padding: 25px; background: #e8f8f5; border-radius: 15px; border: 2px solid #1abc9c; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
                 <h3 style="margin-top:0; color:#16a085;">🔍 語法分析器 (POS Analyzer)</h3>
@@ -193,7 +227,7 @@
         </div>
 
         <div id="finale-section" class="section">
-            <h2 style="text-align:center; color:#e74c3c; font-size: 2.2rem; margin-top:0;">🔥 總體大練習：情境挑戰</h2>
+            <h2 style="text-align:center; color:#e74c3c; font-size: 2.2rem; margin-top:0;">🔥 成語測驗 - Idiom Quiz</h2>
             <div class="quiz-area">
                 <div class="quiz-status">
                     <span id="finale-progress">📝 題目： 1 / 10</span>
@@ -221,10 +255,12 @@
             <button class="back-btn" onclick="switchTab('dashboard')">返回主目錄</button>
             <button onclick="downloadSentencesAsTxt()" style="background: #27ae60; color: white; padding:10px 20px; border:none; border-radius:5px; cursor:pointer; margin-right: 10px; font-weight:bold; font-size:1.1rem;">📥 下載造句語料庫 (.txt)</button>
             <button onclick="clearData()" style="background: #e74c3c; color: white; padding:10px 15px; border:none; border-radius:5px; cursor:pointer; float:right; font-weight:bold;">🗑️ 清除所有資料</button>
-            <table class="admin-table">
-                <thead><tr><th>學習者名稱 Name</th><th>總分數 Total Score</th></tr></thead>
-                <tbody id="admin-table-body"></tbody>
-            </table>
+            <div style="overflow-x:auto;">
+                <table class="admin-table">
+                    <thead><tr><th>學習者名稱 Name</th><th>總分數 Score</th><th>最後使用時間 Last Active</th><th>操作 Action</th></tr></thead>
+                    <tbody id="admin-table-body"></tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -249,7 +285,17 @@
         let sentenceScore = 0;
         let finaleScore = 0;
 
-        // 含注音、拼音、字面義、隱喻義及英文輔助說明的教學資料 (精簡至3個例句)
+        // 取得時間格式
+        function getCurrentFormattedTime() {
+            let d = new Date();
+            let yyyy = d.getFullYear();
+            let mm = String(d.getMonth()+1).padStart(2, '0');
+            let dd = String(d.getDate()).padStart(2, '0');
+            let hh = String(d.getHours()).padStart(2, '0');
+            let min = String(d.getMinutes()).padStart(2, '0');
+            return `${hh}:${min}，${yyyy}/${mm}/${dd}`;
+        }
+
         const trainingData = [
             {
                 name: "有備無患", img: "https://i.ibb.co/kVyRBfWJ/image.png",
@@ -325,7 +371,6 @@
             }
         ];
 
-        // 總體大練習情境題庫 (10題)
         const finaleQuestions = [
             { q: "李經理因為董事長是他的親戚，在公司經常遲到早退，對同事頤指氣使，大家都覺得他真是____。", ans: "有恃無恐", options: ["有恃無恐", "有備無患", "有教無類", "有意無意"] },
             { q: "登山隊長要求隊員多帶兩瓶水和急救包，他說山裡天氣變化大，多帶一點總是____。", ans: "有備無患", options: ["有眼無珠", "有備無患", "有氣無力", "有恃無恐"] },
@@ -339,7 +384,7 @@
             { q: "婆婆看著媳婦買回來的新衣服，____地說了一句：「現在的年輕人真捨得花錢啊。」", ans: "有意無意", options: ["有意無意", "有備無患", "有教無類", "有眼無珠"] }
         ];
 
-        // --- 初始化與音樂邏輯 ---
+        // --- 初始化 ---
         window.addEventListener('DOMContentLoaded', () => {
             const btn = document.getElementById('bgm-btn');
             if (!isUserMuted) { btn.classList.add('playing'); } 
@@ -356,8 +401,8 @@
                 audio.play().catch(e => console.log("需使用者互動後播放"));
             }
 
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('main-app').style.display = 'block';
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('main-app').classList.add('active');
             
             initUserStats();
             renderDashboard();
@@ -396,8 +441,108 @@
             const finaleBtn = document.getElementById('grand-finale-btn');
             if(completedIdioms.length === trainingData.length) {
                 finaleBtn.classList.add('unlocked');
-                finaleBtn.innerText = "🔥 進入總體大練習！ (Enter Final Challenge)";
+                finaleBtn.innerText = "🔥 成語測驗 - Idiom Quiz (Click to Enter)";
             }
+        }
+
+        // --- 語音練習 AI 模擬模組 ---
+        function openVoicePracticeModal() {
+            document.getElementById('voice-modal').style.display = 'flex';
+        }
+
+        let recognition;
+        function startRecording() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if(!SpeechRecognition) {
+                alert("您的瀏覽器不支援語音辨識，請使用 Chrome 瀏覽器。");
+                return;
+            }
+            
+            recognition = new SpeechRecognition();
+            recognition.lang = 'zh-TW';
+            recognition.interimResults = false;
+            
+            const btnText = document.getElementById('record-status');
+            const resultText = document.getElementById('voice-recognized-text');
+            const feedbackPanel = document.getElementById('ai-feedback-panel');
+            const jsonOutput = document.getElementById('ai-json-output');
+
+            btnText.innerText = "🔴 錄音中，請大聲朗讀...";
+            resultText.innerText = "聆聽中...";
+            feedbackPanel.style.display = 'none';
+
+            recognition.start();
+
+            recognition.onresult = function(event) {
+                const text = event.results[0][0].transcript;
+                resultText.innerText = text;
+                btnText.innerText = "🎙️ 再次錄音";
+                
+                const target = document.getElementById('voice-target-idiom').value;
+                generateVoiceAIFeedback(target, text);
+            };
+
+            recognition.onerror = function(event) {
+                btnText.innerText = "🎙️ 點擊開始錄音";
+                resultText.innerText = "發生錯誤或沒有聽到聲音，請重試。";
+            };
+            
+            recognition.onend = function() {
+                btnText.innerText = "🎙️ 再次錄音";
+            };
+        }
+
+        function generateVoiceAIFeedback(target, recognizedText) {
+            // 模擬 AI 處理邏輯
+            let mockResponse = {};
+            
+            if(recognizedText.includes(target) || recognizedText.length >= 2) {
+                // 如果辨識結果和目標差異不大，給予完全正確或特定回饋
+                if (target === "有眼無珠" && recognizedText.includes("租")) {
+                    mockResponse = {
+                        "status": "partial_correct",
+                        "error_analysis": "你的『有眼 (yóu yǎn)』變調念得非常標準！但是將『珠 (zhū)』唸成了平舌音『zū』。",
+                        "actionable_advice": {
+                            "mouth_position": "在發『珠 (zhū)』的音時，請將舌尖往上捲起，輕輕靠近上顎（硬顎）再發音。",
+                            "tone_correction": "四個字的聲調都很正確，特別是第三聲變調處理得很好。",
+                            "rhythm": "這是一個『有...無...』的對稱結構，節奏保持『有眼 / 無珠』的兩兩停頓會更有語感。"
+                        },
+                        "encouragement": "捲舌音需要多練習肌肉記憶，再試一次！『有眼無珠』是用來形容人沒有判斷力，唸的時候可以帶點感嘆的語氣喔！"
+                    };
+                } else if(target === "有眼無珠" && recognizedText === "有眼無珠") {
+                     mockResponse = {
+                        "status": "perfect",
+                        "error_analysis": "發音非常精準！完全沒有偏誤。",
+                        "actionable_advice": {
+                            "mouth_position": "捲舌音『珠 (zhū)』發得非常飽滿。",
+                            "tone_correction": "『有眼(yóu yǎn)』完美的二聲變調，無(wú)的二聲也很清晰。",
+                            "rhythm": "停頓點『有眼 / 無珠』掌握得很到位。"
+                        },
+                        "encouragement": "太棒了！你的發音已經達到母語者的水平，請繼續保持喔！"
+                    };
+                } else {
+                    mockResponse = {
+                        "status": "partial_correct",
+                        "error_analysis": `系統聽到了「${recognizedText}」，與目標成語「${target}」有些微落差。`,
+                        "actionable_advice": {
+                            "mouth_position": "請特別注意變數X與Y的咬字部位，開口度可以再大一點。",
+                            "tone_correction": "別忘了如果『X』是第三聲，前面的『有』要變調唸成第二聲(yóu)喔！",
+                            "rhythm": "朗讀時試著抓準『2+2』的節奏感。"
+                        },
+                        "encouragement": "中高級成語的發音細節較多，多聽多唸就能建立肌肉記憶，我們再來一次吧！"
+                    };
+                }
+            } else {
+                 mockResponse = {
+                    "status": "error",
+                    "error_analysis": "系統沒有辨識到目標成語。",
+                    "actionable_advice": { "rhythm": "請再靠近麥克風一點，並以正常語速朗讀。" },
+                    "encouragement": "沒關係，深呼吸，點擊按鈕再試一次！"
+                };
+            }
+
+            document.getElementById('ai-json-output').innerText = JSON.stringify(mockResponse, null, 2);
+            document.getElementById('ai-feedback-panel').style.display = 'block';
         }
 
         // --- 單一成語造句特訓 ---
@@ -517,7 +662,7 @@
             
             let nextBtn = document.getElementById('next-train-btn');
             if(completedIdioms.length === trainingData.length) {
-                nextBtn.innerText = "🌟 解鎖總體大練習！返回主頁";
+                nextBtn.innerText = "🌟 挑戰解鎖！返回主頁";
                 nextBtn.style.background = "#e67e22";
             } else {
                 nextBtn.innerText = "✅ 返回主目錄，挑戰下一個！";
@@ -649,9 +794,11 @@
         function initUserStats() {
             let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
             if(!db[currentUser]) {
-                db[currentUser] = { score: 0, sentences: {} };
-                localStorage.setItem('idiomAppDB', JSON.stringify(db));
+                db[currentUser] = { score: 0, sentences: {}, lastActive: getCurrentFormattedTime() };
+            } else {
+                db[currentUser].lastActive = getCurrentFormattedTime();
             }
+            localStorage.setItem('idiomAppDB', JSON.stringify(db));
         }
 
         function saveLearnerSentence(idiom, sentence) {
@@ -659,6 +806,7 @@
             if (!db[currentUser].sentences) db[currentUser].sentences = {};
             if (!db[currentUser].sentences[idiom]) db[currentUser].sentences[idiom] = [];
             db[currentUser].sentences[idiom].push(sentence);
+            db[currentUser].lastActive = getCurrentFormattedTime();
             localStorage.setItem('idiomAppDB', JSON.stringify(db));
         }
 
@@ -667,24 +815,51 @@
             if(finalTotal > (db[currentUser].score || 0)) {
                 db[currentUser].score = finalTotal; 
             }
+            db[currentUser].lastActive = getCurrentFormattedTime();
             localStorage.setItem('idiomAppDB', JSON.stringify(db));
         }
 
-        function showAdminLogin() {
-            let pwd = prompt("⚙️ 進入系統後台\n\n請輸入管理者密碼 (Password: @admin123)：");
+        function openAdminLoginModal() {
+            document.getElementById('admin-pwd-input').value = "";
+            document.getElementById('admin-login-modal').style.display = "flex";
+        }
+
+        function verifyAdmin() {
+            let pwd = document.getElementById('admin-pwd-input').value;
             if(pwd === "@admin123") {
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('main-app').style.display = 'block';
+                closeModal('admin-login-modal');
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('main-app').classList.add('active');
                 switchTab('admin-panel');
-                
-                let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
-                let tbody = document.getElementById('admin-table-body');
-                tbody.innerHTML = "";
-                for(let user in db) {
-                    tbody.innerHTML += `<tr><td style="font-weight:bold;">${user}</td><td style="color:#e67e22; font-weight:bold; font-size:1.2rem;">${db[user].score || 0}</td></tr>`;
-                }
-            } else if(pwd !== null) {
+                loadAdminData();
+            } else {
                 alert("密碼錯誤！");
+            }
+        }
+
+        function loadAdminData() {
+            let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
+            let tbody = document.getElementById('admin-table-body');
+            tbody.innerHTML = "";
+            for(let user in db) {
+                let lastActive = db[user].lastActive || "無紀錄";
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="font-weight:bold;">${user}</td>
+                        <td style="color:#e67e22; font-weight:bold; font-size:1.2rem;">${db[user].score || 0}</td>
+                        <td style="color:#7f8c8d;">${lastActive}</td>
+                        <td><button class="btn-delete-single" onclick="deleteUser('${user}')">🗑️ 刪除</button></td>
+                    </tr>
+                `;
+            }
+        }
+
+        function deleteUser(username) {
+            if(confirm(`確定要刪除「${username}」的所有紀錄嗎？`)) {
+                let db = JSON.parse(localStorage.getItem('idiomAppDB'));
+                delete db[username];
+                localStorage.setItem('idiomAppDB', JSON.stringify(db));
+                loadAdminData();
             }
         }
 
