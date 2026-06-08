@@ -5,14 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🏮簡單學成語✨</title>
     <style>
-        /* 全局與背景設定 */
-        body, html { margin: 0; padding: 0; font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; height: 100%; overflow-x: hidden; background-color: #2c3e50;}
+       /* 全局與背景設定 */
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; 
+            height: 100%; 
+            overflow-x: hidden; 
+            /* 【修正重點 1】將原本的 #2c3e50 移除，改為透明，避免遮擋背景層 */
+            background-color: transparent; 
+        }
         
         .bg-layer {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            /* 背景圖片已更新 */
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: -1;
+            /* 【修正重點 2】將備用底色放在這裡 */
+            background-color: #2c3e50;
+            /* 背景圖網址已嚴格保留不變 */
             background-image: url('https://i.ibb.co/zVJHDDtc/Gemini-Generated-Image-wnn7e2wnn7e2wnn7.png');
-            background-size: cover; background-position: center; background-attachment: fixed; filter: brightness(0.9);
+            background-size: cover; 
+            background-position: center; 
+            background-attachment: fixed; 
+            filter: brightness(0.9);
         }
 
         /* 首頁標題 (標楷體、3D立體風格) */
