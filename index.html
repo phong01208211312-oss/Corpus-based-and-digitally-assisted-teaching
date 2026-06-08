@@ -18,7 +18,7 @@
             font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; 
             height: 100%; 
             overflow-x: hidden; 
-            background-color: transparent; 
+            background-color: #2c3e50; 
         }
         
         .bg-layer {
@@ -40,9 +40,9 @@
         .hidden { display: none !important; }
         
         /* ---------------- 首頁 (Login Screen) 沉浸式設計 ---------------- */
-        #login-screen { text-align: center; margin-top: 10vh; padding: 20px; display: flex; flex-direction: column; align-items: center; width: 100%;}
+        #login-screen { text-align: center; margin-top: 10vh; padding: 20px; display: flex; flex-direction: column; align-items: center; width: 100%; box-sizing: border-box;}
         
-        /* 3D立體風格標題 */
+        /* 3D立體風格標題 (居中對稱) */
         .main-title { 
             font-family: 'Kaiti TC', 'KaiTi', '標楷體', serif; 
             font-size: 4.5rem; 
@@ -50,14 +50,11 @@
             margin: 0 auto 10px auto; 
             font-weight: bold;
             letter-spacing: 4px;
+            text-shadow: 2px 2px 0px #b8860b, 4px 4px 0px #8b6508, 6px 6px 15px rgba(0,0,0,0.7); 
             text-align: center;
-            text-shadow: 
-                2px 2px 0px #b8860b, 
-                4px 4px 0px #8b6508, 
-                6px 6px 15px rgba(0,0,0,0.7); 
-            display: block;
+            width: 100%;
         }
-        .sub-title { text-align: center; font-size: 1.3rem; color: #f8fafc; margin-bottom: 35px; letter-spacing: 1px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); font-weight: bold; display: block;}
+        .sub-title { text-align: center; font-size: 1.3rem; color: #f8fafc; margin-bottom: 35px; letter-spacing: 1px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); font-weight: bold; width: 100%;}
         
         /* 毛玻璃卡片 */
         .login-card {
@@ -71,36 +68,37 @@
             max-width: 480px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.6);
             text-align: left;
+            box-sizing: border-box;
         }
         
-        .login-card label { color: #e2e8f0; font-size: 1rem; font-weight: bold; margin-bottom: 8px; display: block; }
+        .login-card label { color: #e2e8f0; font-size: 1.1rem; font-weight: bold; margin-bottom: 12px; display: block; }
         .login-card input {
             width: 100%; padding: 14px 15px; margin-bottom: 25px;
             background: rgba(15, 23, 42, 0.7); color: white;
             border: 1px solid #64748b; border-radius: 10px;
-            font-size: 1.05rem; box-sizing: border-box; outline: none; transition: 0.3s;
+            font-size: 1.1rem; box-sizing: border-box; outline: none; transition: 0.3s;
             text-align: center;
         }
         .login-card input:focus { border-color: #F6D365; background: rgba(15, 23, 42, 0.9); }
         .login-card input::placeholder { color: #94a3b8; }
         
-        .btn-group { display: flex; flex-direction: column; gap: 15px; margin-bottom: 15px;}
+        .btn-group { display: flex; flex-direction: column; gap: 15px;}
         
         /* 按鈕漸層設計 */
-        .btn-start-main { flex: 1; background: linear-gradient(45deg, #FF512F, #DD2476); color: white; border: none; padding: 15px 5px; border-radius: 12px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(221, 36, 118, 0.5); text-align: center;}
+        .btn-start-main { background: linear-gradient(45deg, #FF512F, #DD2476); color: white; border: none; padding: 15px 5px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(221, 36, 118, 0.5); text-align: center; width: 100%;}
         .btn-start-main:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(221, 36, 118, 0.7); }
         
-        .btn-start-voice { background: linear-gradient(45deg, #8E2DE2, #4A00E0); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(74, 0, 224, 0.5); }
+        .btn-start-voice { background: linear-gradient(45deg, #8E2DE2, #4A00E0); color: white; border: none; padding: 15px 5px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(74, 0, 224, 0.5); text-align: center; width: 100%;}
         .btn-start-voice:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(74, 0, 224, 0.7); }
 
-        .btn-start-mini { flex: 1; background: linear-gradient(45deg, #11998e, #38ef7d); color: white; border: none; padding: 15px 5px; border-radius: 12px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(17, 153, 142, 0.5); text-align: center;}
-        .btn-start-mini:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(17, 153, 142, 0.7); }
+        .btn-start-mini { background: linear-gradient(45deg, #f39c12, #d35400); color: white; border: none; padding: 15px 5px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.5); text-align: center; width: 100%;}
+        .btn-start-mini:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(230, 126, 34, 0.7); }
 
         /* 音樂與設定按鈕 */
         .music-btn, .settings-btn { 
-            position: fixed; right: 20px; font-size: 2rem; cursor: pointer; z-index: 100; 
-            background: rgba(255,255,255,0.9); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: all 0.3s;
+            position: fixed; right: 20px; font-size: 2rem; cursor: pointer; z-index: 9999; 
+            background: rgba(255,255,255,0.95); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4); transition: all 0.3s;
         }
         .music-btn { top: 20px; border: 3px solid #bdc3c7; }
         .settings-btn { bottom: 20px; }
@@ -111,7 +109,7 @@
         @keyframes spin-slow { 100% { transform: rotate(360deg); } }
 
         /* 內容容器 */
-        #main-app { display: none; min-height: 100vh; padding: 20px; box-sizing: border-box; background: rgba(255, 255, 255, 0.85); }
+        #main-app { display: none; min-height: 100vh; padding: 20px; box-sizing: border-box; background: rgba(255, 255, 255, 0.85); width: 100%; }
         #main-app.active { display: block !important; }
         
         .section { display: none; max-width: 900px; margin: 0 auto; background: rgba(255, 255, 255, 0.95); padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
@@ -171,12 +169,11 @@
         .admin-table th, .admin-table td { border: 1px solid #bdc3c7; padding: 12px; text-align: center; background: white;}
         .admin-table th { background: #34495e; color: white; }
         
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 200; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;}
-        .modal-content { background: #fff; padding: 30px; border-radius: 15px; width: 100%; max-width: 600px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5);}
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;}
+        .modal-content { background: #fff; padding: 30px; border-radius: 15px; width: 100%; max-width: 650px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5);}
         .close-modal { position: absolute; top: 15px; right: 20px; font-size: 2rem; cursor: pointer; color: #7f8c8d; }
         .close-modal:hover { color: #e74c3c; }
 
-        /* 單一刪除按鈕 */
         .btn-delete-single { background: #e74c3c; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.9rem; transition: 0.2s;}
         .btn-delete-single:hover { background: #c0392b; }
         
@@ -205,8 +202,10 @@
     </div>
 
     <div id="login-screen">
-        <div class="main-title">簡單學成語</div>
-        <div class="sub-title">Learn Idioms Easily</div>
+        <div style="text-align: center; width: 100%;">
+            <div class="main-title">簡單學成語</div>
+            <div class="sub-title">Learn Idioms Easily</div>
+        </div>
         
         <div class="login-card">
             <label for="username">👤 Your Name / 您的名字：</label>
@@ -224,7 +223,7 @@
         <div class="modal-content" style="max-width: 650px; text-align: center;">
             <span class="close-modal" onclick="closeModal('voice-modal')">&times;</span>
             <h2 style="color:#8e44ad; margin-top:0;">🎤 語音造句診斷</h2>
-            <p style="color:#7f8c8d; margin-bottom: 20px; line-height: 1.5;">請選擇成語，點擊麥克風後<strong style="color:#e74c3c;">大聲說出您使用該成語所造的完整句子</strong>，AI 教師將為您診斷語法與發音。</p>
+            <p style="color:#7f8c8d; margin-bottom: 20px; line-height: 1.5;">請選擇成語，點擊麥克風後<strong style="color:#e74c3c;">大聲說出您使用該成語所造的完整句子</strong>。<br>💡 <small>思考時間已延長，您可以放慢語速，停頓時系統會等待 5 秒鐘。</small></p>
             
             <select id="voice-target-idiom" style="padding:10px; font-size:1.2rem; margin-bottom:20px; border-radius:5px; border: 2px solid #bdc3c7; width: 80%;">
                 <option value="有備無患">有備無患 (yǒu bèi wú huàn)</option>
@@ -235,23 +234,23 @@
                 <option value="有眼無珠">有眼無珠 (yǒu yǎn wú zhū)</option>
             </select>
             
-            <button id="record-btn" onclick="startRecording()" style="background:#e74c3c; color:white; border:none; padding:15px 30px; font-size:1.2rem; border-radius:50px; cursor:pointer; font-weight:bold; box-shadow:0 4px 10px rgba(231,76,60,0.4);"><span id="record-status">🎙️ 點擊開始錄音</span></button>
+            <button id="record-btn" onclick="startRecording()" style="background:#e74c3c; color:white; border:none; padding:15px 30px; font-size:1.2rem; border-radius:50px; cursor:pointer; font-weight:bold; box-shadow:0 4px 10px rgba(231,76,60,0.4); width: 80%;"><span id="record-status">🎙️ 點擊開始錄音</span></button>
             
-            <div style="margin-top:20px; font-size:1.2rem; color:#2c3e50; background: #ecf0f1; padding: 15px; border-radius: 8px;">
-                <strong>你的口說造句：</strong><br><span id="voice-recognized-text" style="color:#e67e22; display:block; margin-top:10px;">尚未錄音</span>
+            <div style="margin-top:20px; font-size:1.2rem; color:#2c3e50; background: #ecf0f1; padding: 15px; border-radius: 8px; text-align: left;">
+                <strong>🗣️ 你的口說造句：</strong><br><span id="voice-recognized-text" style="color:#e67e22; display:block; margin-top:10px; line-height: 1.5;">尚未錄音</span>
             </div>
 
             <div id="ai-feedback-panel" class="ai-feedback-container">
-                <h4 style="color:#2980b9; margin-top:0; font-size: 1.2rem;">📝 AI 教師診斷回饋：</h4>
-                <div id="ai-feedback-container-inner" style="background:#fff; padding:15px; border-radius:5px; border:1px solid #bdc3c7; font-size:1.1rem; line-height:1.6;"></div>
+                <h4 style="color:#2980b9; margin-top:0; font-size: 1.2rem; border-bottom: 2px solid #2980b9; padding-bottom: 10px;">📝 AI 教師診斷回饋：</h4>
+                <div id="ai-feedback-container-inner" style="background:#fff; padding:15px; border-radius:5px; font-size:1.1rem; line-height:1.6;"></div>
             </div>
         </div>
     </div>
 
     <div id="main-app">
         <div id="dashboard" class="section active">
-            <div style="text-align: center; margin-bottom: 30px;">
-                <div class="main-title" style="font-size: 4rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); margin: 0 auto;">「有X無Y」成語匯集</div>
+            <div style="text-align: center; margin-bottom: 30px; width: 100%;">
+                <div class="main-title" style="font-size: 4rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); width: 100%;">「有X無Y」成語匯集</div>
                 <p style="font-size:1.3rem; color:#34495e; font-weight:bold; margin-top: 10px;">請點擊下方成語開始造句特訓，全數完成即可解鎖大挑戰！</p>
             </div>
             
@@ -343,7 +342,6 @@
         let sentenceScore = 0;
         let finaleScore = 0;
 
-        // 取得時間格式
         function getCurrentFormattedTime() {
             let d = new Date();
             let yyyy = d.getFullYear();
@@ -354,7 +352,6 @@
             return `${hh}:${min}，${yyyy}/${mm}/${dd}`;
         }
 
-        // 含注音、拼音、字面義、隱喻義及英文輔助說明的教學資料 (精簡至3個例句)
         const trainingData = [
             {
                 name: "有備無患", img: "https://i.ibb.co/kVyRBfWJ/image.png",
@@ -504,12 +501,20 @@
             }
         }
 
-        // --- 語音練習 AI 模擬模組 (口說造句版) ---
+        // --- 語音練習 AI 模擬模組 (長錄音 + 5秒延遲 + 具體文字反饋) ---
         function openVoicePracticeModal() {
+            if(!currentUser) {
+                currentUser = prompt("請先輸入您的姓名以記錄語音資料：") || "訪客";
+                initUserStats();
+            }
             document.getElementById('voice-modal').style.display = 'flex';
         }
 
         let recognition;
+        let voiceTimer;
+        let isRecording = false;
+        let currentVoiceText = "";
+
         function startRecording() {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             if(!SpeechRecognition) {
@@ -517,45 +522,83 @@
                 return;
             }
             
+            if(isRecording) {
+                recognition.stop();
+                return;
+            }
+
             recognition = new SpeechRecognition();
             recognition.lang = 'zh-TW';
-            recognition.interimResults = false;
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            
+            currentVoiceText = "";
+            isRecording = true;
             
             const btnText = document.getElementById('record-status');
             const resultText = document.getElementById('voice-recognized-text');
             const feedbackPanel = document.getElementById('ai-feedback-panel');
 
-            btnText.innerText = "🔴 錄音中，請大聲朗讀您的造句...";
-            resultText.innerText = "聆聽中...";
+            btnText.innerHTML = "⏹️ 錄音中...<br><small style='font-size:0.8rem;'>(點擊結束 或 等待停頓5秒)</small>";
+            resultText.innerText = "聆聽中... (請開始大聲造句)";
             feedbackPanel.style.display = 'none';
 
             recognition.start();
 
             recognition.onresult = function(event) {
-                const text = event.results[0][0].transcript;
-                resultText.innerText = text;
-                btnText.innerText = "🎙️ 再次錄音";
-                
-                const targetIdiom = document.getElementById('voice-target-idiom').value;
-                generateVoiceAIFeedback(targetIdiom, text);
+                let interimTranscript = '';
+                let finalStr = '';
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    if (event.results[i].isFinal) {
+                        finalStr += event.results[i][0].transcript;
+                    } else {
+                        interimTranscript += event.results[i][0].transcript;
+                    }
+                }
+                currentVoiceText = finalStr + interimTranscript;
+                resultText.innerText = currentVoiceText;
+
+                // 停頓 5 秒後自動停止並分析
+                clearTimeout(voiceTimer);
+                voiceTimer = setTimeout(() => {
+                    recognition.stop();
+                }, 5000);
             };
 
             recognition.onerror = function(event) {
-                btnText.innerText = "🎙️ 點擊開始錄音";
+                isRecording = false;
+                btnText.innerHTML = "🎙️ 點擊開始錄音";
                 resultText.innerText = "發生錯誤或沒有聽到聲音，請重試。";
             };
             
             recognition.onend = function() {
-                btnText.innerText = "🎙️ 再次錄音";
+                isRecording = false;
+                clearTimeout(voiceTimer);
+                btnText.innerHTML = "🎙️ 再次錄音";
+                
+                if(currentVoiceText.trim() !== "") {
+                    const targetIdiom = document.getElementById('voice-target-idiom').value;
+                    generateVoiceAIFeedback(targetIdiom, currentVoiceText);
+                } else {
+                    resultText.innerText = "沒有聽到聲音，請重試。";
+                }
             };
+            
+            // 給予初始 8 秒的時間發言
+            clearTimeout(voiceTimer);
+            voiceTimer = setTimeout(() => {
+                if(isRecording) recognition.stop();
+            }, 8000);
         }
 
         function generateVoiceAIFeedback(targetIdiom, recognizedText) {
             let cleanRec = recognizedText.replace(/[，。！？、\s]/g, "");
             let fbHTML = "";
+            let isCorrect = false;
             
             if (cleanRec.includes(targetIdiom)) {
                 if (cleanRec.length < targetIdiom.length + 4) {
+                    isCorrect = false;
                     fbHTML = `
                         <div style="color:#c0392b;"><strong>⚠️ 診斷分析：</strong>系統聽到了「${recognizedText}」。你成功唸出了成語，但句子似乎太短了，無法構成完整情境。</div>
                         <div style="color:#2980b9; margin-top:10px;"><strong>💡 具體建議：</strong>
@@ -567,6 +610,7 @@
                         <div style="color:#27ae60; margin-top:10px;"><strong>🌟 鼓勵：</strong>開頭很好！試著把句子拉長，描述一個完整的故事吧！</div>
                     `;
                 } else {
+                    isCorrect = true;
                     fbHTML = `
                         <div style="color:#27ae60;"><strong>✅ 診斷分析：</strong>系統聽到了「${recognizedText}」。語法結構完整，成語使用恰當，發音清晰！</div>
                         <div style="color:#2980b9; margin-top:10px;"><strong>💡 具體建議：</strong>
@@ -580,6 +624,7 @@
                     `;
                 }
             } else {
+                 isCorrect = false;
                  fbHTML = `
                     <div style="color:#c0392b;"><strong>❌ 診斷分析：</strong>系統聽到了「${recognizedText}」。系統沒有聽到目標成語「${targetIdiom}」。</div>
                     <div style="color:#2980b9; margin-top:10px;"><strong>💡 具體建議：</strong>
@@ -592,13 +637,59 @@
                 `;
             }
 
+            // 儲存語音造句紀錄
+            saveVoiceRecord(targetIdiom, recognizedText, isCorrect);
+
             document.getElementById('ai-feedback-container-inner').innerHTML = fbHTML;
             document.getElementById('ai-feedback-panel').style.display = 'block';
         }
 
-        // --- 單一成語造句特訓 ---
-        let currentTrainIdx = 0;
+        // --- 紀錄與儲存邏輯 ---
+        function saveVoiceRecord(idiom, sentence, isCorrect) {
+            if(!currentUser) return;
+            let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
+            if (!db[currentUser]) { db[currentUser] = { score: 0, sentences: {}, voiceRecords: { correct: [], incorrect: [] }, lastActive: getCurrentFormattedTime() }; }
+            if (!db[currentUser].voiceRecords) { db[currentUser].voiceRecords = { correct: [], incorrect: [] }; }
+            
+            let entry = `[${idiom}] ${sentence}`;
+            if(isCorrect) {
+                db[currentUser].voiceRecords.correct.push(entry);
+            } else {
+                db[currentUser].voiceRecords.incorrect.push(entry);
+            }
+            db[currentUser].lastActive = getCurrentFormattedTime();
+            localStorage.setItem('idiomAppDB', JSON.stringify(db));
+        }
 
+        function initUserStats() {
+            let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
+            if(!db[currentUser]) {
+                db[currentUser] = { score: 0, sentences: {}, voiceRecords: { correct: [], incorrect: [] }, lastActive: getCurrentFormattedTime() };
+            } else {
+                db[currentUser].lastActive = getCurrentFormattedTime();
+            }
+            localStorage.setItem('idiomAppDB', JSON.stringify(db));
+        }
+
+        function saveLearnerSentence(idiom, sentence) {
+            let db = JSON.parse(localStorage.getItem('idiomAppDB'));
+            if (!db[currentUser].sentences) db[currentUser].sentences = {};
+            if (!db[currentUser].sentences[idiom]) db[currentUser].sentences[idiom] = [];
+            db[currentUser].sentences[idiom].push(sentence);
+            db[currentUser].lastActive = getCurrentFormattedTime();
+            localStorage.setItem('idiomAppDB', JSON.stringify(db));
+        }
+
+        function saveUserData(finalTotal) {
+            let db = JSON.parse(localStorage.getItem('idiomAppDB'));
+            if(finalTotal > (db[currentUser].score || 0)) {
+                db[currentUser].score = finalTotal; 
+            }
+            db[currentUser].lastActive = getCurrentFormattedTime();
+            localStorage.setItem('idiomAppDB', JSON.stringify(db));
+        }
+
+        // --- 單一成語造句特訓 ---
         function openTraining(index) {
             currentTrainIdx = index;
             const data = trainingData[index];
@@ -729,10 +820,6 @@
         }
 
         // --- 總體大練習 ---
-        let currentFinaleIdx = 0;
-        let currentQAttempts = 0;
-        let finaleQuizList = [];
-
         function startGrandFinale() {
             finaleQuizList = [...finaleQuestions].sort(() => 0.5 - Math.random());
             currentFinaleIdx = 0;
@@ -843,58 +930,33 @@
             document.getElementById(modalId).style.display = "none";
         }
 
-        // --- 後台數據管理與下載 ---
-        function initUserStats() {
-            let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
-            if(!db[currentUser]) {
-                db[currentUser] = { score: 0, sentences: {}, lastActive: getCurrentFormattedTime() };
-            } else {
-                db[currentUser].lastActive = getCurrentFormattedTime();
-            }
-            localStorage.setItem('idiomAppDB', JSON.stringify(db));
-        }
-
-        function saveLearnerSentence(idiom, sentence) {
-            let db = JSON.parse(localStorage.getItem('idiomAppDB'));
-            if (!db[currentUser].sentences) db[currentUser].sentences = {};
-            if (!db[currentUser].sentences[idiom]) db[currentUser].sentences[idiom] = [];
-            db[currentUser].sentences[idiom].push(sentence);
-            db[currentUser].lastActive = getCurrentFormattedTime();
-            localStorage.setItem('idiomAppDB', JSON.stringify(db));
-        }
-
-        function saveUserData(finalTotal) {
-            let db = JSON.parse(localStorage.getItem('idiomAppDB'));
-            if(finalTotal > (db[currentUser].score || 0)) {
-                db[currentUser].score = finalTotal; 
-            }
-            db[currentUser].lastActive = getCurrentFormattedTime();
-            localStorage.setItem('idiomAppDB', JSON.stringify(db));
-        }
-
+        // --- 後台管理邏輯 ---
         function showAdminLogin() {
             let pwd = prompt("⚙️ 進入系統後台\n\n請輸入管理者密碼 (Password: @admin123)：");
             if(pwd === "@admin123") {
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('main-app').classList.add('active');
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-app').style.display = 'block';
                 switchTab('admin-panel');
-                
-                let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
-                let tbody = document.getElementById('admin-table-body');
-                tbody.innerHTML = "";
-                for(let user in db) {
-                    let lastActive = db[user].lastActive || "無紀錄";
-                    tbody.innerHTML += `
-                        <tr>
-                            <td style="font-weight:bold;">${user}</td>
-                            <td style="color:#e67e22; font-weight:bold; font-size:1.2rem;">${db[user].score || 0}</td>
-                            <td style="color:#7f8c8d;">${lastActive}</td>
-                            <td><button class="btn-delete-single" onclick="deleteUser('${user}')">🗑️ 刪除</button></td>
-                        </tr>
-                    `;
-                }
+                loadAdminData();
             } else if(pwd !== null) {
                 alert("密碼錯誤！");
+            }
+        }
+
+        function loadAdminData() {
+            let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
+            let tbody = document.getElementById('admin-table-body');
+            tbody.innerHTML = "";
+            for(let user in db) {
+                let lastActive = db[user].lastActive || "無紀錄";
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="font-weight:bold;">${user}</td>
+                        <td style="color:#e67e22; font-weight:bold; font-size:1.2rem;">${db[user].score || 0}</td>
+                        <td style="color:#7f8c8d;">${lastActive}</td>
+                        <td><button class="btn-delete-single" onclick="deleteUser('${user}')">🗑️ 刪除</button></td>
+                    </tr>
+                `;
             }
         }
 
@@ -909,9 +971,13 @@
 
         function downloadSentencesAsTxt() {
             let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
-            let content = "【學習者造句紀錄語料庫 (Learner Corpus)】\n\n";
-            let corpusByIdiom = {};
+            let content = "【學習者造句紀錄與語音紀錄總表】\n\n";
 
+            // 1. 一般造句紀錄
+            content += "====================================\n";
+            content += "        ✍️ 一般寫作造句紀錄\n";
+            content += "====================================\n\n";
+            let corpusByIdiom = {};
             for(let user in db) {
                 if(db[user].sentences) {
                     for(let idiom in db[user].sentences) {
@@ -922,25 +988,40 @@
                     }
                 }
             }
-
-            let hasData = false;
             for(let idiom in corpusByIdiom) {
-                hasData = true;
-                content += `====================\n▶ 成語：${idiom}\n====================\n`;
+                content += `▶ 成語：${idiom}\n--------------------\n`;
                 corpusByIdiom[idiom].forEach(s => { content += s + "\n"; });
                 content += "\n";
             }
 
-            if(!hasData) {
-                alert("目前還沒有學習者留下造句紀錄喔！");
-                return;
+            // 2. 語音造句紀錄 (對錯分類)
+            content += "\n====================================\n";
+            content += "        🎤 語音造句口說紀錄\n";
+            content += "====================================\n\n";
+            
+            content += "【✅ 使用正確的句子】\n--------------------\n";
+            for(let user in db) {
+                if(db[user].voiceRecords && db[user].voiceRecords.correct && db[user].voiceRecords.correct.length > 0) {
+                    db[user].voiceRecords.correct.forEach(s => {
+                        content += `[${user}] ${s}\n`;
+                    });
+                }
+            }
+
+            content += "\n【❌ 使用偏誤的句子】\n--------------------\n";
+            for(let user in db) {
+                if(db[user].voiceRecords && db[user].voiceRecords.incorrect && db[user].voiceRecords.incorrect.length > 0) {
+                    db[user].voiceRecords.incorrect.forEach(s => {
+                        content += `[${user}] ${s}\n`;
+                    });
+                }
             }
 
             let blob = new Blob([content], { type: "text/plain;charset=utf-8" });
             let url = URL.createObjectURL(blob);
             let a = document.createElement("a");
             a.href = url;
-            a.download = "學生造句語料庫.txt";
+            a.download = "學生學習紀錄總表.txt";
             a.click();
             URL.revokeObjectURL(url);
         }
