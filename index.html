@@ -5,14 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🏮簡單學成語✨</title>
     <style>
-       /* 全局與背景設定 */
+        /* 預設主題與變數 */
+        :root { 
+            --edu-primary: #4A90E2; --edu-secondary: #FFD200; --edu-accent: #FF5A5F; --edu-success: #20b2aa; 
+            --text-dark: #333; --box-bg: #F0F7FF;
+        }
+
+        /* 全局與背景設定：覆蓋最底層 */
         body, html { 
             margin: 0; 
             padding: 0; 
             font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; 
             height: 100%; 
             overflow-x: hidden; 
-            /* 【修正重點 1】將原本的 #2c3e50 移除，改為透明，避免遮擋背景層 */
             background-color: transparent; 
         }
         
@@ -23,9 +28,7 @@
             width: 100%; 
             height: 100%; 
             z-index: -1;
-            /* 【修正重點 2】將備用底色放在這裡 */
             background-color: #2c3e50;
-            /* 背景圖網址已嚴格保留不變 */
             background-image: url('https://i.ibb.co/zVJHDDtc/Gemini-Generated-Image-wnn7e2wnn7e2wnn7.png');
             background-size: cover; 
             background-position: center; 
@@ -33,44 +36,63 @@
             filter: brightness(0.9);
         }
 
-        /* 首頁標題 (標楷體、3D立體風格) */
-        .main-title {
-            font-family: 'Kaiti TC', 'KaiTi', '標楷體', serif;
-            font-size: 4.5rem; font-weight: bold; color: #FFD700; text-align: center; margin-bottom: 10px;
-            text-shadow: 2px 2px 0px #b8860b, 4px 4px 0px #8b6508, 6px 6px 15px rgba(0,0,0,0.7);
-            letter-spacing: 4px; z-index: 10;
+        #app { width: 100%; max-width: 900px; position: relative; min-height: 100vh; display: flex; flex-direction: column; }
+        .hidden { display: none !important; }
+        
+        /* ---------------- 首頁 (Login Screen) 沉浸式設計 ---------------- */
+        #login-screen { text-align: center; margin-top: 10vh; padding: 20px; display: flex; flex-direction: column; align-items: center; width: 100%;}
+        
+        /* 3D立體風格標題 */
+        .main-title { 
+            font-family: 'Kaiti TC', 'KaiTi', '標楷體', serif; 
+            font-size: 4.5rem; 
+            color: #FFD700; 
+            margin: 0 0 10px 0; 
+            font-weight: bold;
+            letter-spacing: 4px;
+            text-shadow: 
+                2px 2px 0px #b8860b, 
+                4px 4px 0px #8b6508, 
+                6px 6px 15px rgba(0,0,0,0.7); 
         }
-        .sub-title { text-align: center; font-size: 1.3rem; color: #f8fafc; margin-bottom: 35px; letter-spacing: 1px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); font-weight: bold;}
-
-        /* 登入介面 */
-        #login-screen { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px;}
-        /* 新增：用於隱藏登入畫面的類別 */
-        #login-screen.hidden { display: none !important; }
-
+        .sub-title { font-size: 1.3rem; color: #f8fafc; margin-bottom: 35px; letter-spacing: 1px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); font-weight: bold;}
+        
+        /* 毛玻璃卡片 */
         .login-card {
-            background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border-radius: 20px; padding: 40px 30px; width: 100%; max-width: 400px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6); text-align: center;
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 35px 30px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            text-align: left;
         }
-        .login-card label { color: #e2e8f0; font-size: 1.1rem; font-weight: bold; margin-bottom: 15px; display: block; }
-        .login-card input[type="text"] {
+        
+        .login-card label { color: #e2e8f0; font-size: 1rem; font-weight: bold; margin-bottom: 8px; display: block; }
+        .login-card input {
             width: 100%; padding: 14px 15px; margin-bottom: 25px;
-            background: rgba(15, 23, 42, 0.7); color: white; border: 1px solid #64748b; border-radius: 10px;
-            font-size: 1.1rem; box-sizing: border-box; outline: none; transition: 0.3s; text-align: center;
+            background: rgba(15, 23, 42, 0.7); color: white;
+            border: 1px solid #64748b; border-radius: 10px;
+            font-size: 1.05rem; box-sizing: border-box; outline: none; transition: 0.3s;
+            text-align: center;
         }
         .login-card input:focus { border-color: #F6D365; background: rgba(15, 23, 42, 0.9); }
         .login-card input::placeholder { color: #94a3b8; }
         
-        .btn-group { display: flex; flex-direction: column; gap: 12px; }
-        .btn-start-main { background: linear-gradient(45deg, #FF512F, #DD2476); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(221, 36, 118, 0.5); }
+        .btn-group { display: flex; flex-direction: column; gap: 15px; margin-bottom: 15px;}
+        
+        /* 按鈕漸層設計 */
+        .btn-start-main { flex: 1; background: linear-gradient(45deg, #FF512F, #DD2476); color: white; border: none; padding: 15px 5px; border-radius: 12px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(221, 36, 118, 0.5); text-align: center;}
         .btn-start-main:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(221, 36, 118, 0.7); }
         
         .btn-start-voice { background: linear-gradient(45deg, #8E2DE2, #4A00E0); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(74, 0, 224, 0.5); }
         .btn-start-voice:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(74, 0, 224, 0.7); }
 
-        .btn-start-mini { background: linear-gradient(45deg, #f39c12, #d35400); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.5); }
-        .btn-start-mini:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(230, 126, 34, 0.7); }
+        .btn-start-mini { flex: 1; background: linear-gradient(45deg, #11998e, #38ef7d); color: white; border: none; padding: 15px 5px; border-radius: 12px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(17, 153, 142, 0.5); text-align: center;}
+        .btn-start-mini:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(17, 153, 142, 0.7); }
 
         /* 音樂與設定按鈕 */
         .music-btn, .settings-btn { 
@@ -88,7 +110,6 @@
 
         /* 內容容器 */
         #main-app { display: none; min-height: 100vh; padding: 20px; box-sizing: border-box; background: rgba(255, 255, 255, 0.85); }
-        /* 新增：用於顯示主程式區塊的類別 */
         #main-app.active { display: block !important; }
         
         .section { display: none; max-width: 900px; margin: 0 auto; background: rgba(255, 255, 255, 0.95); padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
@@ -101,7 +122,6 @@
         .idiom-card-btn.completed { background: #27ae60; color: #fff; border-color: #2ecc71; }
         .idiom-card-btn.completed::after { content: "✅"; position: absolute; top: -10px; right: -10px; font-size: 1.5rem; background: #fff; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2);}
 
-        /* 測驗按鈕居中設計 */
         .finale-btn-container { text-align: center; margin-top: 30px; }
         .finale-btn { display: inline-block; background: #e74c3c; color: white; border: none; padding: 20px 40px; font-size: 1.8rem; border-radius: 50px; cursor: pointer; font-weight: bold; box-shadow: 0 5px 15px rgba(231,76,60,0.4); transition: 0.3s; opacity: 0.5; pointer-events: none;}
         .finale-btn.unlocked { opacity: 1; pointer-events: auto; animation: unlock-pulse 2s infinite; }
@@ -159,8 +179,8 @@
         .btn-delete-single:hover { background: #c0392b; }
         
         /* AI語音診斷框 */
-        .ai-feedback-container { background: #f4f6f7; padding: 15px; border-radius: 8px; border-left: 5px solid #8e44ad; text-align: left; margin-top: 15px; display: none; }
-        .ai-feedback-container pre { background: #fff; padding: 10px; border: 1px solid #ddd; border-radius: 5px; overflow-x: auto; white-space: pre-wrap; font-size: 1rem; color: #2c3e50; }
+        .ai-feedback-container { background: #fdfefe; padding: 20px; border-radius: 8px; border-left: 5px solid #8e44ad; border-right: 1px solid #ddd; border-top: 1px solid #ddd; border-bottom: 1px solid #ddd; text-align: left; margin-top: 15px; display: none; }
+        .ai-feedback-container pre { background: #f4f6f7; padding: 15px; border-radius: 5px; overflow-x: auto; white-space: pre-wrap; font-size: 1.05rem; color: #2c3e50; font-family: monospace; line-height: 1.5; border: 1px solid #bdc3c7;}
     </style>
 </head>
 <body>
@@ -202,10 +222,10 @@
     <div id="voice-modal" class="modal">
         <div class="modal-content" style="max-width: 650px; text-align: center;">
             <span class="close-modal" onclick="closeModal('voice-modal')">&times;</span>
-            <h2 style="color:#8e44ad; margin-top:0;">🎤 語音發音診斷</h2>
-            <p style="color:#7f8c8d;">請選擇成語，點擊麥克風後大聲朗讀，AI 教師將為您診斷發音與變調。</p>
+            <h2 style="color:#8e44ad; margin-top:0;">🎤 語音發音診斷 (全句練習)</h2>
+            <p style="color:#7f8c8d; margin-bottom: 20px;">請選擇成語，點擊麥克風後<strong style="color:#e74c3c;">大聲朗讀畫面上的完整句子</strong>，AI 教師將為您診斷語法與發音。</p>
             
-            <select id="voice-target-idiom" style="padding:10px; font-size:1.2rem; margin-bottom:20px; border-radius:5px;">
+            <select id="voice-target-idiom" onchange="updateVoiceSentence()" style="padding:10px; font-size:1.2rem; margin-bottom:15px; border-radius:5px; border: 2px solid #bdc3c7; width: 80%;">
                 <option value="有備無患">有備無患 (yǒu bèi wú huàn)</option>
                 <option value="有恃無恐">有恃無恐 (yǒu shì wú kǒng)</option>
                 <option value="有教無類">有教無類 (yǒu jiào wú lèi)</option>
@@ -213,15 +233,20 @@
                 <option value="有意無意">有意無意 (yǒu yì wú yì)</option>
                 <option value="有眼無珠">有眼無珠 (yǒu yǎn wú zhū)</option>
             </select>
-            <br>
+            
+            <div style="background: #fdf2e9; border: 2px dashed #e67e22; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                <span style="color:#e67e22; font-weight:bold; font-size:1.1rem; display:block; margin-bottom:10px;">👇 請跟讀以下句子 👇</span>
+                <span id="voice-target-sentence" style="font-size: 1.5rem; color: #2c3e50; font-weight: bold;">出門多帶把傘總是好的，有備無患嘛！</span>
+            </div>
+
             <button id="record-btn" onclick="startRecording()" style="background:#e74c3c; color:white; border:none; padding:15px 30px; font-size:1.2rem; border-radius:50px; cursor:pointer; font-weight:bold; box-shadow:0 4px 10px rgba(231,76,60,0.4);"><span id="record-status">🎙️ 點擊開始錄音</span></button>
             
-            <div style="margin-top:20px; font-size:1.1rem; color:#2c3e50;">
-                <strong>辨識結果：</strong> <span id="voice-recognized-text" style="color:#e67e22;">尚未錄音</span>
+            <div style="margin-top:20px; font-size:1.2rem; color:#2c3e50; background: #ecf0f1; padding: 15px; border-radius: 8px;">
+                <strong>你的朗讀結果：</strong><br><span id="voice-recognized-text" style="color:#e67e22; display:block; margin-top:10px;">尚未錄音</span>
             </div>
 
             <div id="ai-feedback-panel" class="ai-feedback-container">
-                <h4 style="color:#2c3e50; margin-top:0;">📝 AI 診斷回饋 (JSON格式)：</h4>
+                <h4 style="color:#2980b9; margin-top:0; font-size: 1.2rem;">📝 AI 教師診斷回饋 (JSON格式)：</h4>
                 <pre id="ai-json-output"></pre>
             </div>
         </div>
@@ -239,10 +264,19 @@
             </div>
             
             <div style="margin-top: 50px; padding: 25px; background: #e8f8f5; border-radius: 15px; border: 2px solid #1abc9c; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-                <h3 style="margin-top:0; color:#16a085;">🔍 語法分析器 (POS Analyzer)</h3>
-                <input type="text" id="syntax-input" placeholder="請輸入包含目標成語的句子..." style="width:75%; padding:12px; font-size:1.1rem; border-radius:5px; border:1px solid #ccc;">
+                <h3 style="margin-top:0; color:#16a085; font-size: 1.4rem;">🔍 語法分析器 (POS Analyzer)</h3>
+                <p style="color:#7f8c8d; margin-bottom:15px; font-size: 1.1rem;">輸入包含目標成語的句子，分析其在句中的詞性角色。</p>
+                <input type="text" id="syntax-input" placeholder="例如：這真是個有備無患的好方法..." style="width:75%; padding:12px; font-size:1.1rem; border-radius:5px; border:1px solid #ccc;">
                 <button onclick="analyzeSyntax()" style="padding:12px 25px; font-size:1.1rem; background:#1abc9c; color:white; border:none; border-radius:5px; cursor:pointer; font-weight:bold;">分析 Analyze</button>
                 <div id="query-result" style="margin-top:15px; font-weight:bold; color:#2c3e50; font-size:1.2rem; line-height: 1.6;"></div>
+                
+                <hr style="border: 0; border-top: 2px dashed #bdc3c7; margin: 25px 0;">
+                
+                <h3 style="margin-top:0; color:#8e44ad; font-size: 1.4rem;">📊 總語料庫檢索 (KWIC & Collocation)</h3>
+                <p style="color:#7f8c8d; margin-bottom:15px; font-size: 1.1rem;">查閱全部 600 筆成語語料，包含上下文關鍵詞 (KWIC) 檢索與搭配詞統計功能。</p>
+                <div style="text-align: right;">
+                    <a href="https://phong01208211312-oss.github.io/Idiom-Corpus-chengyuyuliaoku/" target="_blank" class="corpus-btn" style="background:#8e44ad; box-shadow: 0 4px 10px rgba(142,68,173,0.3);">📚 進入總語料庫檢索</a>
+                </div>
             </div>
         </div>
 
@@ -320,6 +354,16 @@
             let min = String(d.getMinutes()).padStart(2, '0');
             return `${hh}:${min}，${yyyy}/${mm}/${dd}`;
         }
+
+        // 語音練習的指定句子
+        const voiceSentences = {
+            "有備無患": "出門多帶把傘總是好的，有備無患嘛！",
+            "有恃無恐": "他因為背後有靠山，所以顯得有恃無恐。",
+            "有教無類": "孔子提倡有教無類的教育精神。",
+            "有氣無力": "他生了一場大病，說話總是有氣無力。",
+            "有意無意": "他有意無意地提起了那件往事。",
+            "有眼無珠": "我真是有眼無珠，竟然沒認出您來。"
+        };
 
         const trainingData = [
             {
@@ -470,9 +514,15 @@
             }
         }
 
-        // --- 語音練習 AI 模擬模組 ---
+        // --- 語音練習 AI 模擬模組 (全句版) ---
+        function updateVoiceSentence() {
+            let idiom = document.getElementById('voice-target-idiom').value;
+            document.getElementById('voice-target-sentence').innerText = voiceSentences[idiom];
+        }
+
         function openVoicePracticeModal() {
             document.getElementById('voice-modal').style.display = 'flex';
+            updateVoiceSentence(); // 初始化顯示第一句
         }
 
         let recognition;
@@ -503,8 +553,8 @@
                 resultText.innerText = text;
                 btnText.innerText = "🎙️ 再次錄音";
                 
-                const target = document.getElementById('voice-target-idiom').value;
-                generateVoiceAIFeedback(target, text);
+                const targetIdiom = document.getElementById('voice-target-idiom').value;
+                generateVoiceAIFeedback(targetIdiom, text);
             };
 
             recognition.onerror = function(event) {
@@ -517,52 +567,48 @@
             };
         }
 
-        function generateVoiceAIFeedback(target, recognizedText) {
-            // 模擬 AI 處理邏輯
+        function generateVoiceAIFeedback(targetIdiom, recognizedText) {
+            let targetSentence = voiceSentences[targetIdiom];
             let mockResponse = {};
             
-            if(recognizedText.includes(target) || recognizedText.length >= 2) {
-                // 如果辨識結果和目標差異不大，給予完全正確或特定回饋
-                if (target === "有眼無珠" && recognizedText.includes("租")) {
-                    mockResponse = {
-                        "status": "partial_correct",
-                        "error_analysis": "你的『有眼 (yóu yǎn)』變調念得非常標準！但是將『珠 (zhū)』唸成了平舌音『zū』。",
-                        "actionable_advice": {
-                            "mouth_position": "在發『珠 (zhū)』的音時，請將舌尖往上捲起，輕輕靠近上顎（硬顎）再發音。",
-                            "tone_correction": "四個字的聲調都很正確，特別是第三聲變調處理得很好。",
-                            "rhythm": "這是一個『有...無...』的對稱結構，節奏保持『有眼 / 無珠』的兩兩停頓會更有語感。"
-                        },
-                        "encouragement": "捲舌音需要多練習肌肉記憶，再試一次！『有眼無珠』是用來形容人沒有判斷力，唸的時候可以帶點感嘆的語氣喔！"
-                    };
-                } else if(target === "有眼無珠" && recognizedText === "有眼無珠") {
-                     mockResponse = {
-                        "status": "perfect",
-                        "error_analysis": "發音非常精準！完全沒有偏誤。",
-                        "actionable_advice": {
-                            "mouth_position": "捲舌音『珠 (zhū)』發得非常飽滿。",
-                            "tone_correction": "『有眼(yóu yǎn)』完美的二聲變調，無(wú)的二聲也很清晰。",
-                            "rhythm": "停頓點『有眼 / 無珠』掌握得很到位。"
-                        },
-                        "encouragement": "太棒了！你的發音已經達到母語者的水平，請繼續保持喔！"
-                    };
-                } else {
-                    mockResponse = {
-                        "status": "partial_correct",
-                        "error_analysis": `系統聽到了「${recognizedText}」，與目標成語「${target}」有些微落差。`,
-                        "actionable_advice": {
-                            "mouth_position": "請特別注意變數X與Y的咬字部位，開口度可以再大一點。",
-                            "tone_correction": "別忘了如果『X』是第三聲，前面的『有』要變調唸成第二聲(yóu)喔！",
-                            "rhythm": "朗讀時試著抓準『2+2』的節奏感。"
-                        },
-                        "encouragement": "中高級成語的發音細節較多，多聽多唸就能建立肌肉記憶，我們再來一次吧！"
-                    };
-                }
+            // 清除標點符號以進行比對
+            let cleanRec = recognizedText.replace(/[，。！？、]/g, "");
+            let cleanTar = targetSentence.replace(/[，。！？、]/g, "");
+            
+            if (cleanRec === cleanTar) {
+                mockResponse = {
+                    "status": "perfect",
+                    "sentence_analysis": `辨識結果：「${recognizedText}」。整句話的語法與發音都非常完美！`,
+                    "error_analysis": "無偏誤。",
+                    "actionable_advice": {
+                        "grammar": "句子結構完整，成語使用時機正確。",
+                        "tone_correction": "『有(yóu)』的變調處理得很自然。",
+                        "rhythm": "整句朗讀的節奏感極佳！停頓點十分精準。"
+                    },
+                    "encouragement": "你的口說能力非常棒，這句話聽起來已經像母語人士了，請繼續保持喔！"
+                };
+            } else if (recognizedText.includes(targetIdiom)) {
+                mockResponse = {
+                    "status": "partial_correct",
+                    "sentence_analysis": `系統聽到了：「${recognizedText}」。你成功唸出了成語，但句子的其他部分有些微漏字或語法偏誤。`,
+                    "error_analysis": `目標句子是：「${targetSentence}」。注意對比你唸出的內容。`,
+                    "actionable_advice": {
+                        "grammar": "請注意中文句子的完整性，尤其是主詞與助詞的搭配。",
+                        "tone_correction": "成語聲調正確，但句尾的語氣詞可以再放輕一點。",
+                        "rhythm": "長句朗讀時，可以在成語前稍微停頓，會讓表達更清晰。"
+                    },
+                    "encouragement": "很棒！最難的成語發音你已經掌握了，整句話再順一次一定會更好！"
+                };
             } else {
                  mockResponse = {
                     "status": "error",
-                    "error_analysis": "系統沒有辨識到目標成語。",
-                    "actionable_advice": { "rhythm": "請再靠近麥克風一點，並以正常語速朗讀。" },
-                    "encouragement": "沒關係，深呼吸，點擊按鈕再試一次！"
+                    "sentence_analysis": `系統聽到了：「${recognizedText}」。`,
+                    "error_analysis": `系統沒有辨識到目標成語「${targetIdiom}」，或是整句語法落差較大。`,
+                    "actionable_advice": { 
+                        "grammar": `請再次確認句型結構：「${targetSentence}」。`,
+                        "rhythm": "請再靠近麥克風一點，並以正常語速朗讀整句話。" 
+                    },
+                    "encouragement": "沒關係，深呼吸，看清楚螢幕上的句子，點擊按鈕再試一次！"
                 };
             }
 
@@ -582,6 +628,9 @@
             data.examples.forEach(ex => { examplesHTML += `<li>${ex}</li>`; });
 
             let doneMsg = completedIdioms.includes(index) ? `<div style="background:#d5f5e3; color:#27ae60; padding:10px; text-align:center; font-weight:bold; border-radius:5px; margin-bottom:15px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">✅ 您已完成過此成語的造句練習。</div>` : "";
+            
+            // 專屬語料庫連結 (附帶 query 參數)
+            let specificCorpusUrl = `https://phong01208211312-oss.github.io/Idiom-Corpus-chengyuyuliaoku/?query=${encodeURIComponent(data.name)}`;
 
             contentBox.innerHTML = `
                 ${doneMsg}
@@ -606,7 +655,7 @@
                     <h4>📚 語料庫真實例句 (Authentic Examples)</h4>
                     <ul>${examplesHTML}</ul>
                     <div style="text-align: right; margin-top: 15px;">
-                        <a href="https://phong01208211312-oss.github.io/Idiom-Corpus-chengyuyuliaoku/" target="_blank" class="corpus-btn">🔍 查閱更多語料</a>
+                        <a href="${specificCorpusUrl}" target="_blank" class="corpus-btn">🔍 查閱更多語料 (More Examples)</a>
                     </div>
                 </div>
 
