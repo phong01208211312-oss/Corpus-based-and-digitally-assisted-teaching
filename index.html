@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🏮簡單學成語✨</title>
     <style>
-         /* 全局與背景設定 */
+        /* 全局與背景設定 */
         body, html { 
             margin: 0; 
             padding: 0; 
             font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; 
             height: 100%; 
             overflow-x: hidden; 
-            /* 【修正重點 1】將原本的 #2c3e50 移除，改為透明，避免遮擋背景層 */
             background-color: transparent; 
         }
         
@@ -23,15 +22,16 @@
             width: 100%; 
             height: 100%; 
             z-index: -1;
-            /* 【修正重點 2】將備用底色放在這裡 */
             background-color: #2c3e50;
-            /* 背景圖網址已嚴格保留不變 */
             background-image: url('https://i.ibb.co/zVJHDDtc/Gemini-Generated-Image-wnn7e2wnn7e2wnn7.png');
             background-size: cover; 
             background-position: center; 
             background-attachment: fixed; 
             filter: brightness(0.9);
         }
+        
+        #app { width: 100%; max-width: 900px; position: relative; min-height: 100vh; display: flex; flex-direction: column; }
+        .hidden { display: none !important; }
         
         /* ---------------- 首頁 (Login Screen) 沉浸式設計 ---------------- */
         #login-screen { text-align: center; margin-top: 10vh; padding: 20px; display: flex; flex-direction: column; align-items: center; width: 100%; box-sizing: border-box;}
@@ -196,10 +196,8 @@
     </div>
 
     <div id="login-screen">
-        <div style="text-align: center; width: 100%;">
-            <div class="main-title">簡單學成語</div>
-            <div class="sub-title">Learn Idioms Easily</div>
-        </div>
+        <div class="main-title">簡單學成語</div>
+        <div class="sub-title">Learn Idioms Easily</div>
         
         <div class="login-card">
             <label for="username">👤 Your Name / 您的名字：</label>
@@ -243,10 +241,8 @@
 
     <div id="main-app">
         <div id="dashboard" class="section active">
-            <div style="text-align: center; margin-bottom: 30px; width: 100%;">
-                <div class="main-title" style="font-size: 4rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); width: 100%;">「有X無Y」成語匯集</div>
-                <p style="font-size:1.3rem; color:#34495e; font-weight:bold; margin-top: 10px;">請點擊下方成語開始造句特訓，全數完成即可解鎖大挑戰！</p>
-            </div>
+            <h1 class="main-title" style="font-size: 4rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); margin-top: 0;">「有X無Y」成語匯集</h1>
+            <p style="text-align:center; font-size:1.3rem; color:#34495e; font-weight:bold;">請點擊下方成語開始造句特訓，全數完成即可解鎖大挑戰！</p>
             
             <div class="dashboard-grid" id="dashboard-grid">
                 </div>
@@ -495,9 +491,12 @@
             }
         }
 
-        // --- 語音練習 AI 模擬模組 (長錄音 + 5秒延遲 + 具體文字反饋) ---
+        // --- 語音練習 AI 模擬模組 (長錄音 + 5秒延遲 + 精簡版文字反饋) ---
         function openVoicePracticeModal() {
-        
+            if(!currentUser) {
+                currentUser = prompt("請先輸入您的姓名以記錄語音資料：") || "訪客";
+                initUserStats();
+            }
             document.getElementById('voice-modal').style.display = 'flex';
         }
 
@@ -549,7 +548,6 @@
                 currentVoiceText = finalStr + interimTranscript;
                 resultText.innerText = currentVoiceText;
 
-                // 停頓 5 秒後自動停止並分析
                 clearTimeout(voiceTimer);
                 voiceTimer = setTimeout(() => {
                     recognition.stop();
@@ -575,60 +573,55 @@
                 }
             };
             
-            // 給予初始 8 秒的時間發言
             clearTimeout(voiceTimer);
             voiceTimer = setTimeout(() => {
                 if(isRecording) recognition.stop();
             }, 8000);
         }
 
+        // 精簡版 AI 反饋
         function generateVoiceAIFeedback(targetIdiom, recognizedText) {
             let cleanRec = recognizedText.replace(/[，。！？、\s]/g, "");
             let fbHTML = "";
             let isCorrect = false;
             
+            let targetData = trainingData.find(d => d.name === targetIdiom);
+            
             if (cleanRec.includes(targetIdiom)) {
                 if (cleanRec.length < targetIdiom.length + 4) {
                     isCorrect = false;
                     fbHTML = `
-                        <div style="color:#c0392b;"><strong>⚠️ 診斷分析：</strong>系統聽到了「${recognizedText}」。你成功唸出了成語，但句子似乎太短了，無法構成完整情境。</div>
-                        <div style="color:#2980b9; margin-top:10px;"><strong>💡 具體建議：</strong>
-                            <ul style="margin-top:5px; padding-left: 20px;">
-                                <li style="margin-bottom:5px;"><b>語法：</b>請嘗試加入主詞、原因或結果。例如搭配『因為...所以...』的結構。</li>
-                                <li><b>發音：</b>『${targetIdiom}』的聲調大致正確，記得保持流暢的語速。</li>
-                            </ul>
-                        </div>
-                        <div style="color:#27ae60; margin-top:10px;"><strong>🌟 鼓勵：</strong>開頭很好！試著把句子拉長，描述一個完整的故事吧！</div>
+                        <div style="color:#c0392b;"><strong>⚠️ 診斷分析：</strong>句子太短囉，試著加入原因或結果來豐富情境！</div>
+                        <div style="color:#27ae60; margin-top:10px;"><strong>🌟 鼓勵：</strong>開頭很好，把句子拉長，描述一個完整的故事吧！<br><span style="color:#7f8c8d; font-size: 0.95rem;">(Your sentence is a bit too short, try adding reasons or results to enrich the context!)</span></div>
                     `;
                 } else {
-                    isCorrect = true;
-                    fbHTML = `
-                        <div style="color:#27ae60;"><strong>✅ 診斷分析：</strong>系統聽到了「${recognizedText}」。語法結構完整，成語使用恰當，發音清晰！</div>
-                        <div style="color:#2980b9; margin-top:10px;"><strong>💡 具體建議：</strong>
-                            <ul style="margin-top:5px; padding-left: 20px;">
-                                <li style="margin-bottom:5px;"><b>語法：</b>句意非常通順，能夠準確表達您想呈現的情境。</li>
-                                <li style="margin-bottom:5px;"><b>發音：</b>發音咬字清晰，特別是成語部分的連讀變調處理得很自然。</li>
-                                <li><b>節奏：</b>整句朗讀的節奏感極佳，停頓點十分精準。</li>
-                            </ul>
-                        </div>
-                        <div style="color:#e67e22; margin-top:10px;"><strong>🌟 鼓勵：</strong>太棒了！你的口說造句能力非常出色，已經很接近母語人士的語感了，請繼續保持喔！</div>
-                    `;
+                    let isTooSimilar = targetData && targetData.examples.some(ex => {
+                        let cleanEx = ex.replace(/[，。！「」\[\]a-zA-Z:0-9\s]/g, "");
+                        return cleanEx.includes(cleanRec) || cleanRec.includes(cleanEx);
+                    });
+
+                    if(isTooSimilar && cleanRec.length < 20) {
+                        isCorrect = true; 
+                        fbHTML = `
+                            <div style="color:#e67e22;"><strong>⚠️ 診斷分析：</strong>語法正確，但和例句太像了！試著結合自己的生活經驗造句吧！</div>
+                            <div style="color:#27ae60; margin-top:10px;"><strong>🌟 鼓勵：</strong>你已經掌握了基本用法，換個情境試試看會更棒！<br><span style="color:#7f8c8d; font-size: 0.95rem;">(Correct grammar, but too similar to the example! Try using your own life experience.)</span></div>
+                        `;
+                    } else {
+                        isCorrect = true;
+                        fbHTML = `
+                            <div style="color:#27ae60;"><strong>✅ 診斷分析：</strong>發音清晰，語法正確，成語運用得很棒！</div>
+                            <div style="color:#2980b9; margin-top:10px;"><strong>🌟 鼓勵：</strong>太厲害了！你的口說造句能力非常出色，請繼續保持喔！<br><span style="color:#7f8c8d; font-size: 0.95rem;">(Great pronunciation and grammar, your idiom usage is excellent! Keep it up!)</span></div>
+                        `;
+                    }
                 }
             } else {
                  isCorrect = false;
                  fbHTML = `
-                    <div style="color:#c0392b;"><strong>❌ 診斷分析：</strong>系統聽到了「${recognizedText}」。系統沒有聽到目標成語「${targetIdiom}」。</div>
-                    <div style="color:#2980b9; margin-top:10px;"><strong>💡 具體建議：</strong>
-                        <ul style="margin-top:5px; padding-left: 20px;">
-                            <li style="margin-bottom:5px;"><b>語法：</b>請確認您的造句中是否確實包含了「${targetIdiom}」。</li>
-                            <li><b>發音：</b>有時候是麥克風收音問題，請靠近麥克風，並放慢語速再大聲朗讀一次。</li>
-                        </ul>
-                    </div>
-                    <div style="color:#27ae60; margin-top:10px;"><strong>🌟 鼓勵：</strong>沒關係！可以先在腦海中構思好句子，準備好再試一次！</div>
+                    <div style="color:#c0392b;"><strong>❌ 診斷分析：</strong>好像沒有聽到目標成語「${targetIdiom}」喔，請確認後再試一次！</div>
+                    <div style="color:#2980b9; margin-top:10px;"><strong>🌟 鼓勵：</strong>沒關係！可以先在腦海中構思好句子，準備好再大聲說一次！<br><span style="color:#7f8c8d; font-size: 0.95rem;">(I didn't hear the target idiom, please check and try again! Take your time to think.)</span></div>
                 `;
             }
 
-            // 儲存語音造句紀錄
             saveVoiceRecord(targetIdiom, recognizedText, isCorrect);
 
             document.getElementById('ai-feedback-container-inner').innerHTML = fbHTML;
@@ -922,14 +915,20 @@
         }
 
         // --- 後台管理邏輯 ---
-        function showAdminLogin() {
-            let pwd = prompt("⚙️ 進入系統後台\n\n請輸入管理者密碼 (Password: @admin123)：");
+        function openAdminLoginModal() {
+            document.getElementById('admin-pwd-input').value = "";
+            document.getElementById('admin-login-modal').style.display = "flex";
+        }
+
+        function verifyAdmin() {
+            let pwd = document.getElementById('admin-pwd-input').value;
             if(pwd === "@admin123") {
+                closeModal('admin-login-modal');
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('main-app').style.display = 'block';
                 switchTab('admin-panel');
                 loadAdminData();
-            } else if(pwd !== null) {
+            } else {
                 alert("密碼錯誤！");
             }
         }
