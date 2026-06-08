@@ -497,10 +497,7 @@
 
         // --- 語音練習 AI 模擬模組 (長錄音 + 5秒延遲 + 具體文字反饋) ---
         function openVoicePracticeModal() {
-            if(!currentUser) {
-                currentUser = prompt("請先輸入您的姓名以記錄語音資料：") || "訪客";
-                initUserStats();
-            }
+        
             document.getElementById('voice-modal').style.display = 'flex';
         }
 
