@@ -47,15 +47,17 @@
             font-family: 'Kaiti TC', 'KaiTi', '標楷體', serif; 
             font-size: 4.5rem; 
             color: #FFD700; 
-            margin: 0 0 10px 0; 
+            margin: 0 auto 10px auto; 
             font-weight: bold;
             letter-spacing: 4px;
+            text-align: center;
             text-shadow: 
                 2px 2px 0px #b8860b, 
                 4px 4px 0px #8b6508, 
                 6px 6px 15px rgba(0,0,0,0.7); 
+            display: block;
         }
-        .sub-title { font-size: 1.3rem; color: #f8fafc; margin-bottom: 35px; letter-spacing: 1px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); font-weight: bold;}
+        .sub-title { text-align: center; font-size: 1.3rem; color: #f8fafc; margin-bottom: 35px; letter-spacing: 1px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); font-weight: bold; display: block;}
         
         /* 毛玻璃卡片 */
         .login-card {
@@ -180,7 +182,6 @@
         
         /* AI語音診斷框 */
         .ai-feedback-container { background: #fdfefe; padding: 20px; border-radius: 8px; border-left: 5px solid #8e44ad; border-right: 1px solid #ddd; border-top: 1px solid #ddd; border-bottom: 1px solid #ddd; text-align: left; margin-top: 15px; display: none; }
-        .ai-feedback-container pre { background: #f4f6f7; padding: 15px; border-radius: 5px; overflow-x: auto; white-space: pre-wrap; font-size: 1.05rem; color: #2c3e50; font-family: monospace; line-height: 1.5; border: 1px solid #bdc3c7;}
     </style>
 </head>
 <body>
@@ -222,10 +223,10 @@
     <div id="voice-modal" class="modal">
         <div class="modal-content" style="max-width: 650px; text-align: center;">
             <span class="close-modal" onclick="closeModal('voice-modal')">&times;</span>
-            <h2 style="color:#8e44ad; margin-top:0;">🎤 語音發音診斷 (全句練習)</h2>
-            <p style="color:#7f8c8d; margin-bottom: 20px;">請選擇成語，點擊麥克風後<strong style="color:#e74c3c;">大聲朗讀畫面上的完整句子</strong>，AI 教師將為您診斷語法與發音。</p>
+            <h2 style="color:#8e44ad; margin-top:0;">🎤 語音造句診斷</h2>
+            <p style="color:#7f8c8d; margin-bottom: 20px; line-height: 1.5;">請選擇成語，點擊麥克風後<strong style="color:#e74c3c;">大聲說出您使用該成語所造的完整句子</strong>，AI 教師將為您診斷語法與發音。</p>
             
-            <select id="voice-target-idiom" onchange="updateVoiceSentence()" style="padding:10px; font-size:1.2rem; margin-bottom:15px; border-radius:5px; border: 2px solid #bdc3c7; width: 80%;">
+            <select id="voice-target-idiom" style="padding:10px; font-size:1.2rem; margin-bottom:20px; border-radius:5px; border: 2px solid #bdc3c7; width: 80%;">
                 <option value="有備無患">有備無患 (yǒu bèi wú huàn)</option>
                 <option value="有恃無恐">有恃無恐 (yǒu shì wú kǒng)</option>
                 <option value="有教無類">有教無類 (yǒu jiào wú lèi)</option>
@@ -234,28 +235,26 @@
                 <option value="有眼無珠">有眼無珠 (yǒu yǎn wú zhū)</option>
             </select>
             
-            <div style="background: #fdf2e9; border: 2px dashed #e67e22; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-                <span style="color:#e67e22; font-weight:bold; font-size:1.1rem; display:block; margin-bottom:10px;">👇 請跟讀以下句子 👇</span>
-                <span id="voice-target-sentence" style="font-size: 1.5rem; color: #2c3e50; font-weight: bold;">出門多帶把傘總是好的，有備無患嘛！</span>
-            </div>
-
             <button id="record-btn" onclick="startRecording()" style="background:#e74c3c; color:white; border:none; padding:15px 30px; font-size:1.2rem; border-radius:50px; cursor:pointer; font-weight:bold; box-shadow:0 4px 10px rgba(231,76,60,0.4);"><span id="record-status">🎙️ 點擊開始錄音</span></button>
             
             <div style="margin-top:20px; font-size:1.2rem; color:#2c3e50; background: #ecf0f1; padding: 15px; border-radius: 8px;">
-                <strong>你的朗讀結果：</strong><br><span id="voice-recognized-text" style="color:#e67e22; display:block; margin-top:10px;">尚未錄音</span>
+                <strong>你的口說造句：</strong><br><span id="voice-recognized-text" style="color:#e67e22; display:block; margin-top:10px;">尚未錄音</span>
             </div>
 
             <div id="ai-feedback-panel" class="ai-feedback-container">
-                <h4 style="color:#2980b9; margin-top:0; font-size: 1.2rem;">📝 AI 教師診斷回饋 (JSON格式)：</h4>
-                <pre id="ai-json-output"></pre>
+                <h4 style="color:#2980b9; margin-top:0; font-size: 1.2rem;">📝 AI 教師診斷回饋：</h4>
+                <div id="ai-feedback-container-inner" style="background:#fff; padding:15px; border-radius:5px; border:1px solid #bdc3c7; font-size:1.1rem; line-height:1.6;"></div>
             </div>
         </div>
     </div>
 
     <div id="main-app">
         <div id="dashboard" class="section active">
-            <div class="main-title" style="font-size: 4rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">「有X無Y」成語匯集</div>
-            <p style="text-align:center; font-size:1.3rem; color:#34495e; font-weight:bold;">請點擊下方成語開始造句特訓，全數完成即可解鎖大挑戰！</p>
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div class="main-title" style="font-size: 4rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); margin: 0 auto;">「有X無Y」成語匯集</div>
+                <p style="font-size:1.3rem; color:#34495e; font-weight:bold; margin-top: 10px;">請點擊下方成語開始造句特訓，全數完成即可解鎖大挑戰！</p>
+            </div>
+            
             <div class="dashboard-grid" id="dashboard-grid">
                 </div>
             
@@ -355,16 +354,7 @@
             return `${hh}:${min}，${yyyy}/${mm}/${dd}`;
         }
 
-        // 語音練習的指定句子
-        const voiceSentences = {
-            "有備無患": "出門多帶把傘總是好的，有備無患嘛！",
-            "有恃無恐": "他因為背後有靠山，所以顯得有恃無恐。",
-            "有教無類": "孔子提倡有教無類的教育精神。",
-            "有氣無力": "他生了一場大病，說話總是有氣無力。",
-            "有意無意": "他有意無意地提起了那件往事。",
-            "有眼無珠": "我真是有眼無珠，竟然沒認出您來。"
-        };
-
+        // 含注音、拼音、字面義、隱喻義及英文輔助說明的教學資料 (精簡至3個例句)
         const trainingData = [
             {
                 name: "有備無患", img: "https://i.ibb.co/kVyRBfWJ/image.png",
@@ -514,15 +504,9 @@
             }
         }
 
-        // --- 語音練習 AI 模擬模組 (全句版) ---
-        function updateVoiceSentence() {
-            let idiom = document.getElementById('voice-target-idiom').value;
-            document.getElementById('voice-target-sentence').innerText = voiceSentences[idiom];
-        }
-
+        // --- 語音練習 AI 模擬模組 (口說造句版) ---
         function openVoicePracticeModal() {
             document.getElementById('voice-modal').style.display = 'flex';
-            updateVoiceSentence(); // 初始化顯示第一句
         }
 
         let recognition;
@@ -540,9 +524,8 @@
             const btnText = document.getElementById('record-status');
             const resultText = document.getElementById('voice-recognized-text');
             const feedbackPanel = document.getElementById('ai-feedback-panel');
-            const jsonOutput = document.getElementById('ai-json-output');
 
-            btnText.innerText = "🔴 錄音中，請大聲朗讀...";
+            btnText.innerText = "🔴 錄音中，請大聲朗讀您的造句...";
             resultText.innerText = "聆聽中...";
             feedbackPanel.style.display = 'none';
 
@@ -568,51 +551,48 @@
         }
 
         function generateVoiceAIFeedback(targetIdiom, recognizedText) {
-            let targetSentence = voiceSentences[targetIdiom];
-            let mockResponse = {};
+            let cleanRec = recognizedText.replace(/[，。！？、\s]/g, "");
+            let fbHTML = "";
             
-            // 清除標點符號以進行比對
-            let cleanRec = recognizedText.replace(/[，。！？、]/g, "");
-            let cleanTar = targetSentence.replace(/[，。！？、]/g, "");
-            
-            if (cleanRec === cleanTar) {
-                mockResponse = {
-                    "status": "perfect",
-                    "sentence_analysis": `辨識結果：「${recognizedText}」。整句話的語法與發音都非常完美！`,
-                    "error_analysis": "無偏誤。",
-                    "actionable_advice": {
-                        "grammar": "句子結構完整，成語使用時機正確。",
-                        "tone_correction": "『有(yóu)』的變調處理得很自然。",
-                        "rhythm": "整句朗讀的節奏感極佳！停頓點十分精準。"
-                    },
-                    "encouragement": "你的口說能力非常棒，這句話聽起來已經像母語人士了，請繼續保持喔！"
-                };
-            } else if (recognizedText.includes(targetIdiom)) {
-                mockResponse = {
-                    "status": "partial_correct",
-                    "sentence_analysis": `系統聽到了：「${recognizedText}」。你成功唸出了成語，但句子的其他部分有些微漏字或語法偏誤。`,
-                    "error_analysis": `目標句子是：「${targetSentence}」。注意對比你唸出的內容。`,
-                    "actionable_advice": {
-                        "grammar": "請注意中文句子的完整性，尤其是主詞與助詞的搭配。",
-                        "tone_correction": "成語聲調正確，但句尾的語氣詞可以再放輕一點。",
-                        "rhythm": "長句朗讀時，可以在成語前稍微停頓，會讓表達更清晰。"
-                    },
-                    "encouragement": "很棒！最難的成語發音你已經掌握了，整句話再順一次一定會更好！"
-                };
+            if (cleanRec.includes(targetIdiom)) {
+                if (cleanRec.length < targetIdiom.length + 4) {
+                    fbHTML = `
+                        <div style="color:#c0392b;"><strong>⚠️ 診斷分析：</strong>系統聽到了「${recognizedText}」。你成功唸出了成語，但句子似乎太短了，無法構成完整情境。</div>
+                        <div style="color:#2980b9; margin-top:10px;"><strong>💡 具體建議：</strong>
+                            <ul style="margin-top:5px; padding-left: 20px;">
+                                <li style="margin-bottom:5px;"><b>語法：</b>請嘗試加入主詞、原因或結果。例如搭配『因為...所以...』的結構。</li>
+                                <li><b>發音：</b>『${targetIdiom}』的聲調大致正確，記得保持流暢的語速。</li>
+                            </ul>
+                        </div>
+                        <div style="color:#27ae60; margin-top:10px;"><strong>🌟 鼓勵：</strong>開頭很好！試著把句子拉長，描述一個完整的故事吧！</div>
+                    `;
+                } else {
+                    fbHTML = `
+                        <div style="color:#27ae60;"><strong>✅ 診斷分析：</strong>系統聽到了「${recognizedText}」。語法結構完整，成語使用恰當，發音清晰！</div>
+                        <div style="color:#2980b9; margin-top:10px;"><strong>💡 具體建議：</strong>
+                            <ul style="margin-top:5px; padding-left: 20px;">
+                                <li style="margin-bottom:5px;"><b>語法：</b>句意非常通順，能夠準確表達您想呈現的情境。</li>
+                                <li style="margin-bottom:5px;"><b>發音：</b>發音咬字清晰，特別是成語部分的連讀變調處理得很自然。</li>
+                                <li><b>節奏：</b>整句朗讀的節奏感極佳，停頓點十分精準。</li>
+                            </ul>
+                        </div>
+                        <div style="color:#e67e22; margin-top:10px;"><strong>🌟 鼓勵：</strong>太棒了！你的口說造句能力非常出色，已經很接近母語人士的語感了，請繼續保持喔！</div>
+                    `;
+                }
             } else {
-                 mockResponse = {
-                    "status": "error",
-                    "sentence_analysis": `系統聽到了：「${recognizedText}」。`,
-                    "error_analysis": `系統沒有辨識到目標成語「${targetIdiom}」，或是整句語法落差較大。`,
-                    "actionable_advice": { 
-                        "grammar": `請再次確認句型結構：「${targetSentence}」。`,
-                        "rhythm": "請再靠近麥克風一點，並以正常語速朗讀整句話。" 
-                    },
-                    "encouragement": "沒關係，深呼吸，看清楚螢幕上的句子，點擊按鈕再試一次！"
-                };
+                 fbHTML = `
+                    <div style="color:#c0392b;"><strong>❌ 診斷分析：</strong>系統聽到了「${recognizedText}」。系統沒有聽到目標成語「${targetIdiom}」。</div>
+                    <div style="color:#2980b9; margin-top:10px;"><strong>💡 具體建議：</strong>
+                        <ul style="margin-top:5px; padding-left: 20px;">
+                            <li style="margin-bottom:5px;"><b>語法：</b>請確認您的造句中是否確實包含了「${targetIdiom}」。</li>
+                            <li><b>發音：</b>有時候是麥克風收音問題，請靠近麥克風，並放慢語速再大聲朗讀一次。</li>
+                        </ul>
+                    </div>
+                    <div style="color:#27ae60; margin-top:10px;"><strong>🌟 鼓勵：</strong>沒關係！可以先在腦海中構思好句子，準備好再試一次！</div>
+                `;
             }
 
-            document.getElementById('ai-json-output').innerText = JSON.stringify(mockResponse, null, 2);
+            document.getElementById('ai-feedback-container-inner').innerHTML = fbHTML;
             document.getElementById('ai-feedback-panel').style.display = 'block';
         }
 
@@ -629,7 +609,6 @@
 
             let doneMsg = completedIdioms.includes(index) ? `<div style="background:#d5f5e3; color:#27ae60; padding:10px; text-align:center; font-weight:bold; border-radius:5px; margin-bottom:15px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">✅ 您已完成過此成語的造句練習。</div>` : "";
             
-            // 專屬語料庫連結 (附帶 query 參數)
             let specificCorpusUrl = `https://phong01208211312-oss.github.io/Idiom-Corpus-chengyuyuliaoku/?query=${encodeURIComponent(data.name)}`;
 
             contentBox.innerHTML = `
@@ -893,38 +872,29 @@
             localStorage.setItem('idiomAppDB', JSON.stringify(db));
         }
 
-        function openAdminLoginModal() {
-            document.getElementById('admin-pwd-input').value = "";
-            document.getElementById('admin-login-modal').style.display = "flex";
-        }
-
-        function verifyAdmin() {
-            let pwd = document.getElementById('admin-pwd-input').value;
+        function showAdminLogin() {
+            let pwd = prompt("⚙️ 進入系統後台\n\n請輸入管理者密碼 (Password: @admin123)：");
             if(pwd === "@admin123") {
-                closeModal('admin-login-modal');
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('main-app').classList.add('active');
                 switchTab('admin-panel');
-                loadAdminData();
-            } else {
+                
+                let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
+                let tbody = document.getElementById('admin-table-body');
+                tbody.innerHTML = "";
+                for(let user in db) {
+                    let lastActive = db[user].lastActive || "無紀錄";
+                    tbody.innerHTML += `
+                        <tr>
+                            <td style="font-weight:bold;">${user}</td>
+                            <td style="color:#e67e22; font-weight:bold; font-size:1.2rem;">${db[user].score || 0}</td>
+                            <td style="color:#7f8c8d;">${lastActive}</td>
+                            <td><button class="btn-delete-single" onclick="deleteUser('${user}')">🗑️ 刪除</button></td>
+                        </tr>
+                    `;
+                }
+            } else if(pwd !== null) {
                 alert("密碼錯誤！");
-            }
-        }
-
-        function loadAdminData() {
-            let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
-            let tbody = document.getElementById('admin-table-body');
-            tbody.innerHTML = "";
-            for(let user in db) {
-                let lastActive = db[user].lastActive || "無紀錄";
-                tbody.innerHTML += `
-                    <tr>
-                        <td style="font-weight:bold;">${user}</td>
-                        <td style="color:#e67e22; font-weight:bold; font-size:1.2rem;">${db[user].score || 0}</td>
-                        <td style="color:#7f8c8d;">${lastActive}</td>
-                        <td><button class="btn-delete-single" onclick="deleteUser('${user}')">🗑️ 刪除</button></td>
-                    </tr>
-                `;
             }
         }
 
