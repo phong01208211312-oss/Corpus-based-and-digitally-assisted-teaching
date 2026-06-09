@@ -29,7 +29,7 @@
             background-attachment: fixed; 
             filter: brightness(0.9);
         }
-        
+
         #app { width: 100%; max-width: 900px; position: relative; min-height: 100vh; display: flex; flex-direction: column; }
         .hidden { display: none !important; }
         
@@ -54,50 +54,52 @@
         .login-card {
             background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border-radius: 20px; padding: 35px 30px; width: 100%; max-width: 480px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6); text-align: left; box-sizing: border-box;
+            border-radius: 20px; padding: 40px 30px; width: 100%; max-width: 400px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6); text-align: center;
         }
-        
-        .login-card label { color: #e2e8f0; font-size: 1.1rem; font-weight: bold; margin-bottom: 12px; display: block; }
+        .login-card label { color: #e2e8f0; font-size: 1.1rem; font-weight: bold; margin-bottom: 15px; display: block; }
         .login-card input {
             width: 100%; padding: 14px 15px; margin-bottom: 25px;
-            background: rgba(15, 23, 42, 0.7); color: white;
-            border: 1px solid #64748b; border-radius: 10px;
-            font-size: 1.1rem; box-sizing: border-box; outline: none; transition: 0.3s;
-            text-align: center;
+            background: rgba(15, 23, 42, 0.7); color: white; border: 1px solid #64748b; border-radius: 10px;
+            font-size: 1.1rem; box-sizing: border-box; outline: none; transition: 0.3s; text-align: center;
         }
         .login-card input:focus { border-color: #F6D365; background: rgba(15, 23, 42, 0.9); }
         .login-card input::placeholder { color: #94a3b8; }
         
-        .btn-group { display: flex; flex-direction: column; gap: 15px;}
-        
-        /* 按鈕漸層設計 */
-        .btn-start-main { background: linear-gradient(45deg, #FF512F, #DD2476); color: white; border: none; padding: 15px 5px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(221, 36, 118, 0.5); text-align: center; width: 100%;}
+        .btn-group { display: flex; flex-direction: column; gap: 15px; }
+        .btn-start-main { background: linear-gradient(45deg, #FF512F, #DD2476); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(221, 36, 118, 0.5); }
         .btn-start-main:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(221, 36, 118, 0.7); }
         
-        .btn-start-voice { background: linear-gradient(45deg, #8E2DE2, #4A00E0); color: white; border: none; padding: 15px 5px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(74, 0, 224, 0.5); text-align: center; width: 100%;}
+        .btn-start-voice { background: linear-gradient(45deg, #8E2DE2, #4A00E0); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(74, 0, 224, 0.5); }
         .btn-start-voice:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(74, 0, 224, 0.7); }
 
-        .btn-start-mini { background: linear-gradient(45deg, #f39c12, #d35400); color: white; border: none; padding: 15px 5px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.5); text-align: center; width: 100%;}
+        .btn-start-mini { background: linear-gradient(45deg, #f39c12, #d35400); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.5); }
         .btn-start-mini:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(230, 126, 34, 0.7); }
 
-        /* 浮動功能按鈕 (音樂、信箱、後台) */
-        .float-btn { 
-            position: fixed; right: 20px; font-size: 2rem; cursor: pointer; z-index: 100; 
-            background: rgba(255,255,255,0.95); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4); transition: all 0.3s;
+        /* 音樂與設定按鈕 */
+        .music-btn, .settings-btn { 
+            position: fixed; right: 20px; font-size: 2rem; cursor: pointer; z-index: 9999; 
+            background: rgba(255,255,255,0.9); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: all 0.3s;
         }
         .music-btn { top: 20px; border: 3px solid #bdc3c7; }
-        .feedback-float-btn { bottom: 95px; background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; font-size: 1.8rem; border: 2px solid white; animation: float-bounce 3s infinite;}
         .settings-btn { bottom: 20px; }
-        
         .music-btn.playing { border-color: #f1c40f; color: #e74c3c; animation: pulse-ring 2s infinite, spin-slow 8s linear infinite; }
         .settings-btn:hover { background: #fff; transform: rotate(90deg); }
-        .feedback-float-btn:hover { transform: scale(1.1); box-shadow: 0 6px 15px rgba(142, 68, 173, 0.6);}
+
+        /* 新增：意見回饋信箱浮動按鈕 */
+        .feedback-btn { 
+            position: fixed; right: 20px; bottom: 95px; font-size: 1.8rem; cursor: pointer; z-index: 9999; 
+            background: linear-gradient(135deg, #FF6B6B, #C0392B); border-radius: 50%; width: 60px; height: 60px; 
+            display: flex; align-items: center; justify-content: center; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4); transition: all 0.3s; color: white; border: 2px solid white;
+            animation: float-bounce 3s infinite;
+        }
+        .feedback-btn:hover { transform: scale(1.1); box-shadow: 0 6px 15px rgba(192, 57, 43, 0.6); }
+        @keyframes float-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
         
         @keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(241, 196, 15, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(241, 196, 15, 0); } 100% { box-shadow: 0 0 0 0 rgba(241, 196, 15, 0); } }
         @keyframes spin-slow { 100% { transform: rotate(360deg); } }
-        @keyframes float-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 
         /* 內容容器 */
         #main-app { display: none; min-height: 100vh; padding: 20px; box-sizing: border-box; background: rgba(255, 255, 255, 0.85); width: 100%; }
@@ -167,6 +169,9 @@
 
         .btn-delete-single { background: #e74c3c; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.9rem; transition: 0.2s;}
         .btn-delete-single:hover { background: #c0392b; }
+        
+        /* AI語音診斷框 */
+        .ai-feedback-container { background: #fdfefe; padding: 20px; border-radius: 8px; border-left: 5px solid #8e44ad; border-right: 1px solid #ddd; border-top: 1px solid #ddd; border-bottom: 1px solid #ddd; text-align: left; margin-top: 15px; display: none; }
     </style>
 </head>
 <body>
@@ -177,9 +182,9 @@
         <source src="https://otologic.jp/sounds/bgm/pre/kuuhaku%20to%20seizyaku.mp3" type="audio/mpeg">
     </audio>
 
-    <div id="bgm-btn" class="float-btn music-btn" onclick="toggleBGM()" title="開啟/關閉音樂">🎵</div>
-    <div class="float-btn feedback-float-btn" onclick="openFeedbackModal()" title="建議與回饋">💌</div>
-    <div class="float-btn settings-btn" onclick="openAdminLoginModal()" title="系統後台">⚙️</div>
+    <div id="bgm-btn" class="music-btn" onclick="toggleBGM()" title="開啟/關閉音樂">🎵</div>
+    <div id="feedback-btn" class="feedback-btn" onclick="openFeedbackModal()" title="建議與回饋信箱">💌</div>
+    <div class="settings-btn" onclick="openAdminLoginModal()" title="系統後台">⚙️</div>
 
     <div id="admin-login-modal" class="modal">
         <div class="modal-content" style="max-width: 400px; text-align: center;">
@@ -189,14 +194,14 @@
             <button onclick="verifyAdmin()" style="padding: 12px 30px; background: #3498db; color: white; font-size: 1.1rem; border: none; border-radius: 8px; cursor: pointer; font-weight:bold; width: 80%;">登入</button>
         </div>
     </div>
-
+    
     <div id="feedback-modal" class="modal">
         <div class="modal-content" style="max-width: 500px; text-align: center;">
             <span class="close-modal" onclick="closeModal('feedback-modal')">&times;</span>
             <h2 style="color:#8e44ad; margin-top:0;">💌 學習者建議與回饋</h2>
             <p style="color:#7f8c8d; font-size: 1.1rem; margin-bottom: 20px;">有任何問題或想告訴老師的話，請在這裡留言喔！</p>
             <textarea id="student-feedback-input" placeholder="請寫下您的回饋 (Write your feedback here)..." style="width: 100%; height: 150px; padding: 15px; font-size: 1.1rem; border-radius: 8px; border: 2px solid #bdc3c7; box-sizing: border-box; resize: vertical; margin-bottom: 20px;"></textarea>
-            <button onclick="submitStudentFeedback()" style="padding: 15px 30px; background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; font-size: 1.2rem; border: none; border-radius: 8px; cursor: pointer; font-weight:bold; width: 100%;">📤 送出回饋 (Submit)</button>
+            <button onclick="submitStudentFeedback()" style="padding: 15px 30px; background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; font-size: 1.2rem; border: none; border-radius: 8px; cursor: pointer; font-weight:bold; width: 100%; box-shadow: 0 4px 6px rgba(142,68,173,0.4);">📤 送出回饋 (Submit)</button>
         </div>
     </div>
 
@@ -239,7 +244,7 @@
                 <strong>🗣️ 你的口說造句：</strong><br><span id="voice-recognized-text" style="color:#e67e22; display:block; margin-top:10px; line-height: 1.5;">尚未錄音</span>
             </div>
 
-            <div id="ai-feedback-panel" style="background: #fdfefe; padding: 20px; border-radius: 8px; border-left: 5px solid #8e44ad; border-right: 1px solid #ddd; border-top: 1px solid #ddd; border-bottom: 1px solid #ddd; text-align: left; margin-top: 15px; display: none;">
+            <div id="ai-feedback-panel" class="ai-feedback-container">
                 <h4 style="color:#2980b9; margin-top:0; font-size: 1.2rem; border-bottom: 2px solid #2980b9; padding-bottom: 10px;">📝 AI 教師診斷回饋：</h4>
                 <div id="ai-feedback-container-inner" style="background:#fff; padding:15px; border-radius:5px; font-size:1.1rem; line-height:1.6;"></div>
             </div>
@@ -307,13 +312,13 @@
         </div>
 
         <div id="admin-panel" class="section">
-            <h2 style="margin-top:0;">⚙️ 系統管理後台</h2>
+            <h2 style="margin-top:0;">⚙️ 學習者數據後台</h2>
             <button class="back-btn" onclick="switchTab('dashboard')">返回主目錄</button>
             
             <div style="margin-bottom: 20px; padding: 15px; background: #fdf2e9; border-radius: 8px; border: 1px solid #e67e22;">
                 <h3 style="margin-top:0; color: #d35400;">📥 資料匯出區</h3>
-                <button onclick="downloadSentencesAsTxt()" style="background: #27ae60; color: white; padding:10px 20px; border:none; border-radius:5px; cursor:pointer; margin-right: 10px; font-weight:bold;">📄 下載學習者語料庫 (.txt)</button>
-                <button onclick="downloadFeedbackAsTxt()" style="background: #8e44ad; color: white; padding:10px 20px; border:none; border-radius:5px; cursor:pointer; font-weight:bold;">💌 下載回饋信箱內容 (.txt)</button>
+                <button onclick="downloadSentencesAsTxt()" style="background: #27ae60; color: white; padding:10px 15px; border:none; border-radius:5px; cursor:pointer; margin-right: 10px; font-weight:bold;">📄 下載學習者語料庫 (.txt)</button>
+                <button onclick="downloadFeedbackAsTxt()" style="background: #8e44ad; color: white; padding:10px 15px; border:none; border-radius:5px; cursor:pointer; font-weight:bold;">💌 下載回饋信箱內容 (.txt)</button>
                 <button onclick="clearData()" style="background: #e74c3c; color: white; padding:10px 15px; border:none; border-radius:5px; cursor:pointer; float:right; font-weight:bold;">🗑️ 清除所有資料</button>
             </div>
 
@@ -506,7 +511,7 @@
             }
         }
 
-        // --- 學習者回饋信箱系統 ---
+        // --- 學習者意見回饋信箱系統 ---
         function openFeedbackModal() {
             if(!currentUser) {
                 currentUser = prompt("請先輸入您的姓名以留言：") || "訪客";
@@ -989,26 +994,29 @@
         function showAdminLogin() {
             let pwd = prompt("⚙️ 進入系統後台\n\n請輸入管理者密碼 (Password: @admin123)：");
             if(pwd === "@admin123") {
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('main-app').classList.add('active');
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-app').style.display = 'block';
                 switchTab('admin-panel');
-                
-                let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
-                let tbody = document.getElementById('admin-table-body');
-                tbody.innerHTML = "";
-                for(let user in db) {
-                    let lastActive = db[user].lastActive || "無紀錄";
-                    tbody.innerHTML += `
-                        <tr>
-                            <td style="font-weight:bold;">${user}</td>
-                            <td style="color:#e67e22; font-weight:bold; font-size:1.2rem;">${db[user].score || 0}</td>
-                            <td style="color:#7f8c8d;">${lastActive}</td>
-                            <td><button class="btn-delete-single" onclick="deleteUser('${user}')">🗑️ 刪除</button></td>
-                        </tr>
-                    `;
-                }
+                loadAdminData();
             } else if(pwd !== null) {
                 alert("密碼錯誤！");
+            }
+        }
+
+        function loadAdminData() {
+            let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
+            let tbody = document.getElementById('admin-table-body');
+            tbody.innerHTML = "";
+            for(let user in db) {
+                let lastActive = db[user].lastActive || "無紀錄";
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="font-weight:bold;">${user}</td>
+                        <td style="color:#e67e22; font-weight:bold; font-size:1.2rem;">${db[user].score || 0}</td>
+                        <td style="color:#7f8c8d;">${lastActive}</td>
+                        <td><button class="btn-delete-single" onclick="deleteUser('${user}')">🗑️ 刪除</button></td>
+                    </tr>
+                `;
             }
         }
 
