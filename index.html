@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🏮簡單學成語✨</title>
+    <title>【簡單學成語】</title>
     <style>
         /* 全局與背景設定 */
         body, html { 
@@ -12,6 +13,7 @@
             font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; 
             height: 100%; 
             overflow-x: hidden; 
+            /* 【修正重點 1】將原本的 #2c3e50 移除，改為透明，避免遮擋背景層 */
             background-color: transparent; 
         }
         
@@ -22,7 +24,9 @@
             width: 100%; 
             height: 100%; 
             z-index: -1;
+            /* 【修正重點 2】將備用底色放在這裡 */
             background-color: #2c3e50;
+            /* 背景圖網址已嚴格保留不變 */
             background-image: url('https://i.ibb.co/zVJHDDtc/Gemini-Generated-Image-wnn7e2wnn7e2wnn7.png');
             background-size: cover; 
             background-position: center; 
@@ -67,13 +71,13 @@
         .login-card input::placeholder { color: #94a3b8; }
         
         .btn-group { display: flex; flex-direction: column; gap: 15px; }
-        .btn-start-main { background: linear-gradient(45deg, #FF512F, #DD2476); color: white; border: none; padding: 15px 5px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(221, 36, 118, 0.5); text-align: center; width: 100%;}
+        .btn-start-main { background: linear-gradient(45deg, #FF512F, #DD2476); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(221, 36, 118, 0.5); }
         .btn-start-main:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(221, 36, 118, 0.7); }
         
-        .btn-start-voice { background: linear-gradient(45deg, #8E2DE2, #4A00E0); color: white; border: none; padding: 15px 5px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(74, 0, 224, 0.5); text-align: center; width: 100%;}
+        .btn-start-voice { background: linear-gradient(45deg, #8E2DE2, #4A00E0); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(74, 0, 224, 0.5); }
         .btn-start-voice:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(74, 0, 224, 0.7); }
 
-        .btn-start-mini { background: linear-gradient(45deg, #f39c12, #d35400); color: white; border: none; padding: 15px 5px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.5); text-align: center; width: 100%;}
+        .btn-start-mini { background: linear-gradient(45deg, #f39c12, #d35400); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.5); }
         .btn-start-mini:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(230, 126, 34, 0.7); }
 
         /* 音樂與設定按鈕 */
@@ -216,9 +220,9 @@
             <input type="text" id="username" placeholder="Enter your name..." autocomplete="off">
             
             <div class="btn-group">
-                <button class="btn-start-main" onclick="startGame()">🚀 開始學習 Start</button>
-                <button class="btn-start-voice" onclick="openVoicePracticeModal()">🎤 語音練習 Voice Practice</button>
-                <button class="btn-start-mini leaderboard-btn" onclick="openLeaderboard()">🏆 學習排名榜 Leaderboard</button>
+                <button class="btn-start-main" onclick="startGame()">開始學習 Start</button>
+                <button class="btn-start-voice" onclick="openVoicePracticeModal()">語音練習 Voice Practice</button>
+                <button class="btn-start-mini leaderboard-btn" onclick="openLeaderboard()">學習排名榜 Leaderboard</button>
             </div>
         </div>
     </div>
@@ -226,7 +230,7 @@
     <div id="voice-modal" class="modal">
         <div class="modal-content" style="max-width: 650px; text-align: center;">
             <span class="close-modal" onclick="closeModal('voice-modal')">&times;</span>
-            <h2 style="color:#8e44ad; margin-top:0;">🎤 語音造句診斷</h2>
+            <h2 style="color:#8e44ad; margin-top:0;">語音造句診斷</h2>
             <p style="color:#7f8c8d; margin-bottom: 20px; line-height: 1.5;">請選擇成語，點擊麥克風後<strong style="color:#e74c3c;">大聲說出您使用該成語所造的完整句子</strong>。<br>💡 <small>思考時間已延長，您可以放慢語速，停頓時系統會等待 5 秒鐘。</small></p>
             
             <select id="voice-target-idiom" style="padding:10px; font-size:1.2rem; margin-bottom:20px; border-radius:5px; border: 2px solid #bdc3c7; width: 80%;">
@@ -253,16 +257,14 @@
 
     <div id="main-app">
         <div id="dashboard" class="section active">
-            <div style="text-align: center; margin-bottom: 30px; width: 100%;">
-                <div class="main-title" style="font-size: 4rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); margin: 0 auto;">「有X無Y」成語匯集</div>
-                <p style="font-size:1.3rem; color:#34495e; font-weight:bold; margin-top: 10px;">請點擊下方成語開始造句特訓，全數完成即可解鎖大挑戰！</p>
-            </div>
+            <h1 class="main-title" style="font-size: 4rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); margin-top: 0;">「有X無Y」成語匯集</h1>
+            <p style="text-align:center; font-size:1.3rem; color:#34495e; font-weight:bold;">請點擊下方成語開始造句特訓，全數完成即可解鎖大挑戰！</p>
             
             <div class="dashboard-grid" id="dashboard-grid">
                 </div>
             
             <div class="finale-btn-container">
-                <button id="grand-finale-btn" class="finale-btn" onclick="startGrandFinale()">🔥 成語測驗 - Idiom Quiz (未解鎖)</button>
+                <button id="grand-finale-btn" class="finale-btn" onclick="startGrandFinale()">成語測驗 - Idiom Quiz (未解鎖)</button>
             </div>
             
             <div style="margin-top: 50px; padding: 25px; background: #e8f8f5; border-radius: 15px; border: 2px solid #1abc9c; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
@@ -274,7 +276,7 @@
                 
                 <hr style="border: 0; border-top: 2px dashed #bdc3c7; margin: 25px 0;">
                 
-                <h3 style="margin-top:0; color:#8e44ad; font-size: 1.4rem;">📊 總語料庫檢索 (KWIC & Collocation)</h3>
+                <h3 style="margin-top:0; color:#8e44ad; font-size: 1.4rem;">總語料庫檢索 (KWIC & Collocation)</h3>
                 <p style="color:#7f8c8d; margin-bottom:15px; font-size: 1.1rem;">查閱全部 600 筆成語語料，包含上下文關鍵詞 (KWIC) 檢索與搭配詞統計功能。</p>
                 <div style="text-align: right;">
                     <a href="https://phong01208211312-oss.github.io/Idiom-Corpus-chengyuyuliaoku/" target="_blank" class="corpus-btn" style="background:#8e44ad; box-shadow: 0 4px 10px rgba(142,68,173,0.3); padding: 10px 20px; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 1.1rem;">📚 進入總語料庫檢索</a>
@@ -288,7 +290,7 @@
         </div>
 
         <div id="finale-section" class="section">
-            <h2 style="text-align:center; color:#e74c3c; font-size: 2.2rem; margin-top:0;">🔥 成語測驗 - Idiom Quiz</h2>
+            <h2 style="text-align:center; color:#e74c3c; font-size: 2.2rem; margin-top:0;">語測驗 - Idiom Quiz</h2>
             <div class="quiz-area">
                 <div class="quiz-status">
                     <span id="finale-progress">📝 題目： 1 / 10</span>
@@ -567,7 +569,7 @@
             URL.revokeObjectURL(url);
         }
 
-        // --- 語音練習 AI 模擬模組 ---
+        // --- 語音練習 AI 模擬模組 (長錄音 + 5秒延遲 + 精簡版文字反饋) ---
         function openVoicePracticeModal() {
             if(!currentUser) {
                 currentUser = prompt("請先輸入您的姓名以記錄語音資料：") || "訪客";
@@ -657,34 +659,51 @@
 
         // 精簡版 AI 反饋
         function generateVoiceAIFeedback(targetIdiom, recognizedText) {
-            const feedbackPanel = document.getElementById('ai-feedback-container-inner');
-            const feedbackBox = document.getElementById('ai-feedback-panel');
+            let cleanRec = recognizedText.replace(/[，。！？、\s]/g, "");
+            let fbHTML = "";
+            let isCorrect = false;
             
-            let isCorrect = recognizedText.includes(targetIdiom);
-            let analysis = "";
-            let advice = "";
-            let encouragement = "";
+            let targetData = trainingData.find(d => d.name === targetIdiom);
             
-            if (isCorrect) {
-                analysis = "✅ 辨識成功！你使用了目標成語「" + targetIdiom + "」。";
-                advice = "你的語法結構很完整。發音部分，成語的聲調處理得不錯，若要更像母語者，可以試著加強『有』字的變調（唸作 yóu）。";
-                encouragement = "造句非常有創意！繼續保持這種練習語感的方式，進步會非常快！<br><span style='color:#7f8c8d; font-size: 0.95rem;'>(Very creative sentence! Keep practicing this way, and you'll improve very fast!)</span>";
+            if (cleanRec.includes(targetIdiom)) {
+                if (cleanRec.length < targetIdiom.length + 4) {
+                    isCorrect = false;
+                    fbHTML = `
+                        <div style="color:#c0392b;"><strong>⚠️ 診斷分析：</strong>句子太短囉，試著加入原因或結果來豐富情境！</div>
+                        <div style="color:#27ae60; margin-top:10px;"><strong>🌟 鼓勵：</strong>開頭很好，把句子拉長，描述一個完整的故事吧！<br><span style="color:#7f8c8d; font-size: 0.95rem;">(Your sentence is a bit too short, try adding reasons or results to enrich the context!)</span></div>
+                    `;
+                } else {
+                    let isTooSimilar = targetData && targetData.examples.some(ex => {
+                        let cleanEx = ex.replace(/[，。！「」\[\]a-zA-Z:0-9\s]/g, "");
+                        return cleanEx.includes(cleanRec) || cleanRec.includes(cleanEx);
+                    });
+
+                    if(isTooSimilar && cleanRec.length < 20) {
+                        isCorrect = true; 
+                        fbHTML = `
+                            <div style="color:#e67e22;"><strong>⚠️ 診斷分析：</strong>語法正確，但和例句太像了！試著結合自己的生活經驗造句吧！</div>
+                            <div style="color:#27ae60; margin-top:10px;"><strong>🌟 鼓勵：</strong>你已經掌握了基本用法，換個情境試試看會更棒！<br><span style="color:#7f8c8d; font-size: 0.95rem;">(Correct grammar, but too similar to the example! Try using your own life experience.)</span></div>
+                        `;
+                    } else {
+                        isCorrect = true;
+                        fbHTML = `
+                            <div style="color:#27ae60;"><strong>✅ 診斷分析：</strong>發音清晰，語法正確，成語運用得很棒！</div>
+                            <div style="color:#2980b9; margin-top:10px;"><strong>🌟 鼓勵：</strong>太厲害了！你的口說造句能力非常出色，請繼續保持喔！<br><span style="color:#7f8c8d; font-size: 0.95rem;">(Great pronunciation and grammar, your idiom usage is excellent! Keep it up!)</span></div>
+                        `;
+                    }
+                }
             } else {
-                analysis = "❌ 辨識結果：「" + recognizedText + "」。似乎沒有使用到目標成語「" + targetIdiom + "」。";
-                advice = "請試著將成語自然地融入句子中。例如：「他總是對朋友有教無類，從不偏心」。";
-                encouragement = "別灰心！成語造句需要一點時間熟悉，重新試一次，你會做得更好！<br><span style='color:#7f8c8d; font-size: 0.95rem;'>(Don't be discouraged! It takes time to get familiar with idioms. Try again, you'll do better!)</span>";
+                 isCorrect = false;
+                 fbHTML = `
+                    <div style="color:#c0392b;"><strong>❌ 診斷分析：</strong>好像沒有聽到目標成語「${targetIdiom}」喔，請確認後再試一次！</div>
+                    <div style="color:#2980b9; margin-top:10px;"><strong>🌟 鼓勵：</strong>沒關係！可以先在腦海中構思好句子，準備好再大聲說一次！<br><span style="color:#7f8c8d; font-size: 0.95rem;">(I didn't hear the target idiom, please check and try again! Take your time to think.)</span></div>
+                `;
             }
 
-            feedbackPanel.innerHTML = `
-                <div style="font-size: 1.2rem; color: #2c3e50; margin-bottom:10px;">${analysis}</div>
-                <div style="background: #eef7ff; padding: 10px; border-radius: 5px;">
-                    <strong>💡 AI 教師建議：</strong><br>${advice}
-                </div>
-                <div style="margin-top:10px; color: #27ae60; font-weight:bold;">🌟 鼓勵：${encouragement}</div>
-            `;
-            feedbackBox.style.display = 'block';
-            
             saveVoiceRecord(targetIdiom, recognizedText, isCorrect);
+
+            document.getElementById('ai-feedback-container-inner').innerHTML = fbHTML;
+            document.getElementById('ai-feedback-panel').style.display = 'block';
         }
 
         // --- 紀錄與儲存邏輯 ---
@@ -985,6 +1004,7 @@
                 closeModal('admin-login-modal');
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('main-app').style.display = 'block';
+                document.getElementById('main-app').classList.add('active');
                 switchTab('admin-panel');
                 loadAdminData();
             } else {
@@ -1106,151 +1126,5 @@
             resBox.innerHTML = `✅ 目標成語：<span style="color:#8e44ad; font-size:1.4rem;">${idiomName}</span><br>📌 語法角色推測：<span style="color:#d35400; font-size:1.4rem;">${role}</span>`;
         }
     </script>
-</body>
-</html>
-
-我目前有一個「成語動畫字典」的程式碼，如：
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>「有X無Y」成語動畫詞典</title>
-    <style>
-        /* 核心變數與字體 */
-        :root {
-            --primary: #3a506b; --secondary: #c0392b; --bg: #ecf0f1; --white: #fff; --text: #2c3e50;
-        }
-        body { font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow-x: hidden; }
-        
-        .container { width: 100%; max-width: 800px; padding: 20px; }
-        
-        /* 標題區 */
-        .header { text-align: center; margin-bottom: 30px; animation: slideDown 0.8s ease; }
-        .header h1 { font-size: 3rem; color: var(--primary); text-shadow: 2px 2px 5px rgba(0,0,0,0.1); margin: 0;}
-        .header p { font-size: 1.2rem; color: #7f8c8d; }
-
-        /* 卡片網格與翻轉設定 */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; perspective: 1000px; }
-        
-        .card {
-            width: 100%; height: 350px;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-            animation: fadeIn 1s ease both;
-        }
-        .card:nth-child(even) { animation-delay: 0.2s; }
-        .card.flipped { transform: rotateY(180deg); }
-
-        .face {
-            position: absolute; width: 100%; height: 100%;
-            backface-visibility: hidden;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            overflow: hidden;
-        }
-
-        /* 正面設計 (圖片與名稱) */
-        .front { background: var(--white); border: 4px solid var(--primary); }
-        .front img { width: 100%; height: 75%; object-fit: cover; border-bottom: 4px solid var(--primary); }
-        .front .idiom-name { font-size: 2rem; font-weight: bold; color: var(--secondary); margin-top: 15px; }
-
-        /* 背面設計 (詳細解說) */
-        .back {
-            background: linear-gradient(135deg, var(--primary), #2c3e50);
-            transform: rotateY(180deg);
-            color: var(--white);
-            padding: 25px; box-sizing: border-box; text-align: left; justify-content: flex-start;
-        }
-        .back h2 { margin: 0 0 10px 0; font-size: 2.2rem; color: #f1c40f; text-align: center; border-bottom: 2px dashed rgba(255,255,255,0.3); padding-bottom: 10px;}
-        .data-box { margin-bottom: 12px; font-size: 1.1rem; line-height: 1.5; }
-        .tag { display: inline-block; background: var(--secondary); padding: 3px 8px; border-radius: 5px; font-size: 0.9rem; font-weight: bold; margin-right: 8px;}
-
-        /* 動畫區 */
-        @keyframes fadeIn { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
-        @keyframes slideDown { 0% { opacity: 0; transform: translateY(-30px); } 100% { opacity: 1; transform: translateY(0); } }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <div class="header">
-        <h1>「有X無Y」成語動畫詞典</h1>
-        <p>✨ 點擊卡片，翻轉查看詳細解說與拼音 ✨</p>
-    </div>
-
-    <div class="grid" id="card-grid"></div>
-</div>
-
-<script>
-    // 詞典資料庫 (統一整合)
-    const idioms = [
-        {
-            name: "有備無患", img: "https://i.ibb.co/kVyRBfWJ/image.png",
-            pinyin: "yǒu bèi wú huàn", zhuyin: "ㄧㄡˇ ㄅㄟˋ ㄨˊ ㄏㄨㄢˋ",
-            literal: "只要有準備，就不會有後患。", meta: "事先做好準備，就能避免災禍。",
-            en: "Preparedness averts peril."
-        },
-        {
-            name: "有恃無恐", img: "https://i.ibb.co/rKNPVsN9/image.png",
-            pinyin: "yǒu shì wú kǒng", zhuyin: "ㄧㄡˇ ㄕˋ ㄨˊ ㄎㄨㄥˇ",
-            literal: "有依靠而沒有恐懼。", meta: "形容有依靠而無所顧忌。",
-            en: "To feel secure and act recklessly because one has backing."
-        },
-        {
-            name: "有教無類", img: "https://i.ibb.co/qFWVFTLp/image.png",
-            pinyin: "yǒu jiào wú lèi", zhuyin: "ㄧㄡˇ ㄐㄧㄠˋ ㄨˊ ㄌㄟˋ",
-            literal: "教育不分對象的類別。", meta: "教育沒有貧富、貴賤、智愚之分。",
-            en: "Education for everyone, irrespective of background."
-        },
-        {
-            name: "有氣無力", img: "https://i.ibb.co/TxCKwgR4/image.png",
-            pinyin: "yǒu qì wú lì", zhuyin: "ㄧㄡˇ ㄑㄧˋ ㄨˊ ㄌㄧˋ",
-            literal: "有呼吸但沒有力氣。", meta: "形容精神不振，虛弱無力的樣子。",
-            en: "Faint and feeble; lacking energy."
-        },
-        {
-            name: "有意無意", img: "https://i.ibb.co/N61GDv9f/image.png",
-            pinyin: "yǒu yì wú yì", zhuyin: "ㄧㄡˇ ㄧˋ ㄨˊ ㄧˋ",
-            literal: "又像是有意，又像是無意。", meta: "存心不讓人明顯看出來的樣子。",
-            en: "Seemingly unintentionally; half-consciously."
-        },
-        {
-            name: "有眼無珠", img: "https://i.ibb.co/BKZhjrVJ/image.png",
-            pinyin: "yǒu yǎn wú zhū", zhuyin: "ㄧㄡˇ ㄧㄢˇ ㄨˊ ㄓㄨ",
-            literal: "長了眼睛卻沒有眼珠。", meta: "比喻沒有眼力，看不出人或事物的價值。",
-            en: "Having eyes but no pupils; blind to someone's true worth."
-        }
-    ];
-
-    // 動態生成卡片
-    const grid = document.getElementById('card-grid');
-    
-    idioms.forEach((idiom) => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.onclick = () => card.classList.toggle('flipped');
-
-        card.innerHTML = `
-            <div class="face front">
-                <img src="${idiom.img}" alt="${idiom.name}">
-                <div class="idiom-name">${idiom.name}</div>
-            </div>
-            <div class="face back">
-                <h2>${idiom.name}</h2>
-                <div class="data-box"><span class="tag">拼 音</span> ${idiom.pinyin}</div>
-                <div class="data-box"><span class="tag">注 音</span> ${idiom.zhuyin}</div>
-                <div class="data-box"><span class="tag">字面義</span> ${idiom.literal}</div>
-                <div class="data-box"><span class="tag">隱喻義</span> ${idiom.meta}</div>
-                <div class="data-box"><span class="tag">英文義</span> ${idiom.en}</div>
-            </div>
-        `;
-        grid.appendChild(card);
-    });
-</script>
-
 </body>
 </html>
