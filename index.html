@@ -290,7 +290,7 @@
         </div>
 
         <div id="finale-section" class="section">
-            <h2 style="text-align:center; color:#e74c3c; font-size: 2.2rem; margin-top:0;">成語測驗 - Idiom Quiz</h2>
+            <h2 style="text-align:center; color:#e74c3c; font-size: 2.2rem; margin-top:0;">語測驗 - Idiom Quiz</h2>
             <div class="quiz-area">
                 <div class="quiz-status">
                     <span id="finale-progress">📝 題目： 1 / 10</span>
@@ -319,8 +319,8 @@
             
             <div style="margin-bottom: 20px; padding: 15px; background: #fdf2e9; border-radius: 8px; border: 1px solid #e67e22;">
                 <h3 style="margin-top:0; color: #d35400;">📥 資料匯出區</h3>
-                <button onclick="downloadSentencesAsTxt()" style="background: #27ae60; color: white; padding:10px 15px; border:none; border-radius:5px; cursor:pointer; margin-right: 10px; font-weight:bold;">📄 下載學習者語料庫 (.txt)</button>
-                <button onclick="downloadFeedbackAsTxt()" style="background: #8e44ad; color: white; padding:10px 15px; border:none; border-radius:5px; cursor:pointer; font-weight:bold;">💌 下載回饋信箱內容 (.txt)</button>
+                <button onclick="downloadSentencesAsTxt()" style="background: #27ae60; color: white; padding:10px 15px; border:none; border-radius:5px; cursor:pointer; margin-right: 10px; font-weight:bold;">📄 下載學習者語料庫 (.json)</button>
+                <button onclick="downloadFeedbackAsTxt()" style="background: #8e44ad; color: white; padding:10px 15px; border:none; border-radius:5px; cursor:pointer; font-weight:bold;">💌 下載回饋信箱內容 (.json)</button>
                 <button onclick="clearData()" style="background: #e74c3c; color: white; padding:10px 15px; border:none; border-radius:5px; cursor:pointer; float:right; font-weight:bold;">🗑️ 清除所有資料</button>
             </div>
 
@@ -343,32 +343,6 @@
             </table>
         </div>
     </div>
-
-    <!-- Firebase SDK -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getDatabase, ref, set, get, update, push, child } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCgu4MOc24SzVG_-oFIVuhbHTc0W1iXX0U",
-            authDomain: "idiom-app-7f0eb.firebaseapp.com",
-            databaseURL: "https://idiom-app-7f0eb-default-rtdb.firebaseio.com",
-            projectId: "idiom-app-7f0eb",
-            storageBucket: "idiom-app-7f0eb.firebasestorage.app",
-            messagingSenderId: "109433211597",
-            appId: "1:109433211597:web:4665c4869494ec6e40f784",
-            measurementId: "G-9XFJ2YQSGD"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-
-        // 全域 Firebase 工具函式，供下方 script 呼叫
-        window._fbSet = (path, data) => set(ref(db, path), data);
-        window._fbUpdate = (path, data) => update(ref(db, path), data);
-        window._fbPush = (path, data) => push(ref(db, path), data);
-        window._fbGet = (path) => get(child(ref(db), path)).then(snap => snap.exists() ? snap.val() : null);
-    </script>
 
     <script>
         // --- 核心資料區 ---
@@ -559,48 +533,37 @@
             let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
             if(!db["_SystemFeedbacks"]) db["_SystemFeedbacks"] = [];
             
-            let fbEntry = {
+            db["_SystemFeedbacks"].push({
                 user: currentUser,
                 time: getCurrentFormattedTime(),
                 content: feedbackText
-            };
+            });
 
-            db["_SystemFeedbacks"].push(fbEntry);
             localStorage.setItem('idiomAppDB', JSON.stringify(db));
-
-            // 同步回饋到 Firebase
-            if(window._fbPush) {
-                window._fbPush('feedbacks', fbEntry)
-                    .catch(e => console.warn('Firebase feedback sync error:', e));
-            }
-
             alert("感謝您的回饋！我們已經收到囉！💖");
             closeModal('feedback-modal');
         }
 
-        function downloadFeedbackAsTxt() {
-            let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
-            let feedbacks = db["_SystemFeedbacks"] || [];
-            
-            if(feedbacks.length === 0) {
-                alert("目前還沒有任何學習者回饋喔！");
-                return;
+        async function downloadFeedbackAsTxt() {
+            if(!window._fbGet) { alert("Firebase 尚未載入，請稍後再試。"); return; }
+            try {
+                let feedbacksRaw = await window._fbGet('feedbacks');
+                if(!feedbacksRaw) {
+                    alert("雲端資料庫目前還沒有任何學習者回饋喔！");
+                    return;
+                }
+                let feedbacks = Object.values(feedbacksRaw);
+                let jsonStr = JSON.stringify(feedbacks, null, 2);
+                let blob = new Blob([jsonStr], { type: "application/json;charset=utf-8" });
+                let url = URL.createObjectURL(blob);
+                let a = document.createElement("a");
+                a.href = url;
+                a.download = "學習者回饋信箱內容.json";
+                a.click();
+                URL.revokeObjectURL(url);
+            } catch(e) {
+                alert("下載失敗，請確認 Firebase 連線正常。\n" + e.message);
             }
-
-            let content = "【學習者意見與回饋總表 (Student Feedbacks)】\n====================================\n\n";
-            feedbacks.forEach((fb, idx) => {
-                content += `[${idx+1}] 來自: ${fb.user}  (${fb.time})\n`;
-                content += `內容: ${fb.content}\n`;
-                content += "------------------------------------\n";
-            });
-
-            let blob = new Blob([content], { type: "text/plain;charset=utf-8" });
-            let url = URL.createObjectURL(blob);
-            let a = document.createElement("a");
-            a.href = url;
-            a.download = "學習者回饋信箱內容.txt";
-            a.click();
-            URL.revokeObjectURL(url);
         }
 
         // --- 語音練習 AI 模擬模組 (長錄音 + 5秒延遲 + 精簡版文字反饋) ---
@@ -755,14 +718,6 @@
             }
             db[currentUser].lastActive = getCurrentFormattedTime();
             localStorage.setItem('idiomAppDB', JSON.stringify(db));
-            // 同步語音紀錄到 Firebase
-            if(window._fbPush) {
-                let category = isCorrect ? 'correct' : 'incorrect';
-                window._fbPush('users/' + currentUser + '/voiceRecords/' + category, entry)
-                    .catch(e => console.warn('Firebase voice sync error:', e));
-                window._fbUpdate('users/' + currentUser, { lastActive: getCurrentFormattedTime() })
-                    .catch(e => console.warn('Firebase update error:', e));
-            }
         }
 
         function initUserStats() {
@@ -773,13 +728,6 @@
                 db[currentUser].lastActive = getCurrentFormattedTime();
             }
             localStorage.setItem('idiomAppDB', JSON.stringify(db));
-            // 同步到 Firebase
-            if(window._fbUpdate) {
-                window._fbUpdate('users/' + currentUser, {
-                    score: db[currentUser].score || 0,
-                    lastActive: db[currentUser].lastActive
-                }).catch(e => console.warn('Firebase sync error:', e));
-            }
         }
 
         function saveLearnerSentence(idiom, sentence) {
@@ -789,11 +737,6 @@
             db[currentUser].sentences[idiom].push(sentence);
             db[currentUser].lastActive = getCurrentFormattedTime();
             localStorage.setItem('idiomAppDB', JSON.stringify(db));
-            // 同步造句到 Firebase
-            if(window._fbPush) {
-                window._fbPush('users/' + currentUser + '/sentences/' + idiom, sentence)
-                    .catch(e => console.warn('Firebase sentence sync error:', e));
-            }
         }
 
         function saveUserData(finalTotal) {
@@ -803,13 +746,6 @@
             }
             db[currentUser].lastActive = getCurrentFormattedTime();
             localStorage.setItem('idiomAppDB', JSON.stringify(db));
-            // 同步分數到 Firebase
-            if(window._fbUpdate) {
-                window._fbUpdate('users/' + currentUser, {
-                    score: db[currentUser].score,
-                    lastActive: db[currentUser].lastActive
-                }).catch(e => console.warn('Firebase score sync error:', e));
-            }
         }
 
         // --- 單一成語造句特訓 ---
@@ -1099,61 +1035,60 @@
             }
         }
 
-        function downloadSentencesAsTxt() {
-            let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
-            let content = "【學習者造句紀錄與語音紀錄總表】\n\n";
+        async function downloadSentencesAsTxt() {
+            if(!window._fbGet) { alert("Firebase 尚未載入，請稍後再試。"); return; }
+            try {
+                let usersRaw = await window._fbGet('users');
+                if(!usersRaw) {
+                    alert("雲端資料庫目前還沒有任何學習者資料喔！");
+                    return;
+                }
+                // 整理成乾淨的結構
+                let output = { sentences: {}, voiceRecords: { correct: [], incorrect: [] }, scores: {} };
 
-            // 1. 一般造句紀錄
-            content += "====================================\n";
-            content += "        ✍️ 一般寫作造句紀錄\n";
-            content += "====================================\n\n";
-            let corpusByIdiom = {};
-            for(let user in db) {
-                if(db[user].sentences) {
-                    for(let idiom in db[user].sentences) {
-                        if(!corpusByIdiom[idiom]) corpusByIdiom[idiom] = [];
-                        db[user].sentences[idiom].forEach(sentence => {
-                            corpusByIdiom[idiom].push(`[${user}] ${sentence}`);
-                        });
+                for(let user in usersRaw) {
+                    let userData = usersRaw[user];
+
+                    // 分數
+                    output.scores[user] = { score: userData.score || 0, lastActive: userData.lastActive || "" };
+
+                    // 造句
+                    if(userData.sentences) {
+                        for(let idiom in userData.sentences) {
+                            if(!output.sentences[idiom]) output.sentences[idiom] = [];
+                            let entries = Object.values(userData.sentences[idiom]);
+                            entries.forEach(sentence => {
+                                output.sentences[idiom].push({ user: user, sentence: sentence });
+                            });
+                        }
+                    }
+
+                    // 語音紀錄
+                    if(userData.voiceRecords) {
+                        if(userData.voiceRecords.correct) {
+                            Object.values(userData.voiceRecords.correct).forEach(s => {
+                                output.voiceRecords.correct.push({ user: user, sentence: s });
+                            });
+                        }
+                        if(userData.voiceRecords.incorrect) {
+                            Object.values(userData.voiceRecords.incorrect).forEach(s => {
+                                output.voiceRecords.incorrect.push({ user: user, sentence: s });
+                            });
+                        }
                     }
                 }
-            }
-            for(let idiom in corpusByIdiom) {
-                content += `▶ 成語：${idiom}\n--------------------\n`;
-                corpusByIdiom[idiom].forEach(s => { content += s + "\n"; });
-                content += "\n";
-            }
 
-            // 2. 語音造句紀錄 (對錯分類)
-            content += "\n====================================\n";
-            content += "        🎤 語音造句口說紀錄\n";
-            content += "====================================\n\n";
-            
-            content += "【✅ 使用正確的句子】\n--------------------\n";
-            for(let user in db) {
-                if(db[user].voiceRecords && db[user].voiceRecords.correct && db[user].voiceRecords.correct.length > 0) {
-                    db[user].voiceRecords.correct.forEach(s => {
-                        content += `[${user}] ${s}\n`;
-                    });
-                }
+                let jsonStr = JSON.stringify(output, null, 2);
+                let blob = new Blob([jsonStr], { type: "application/json;charset=utf-8" });
+                let url = URL.createObjectURL(blob);
+                let a = document.createElement("a");
+                a.href = url;
+                a.download = "學生學習紀錄總表.json";
+                a.click();
+                URL.revokeObjectURL(url);
+            } catch(e) {
+                alert("下載失敗，請確認 Firebase 連線正常。\n" + e.message);
             }
-
-            content += "\n【❌ 使用偏誤的句子】\n--------------------\n";
-            for(let user in db) {
-                if(db[user].voiceRecords && db[user].voiceRecords.incorrect && db[user].voiceRecords.incorrect.length > 0) {
-                    db[user].voiceRecords.incorrect.forEach(s => {
-                        content += `[${user}] ${s}\n`;
-                    });
-                }
-            }
-
-            let blob = new Blob([content], { type: "text/plain;charset=utf-8" });
-            let url = URL.createObjectURL(blob);
-            let a = document.createElement("a");
-            a.href = url;
-            a.download = "學生學習紀錄總表.txt";
-            a.click();
-            URL.revokeObjectURL(url);
         }
 
         function clearData() {
