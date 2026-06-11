@@ -344,6 +344,32 @@
         </div>
     </div>
 
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getDatabase, ref, set, get, update, push, child } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCgu4MOc24SzVG_-oFIVuhbHTc0W1iXX0U",
+            authDomain: "idiom-app-7f0eb.firebaseapp.com",
+            databaseURL: "https://idiom-app-7f0eb-default-rtdb.firebaseio.com",
+            projectId: "idiom-app-7f0eb",
+            storageBucket: "idiom-app-7f0eb.firebasestorage.app",
+            messagingSenderId: "109433211597",
+            appId: "1:109433211597:web:4665c4869494ec6e40f784",
+            measurementId: "G-9XFJ2YQSGD"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        window._fbSet = (path, data) => set(ref(db, path), data);
+        window._fbUpdate = (path, data) => update(ref(db, path), data);
+        window._fbPush = (path, data) => push(ref(db, path), data);
+        window._fbGet = (path) => get(child(ref(db), path)).then(snap => snap.exists() ? snap.val() : null);
+        window._fbReady = true;
+    </script>
+
     <script>
         // --- 核心資料區 ---
         let currentUser = "";
@@ -544,9 +570,22 @@
             closeModal('feedback-modal');
         }
 
+        // 等待 Firebase 模組載入完成（最多 8 秒）
+        function waitForFirebase() {
+            return new Promise((resolve, reject) => {
+                if(window._fbGet) { resolve(); return; }
+                let tries = 0;
+                let interval = setInterval(() => {
+                    tries++;
+                    if(window._fbGet) { clearInterval(interval); resolve(); }
+                    else if(tries > 80) { clearInterval(interval); reject(new Error("Firebase 載入逾時，請重新整理頁面後再試。")); }
+                }, 100);
+            });
+        }
+
         async function downloadFeedbackAsTxt() {
-            if(!window._fbGet) { alert("Firebase 尚未載入，請稍後再試。"); return; }
             try {
+                await waitForFirebase();
                 let feedbacksRaw = await window._fbGet('feedbacks');
                 if(!feedbacksRaw) {
                     alert("雲端資料庫目前還沒有任何學習者回饋喔！");
@@ -562,7 +601,7 @@
                 a.click();
                 URL.revokeObjectURL(url);
             } catch(e) {
-                alert("下載失敗，請確認 Firebase 連線正常。\n" + e.message);
+                alert("下載失敗：" + e.message);
             }
         }
 
@@ -1036,8 +1075,8 @@
         }
 
         async function downloadSentencesAsTxt() {
-            if(!window._fbGet) { alert("Firebase 尚未載入，請稍後再試。"); return; }
             try {
+                await waitForFirebase();
                 let usersRaw = await window._fbGet('users');
                 if(!usersRaw) {
                     alert("雲端資料庫目前還沒有任何學習者資料喔！");
