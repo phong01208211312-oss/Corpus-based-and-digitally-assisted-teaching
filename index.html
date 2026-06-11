@@ -1078,6 +1078,10 @@
                 document.getElementById('main-app').classList.add('active');
                 switchTab('admin-panel');
                 loadAdminData();
+                // 重新載入語音紀錄表格
+                document.getElementById('admin-voice-loading').style.display = 'block';
+                document.getElementById('voice-correct-body').innerHTML = '';
+                document.getElementById('voice-incorrect-body').innerHTML = '';
             } else {
                 alert("密碼錯誤！");
             }
