@@ -792,6 +792,15 @@
             }
             db[currentUser].lastActive = getCurrentFormattedTime();
             localStorage.setItem('idiomAppDB', JSON.stringify(db));
+
+            // 同步語音紀錄到 Firebase
+            if(window._fbPush) {
+                let category = isCorrect ? 'correct' : 'incorrect';
+                window._fbPush('users/' + currentUser + '/voiceRecords/' + category, entry)
+                    .catch(e => console.warn('Firebase voice sync error:', e));
+                window._fbUpdate('users/' + currentUser, { lastActive: getCurrentFormattedTime() })
+                    .catch(e => console.warn('Firebase update error:', e));
+            }
         }
 
         function initUserStats() {
