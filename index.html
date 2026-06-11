@@ -319,16 +319,39 @@
             
             <div style="margin-bottom: 20px; padding: 15px; background: #fdf2e9; border-radius: 8px; border: 1px solid #e67e22;">
                 <h3 style="margin-top:0; color: #d35400;">📥 資料匯出區</h3>
-                <button onclick="downloadSentencesAsTxt()" style="background: #27ae60; color: white; padding:10px 15px; border:none; border-radius:5px; cursor:pointer; margin-right: 10px; font-weight:bold;">📄 下載學習者語料庫 (.json)</button>
-                <button onclick="downloadFeedbackAsTxt()" style="background: #8e44ad; color: white; padding:10px 15px; border:none; border-radius:5px; cursor:pointer; font-weight:bold;">💌 下載回饋信箱內容 (.json)</button>
-                <button onclick="clearData()" style="background: #e74c3c; color: white; padding:10px 15px; border:none; border-radius:5px; cursor:pointer; float:right; font-weight:bold;">🗑️ 清除所有資料</button>
+                <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
+                    <button onclick="downloadSentencesAsTxt()" style="background: #27ae60; color: white; padding:10px 15px; border:none; border-radius:5px; cursor:pointer; font-weight:bold;">📄 下載學習者語料庫 (.json)</button>
+                    <button onclick="downloadVoiceAsTxt()" style="background: #2980b9; color: white; padding:10px 15px; border:none; border-radius:5px; cursor:pointer; font-weight:bold;">🎤 下載語音紀錄 (.json)</button>
+                    <button onclick="downloadFeedbackAsTxt()" style="background: #8e44ad; color: white; padding:10px 15px; border:none; border-radius:5px; cursor:pointer; font-weight:bold;">💌 下載回饋信箱內容 (.json)</button>
+                    <button onclick="clearData()" style="background: #e74c3c; color: white; padding:10px 15px; border:none; border-radius:5px; cursor:pointer; margin-left:auto; font-weight:bold;">🗑️ 清除所有資料</button>
+                </div>
             </div>
 
-            <div style="overflow-x:auto;">
+            <div style="overflow-x:auto; margin-bottom: 30px;">
+                <h3 style="color:#2c3e50; border-left: 5px solid #e67e22; padding-left:10px;">📊 學習者分數總覽</h3>
                 <table class="admin-table">
                     <thead><tr><th>學習者名稱 Name</th><th>總分數 Score</th><th>最後使用時間 Last Active</th><th>操作 Action</th></tr></thead>
                     <tbody id="admin-table-body"></tbody>
                 </table>
+            </div>
+
+            <div style="overflow-x:auto; margin-bottom: 30px;">
+                <h3 style="color:#2c3e50; border-left: 5px solid #2980b9; padding-left:10px;">🎤 語音造句紀錄</h3>
+                <div id="admin-voice-loading" style="color:#7f8c8d; padding:10px;">載入中...</div>
+                <div id="admin-voice-correct" style="margin-bottom:20px;">
+                    <h4 style="color:#27ae60; margin-bottom:8px;">✅ 使用正確的句子</h4>
+                    <table class="admin-table" id="voice-correct-table">
+                        <thead><tr><th style="width:150px;">學習者</th><th style="width:120px;">成語</th><th>造句內容</th></tr></thead>
+                        <tbody id="voice-correct-body"></tbody>
+                    </table>
+                </div>
+                <div id="admin-voice-incorrect">
+                    <h4 style="color:#e74c3c; margin-bottom:8px;">❌ 使用偏誤的句子</h4>
+                    <table class="admin-table" id="voice-incorrect-table">
+                        <thead><tr><th style="width:150px;">學習者</th><th style="width:120px;">成語</th><th>造句內容</th></tr></thead>
+                        <tbody id="voice-incorrect-body"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -558,14 +581,22 @@
 
             let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
             if(!db["_SystemFeedbacks"]) db["_SystemFeedbacks"] = [];
-            
-            db["_SystemFeedbacks"].push({
-                user: currentUser,
+
+            let fbEntry = {
+                name: currentUser || "訪客",
                 time: getCurrentFormattedTime(),
                 content: feedbackText
-            });
+            };
 
+            db["_SystemFeedbacks"].push(fbEntry);
             localStorage.setItem('idiomAppDB', JSON.stringify(db));
+
+            // 同步回饋到 Firebase
+            if(window._fbPush) {
+                window._fbPush('feedbacks', fbEntry)
+                    .catch(e => console.warn('Firebase feedback sync error:', e));
+            }
+
             alert("感謝您的回饋！我們已經收到囉！💖");
             closeModal('feedback-modal');
         }
@@ -591,7 +622,11 @@
                     alert("雲端資料庫目前還沒有任何學習者回饋喔！");
                     return;
                 }
-                let feedbacks = Object.values(feedbacksRaw);
+                let feedbacks = Object.values(feedbacksRaw).map(fb => ({
+                    name: fb.name || fb.user || "（未填姓名）",
+                    time: fb.time || "",
+                    content: fb.content || ""
+                }));
                 let jsonStr = JSON.stringify(feedbacks, null, 2);
                 let blob = new Blob([jsonStr], { type: "application/json;charset=utf-8" });
                 let url = URL.createObjectURL(blob);
@@ -1048,11 +1083,15 @@
             }
         }
 
-        function loadAdminData() {
+        async function loadAdminData() {
+            // 分數表格（本地 + 雲端合併）
             let db = JSON.parse(localStorage.getItem('idiomAppDB')) || {};
             let tbody = document.getElementById('admin-table-body');
             tbody.innerHTML = "";
+
+            // 先用本地資料渲染
             for(let user in db) {
+                if(user === '_SystemFeedbacks') continue;
                 let lastActive = db[user].lastActive || "無紀錄";
                 tbody.innerHTML += `
                     <tr>
@@ -1062,6 +1101,66 @@
                         <td><button class="btn-delete-single" onclick="deleteUser('${user}')">🗑️ 刪除</button></td>
                     </tr>
                 `;
+            }
+
+            // 再從 Firebase 抓語音紀錄
+            const loadingEl = document.getElementById('admin-voice-loading');
+            const correctBody = document.getElementById('voice-correct-body');
+            const incorrectBody = document.getElementById('voice-incorrect-body');
+            correctBody.innerHTML = "";
+            incorrectBody.innerHTML = "";
+
+            try {
+                await waitForFirebase();
+                let usersRaw = await window._fbGet('users');
+                loadingEl.style.display = 'none';
+
+                if(!usersRaw) {
+                    correctBody.innerHTML = '<tr><td colspan="3" style="color:#7f8c8d;">尚無語音紀錄</td></tr>';
+                    incorrectBody.innerHTML = '<tr><td colspan="3" style="color:#7f8c8d;">尚無語音紀錄</td></tr>';
+                    return;
+                }
+
+                let correctCount = 0, incorrectCount = 0;
+
+                for(let user in usersRaw) {
+                    let userData = usersRaw[user];
+                    if(!userData.voiceRecords) continue;
+
+                    if(userData.voiceRecords.correct) {
+                        Object.values(userData.voiceRecords.correct).forEach(entry => {
+                            let match = entry.match(/^\[(.+?)\]\s*(.+)$/);
+                            let idiom = match ? match[1] : "—";
+                            let sentence = match ? match[2] : entry;
+                            correctBody.innerHTML += `<tr>
+                                <td style="font-weight:bold; color:#2c3e50;">${user}</td>
+                                <td style="color:#8e44ad; font-weight:bold;">${idiom}</td>
+                                <td style="color:#27ae60;">${sentence}</td>
+                            </tr>`;
+                            correctCount++;
+                        });
+                    }
+
+                    if(userData.voiceRecords.incorrect) {
+                        Object.values(userData.voiceRecords.incorrect).forEach(entry => {
+                            let match = entry.match(/^\[(.+?)\]\s*(.+)$/);
+                            let idiom = match ? match[1] : "—";
+                            let sentence = match ? match[2] : entry;
+                            incorrectBody.innerHTML += `<tr>
+                                <td style="font-weight:bold; color:#2c3e50;">${user}</td>
+                                <td style="color:#8e44ad; font-weight:bold;">${idiom}</td>
+                                <td style="color:#e74c3c;">${sentence}</td>
+                            </tr>`;
+                            incorrectCount++;
+                        });
+                    }
+                }
+
+                if(correctCount === 0) correctBody.innerHTML = '<tr><td colspan="3" style="color:#7f8c8d;">尚無正確語音紀錄</td></tr>';
+                if(incorrectCount === 0) incorrectBody.innerHTML = '<tr><td colspan="3" style="color:#7f8c8d;">尚無偏誤語音紀錄</td></tr>';
+
+            } catch(e) {
+                loadingEl.innerHTML = '<span style="color:#e74c3c;">語音紀錄載入失敗，請重新整理頁面。</span>';
             }
         }
 
@@ -1074,7 +1173,45 @@
             }
         }
 
-        async function downloadSentencesAsTxt() {
+        async function downloadVoiceAsTxt() {
+            try {
+                await waitForFirebase();
+                let usersRaw = await window._fbGet('users');
+                if(!usersRaw) {
+                    alert("雲端資料庫目前還沒有任何語音紀錄喔！");
+                    return;
+                }
+                let output = { correct: [], incorrect: [] };
+                for(let user in usersRaw) {
+                    let userData = usersRaw[user];
+                    if(!userData.voiceRecords) continue;
+                    if(userData.voiceRecords.correct) {
+                        Object.values(userData.voiceRecords.correct).forEach(entry => {
+                            let m = entry.match(/^\[(.+?)\]\s*(.+)$/);
+                            output.correct.push({ name: user, idiom: m ? m[1] : "—", sentence: m ? m[2] : entry });
+                        });
+                    }
+                    if(userData.voiceRecords.incorrect) {
+                        Object.values(userData.voiceRecords.incorrect).forEach(entry => {
+                            let m = entry.match(/^\[(.+?)\]\s*(.+)$/);
+                            output.incorrect.push({ name: user, idiom: m ? m[1] : "—", sentence: m ? m[2] : entry });
+                        });
+                    }
+                }
+                let jsonStr = JSON.stringify(output, null, 2);
+                let blob = new Blob([jsonStr], { type: "application/json;charset=utf-8" });
+                let url = URL.createObjectURL(blob);
+                let a = document.createElement("a");
+                a.href = url;
+                a.download = "學習者語音紀錄.json";
+                a.click();
+                URL.revokeObjectURL(url);
+            } catch(e) {
+                alert("下載失敗：" + e.message);
+            }
+        }
+
+                async function downloadSentencesAsTxt() {
             try {
                 await waitForFirebase();
                 let usersRaw = await window._fbGet('users');
