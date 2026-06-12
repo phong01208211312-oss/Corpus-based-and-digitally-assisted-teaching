@@ -1414,10 +1414,49 @@
                 }
             }
 
-            // ── 規則 7：謂語（句尾或後接標點）──
+            // ── 規則 7：句尾 → 判斷是謂語還是賓語 ──
             if (!role && /^[。！？!?\s]*$/.test(after)) {
-                role = "謂語"; evidence = "成語位於句末，直接充當謂語描述主語的狀態或性質。";
-                color = "#1e8449";
+                // 賓語判斷：成語前方緊接著「的＋賓語動詞」結構，或直接被及物動詞管轄
+                // 例：「依靠自己的有備無患」、「追求有備無患」、「做到有備無患」
+                const transitiveVerbs = [
+                    "依靠","依賴","仰賴","仗著","憑著","憑藉","追求","達到","做到","實現",
+                    "保持","維持","展現","體現","彰顯","強調","注重","重視","講究","強調",
+                    "需要","缺乏","擁有","具備","失去","帶來","形成","造成","避免","防止",
+                    "展示","顯示","代表","象徵","說明","證明","表示","表達","傳達","呈現",
+                    "培養","建立","確保","保證","達成","完成","獲得","取得","爭取","發揮",
+                    "感受","體會","理解","感到","看到","見到","聽到","想到","想起","記得",
+                    "相信","認為","覺得","認識","了解","知道","明白","清楚","掌握","學習"
+                ];
+                // 檢查 before 裡有沒有及物動詞緊接在成語之前（可能中間有「的／之」）
+                const beforeNoSpace = before.replace(/\s/g,"");
+                const hasTransitiveVerb = transitiveVerbs.some(v => {
+                    // 動詞直接在成語前：「依靠有備無患」
+                    if (beforeNoSpace.endsWith(v)) return true;
+                    // 動詞＋的／之＋成語：「依靠自己的有備無患」「自己的有備無患」
+                    const vIdx = beforeNoSpace.lastIndexOf(v);
+                    if (vIdx >= 0) {
+                        const between = beforeNoSpace.slice(vIdx + v.length);
+                        // 中間只有 的/之/自己的/...等，沒有其他動詞結構
+                        if (/^[的之自己你我他她它們大家]{0,6}$/.test(between)) return true;
+                    }
+                    return false;
+                });
+                if (hasTransitiveVerb) {
+                    const matchedV = transitiveVerbs.find(v => {
+                        if (before.replace(/\s/g,"").endsWith(v)) return true;
+                        const vIdx = before.replace(/\s/g,"").lastIndexOf(v);
+                        if (vIdx >= 0) {
+                            const between = before.replace(/\s/g,"").slice(vIdx + v.length);
+                            return /^[的之自己你我他她它們大家]{0,6}$/.test(between);
+                        }
+                        return false;
+                    });
+                    role = "賓語"; evidence = `成語前方有及物動詞「${matchedV || ""}」管轄，成語作為該動詞的受詞，充當賓語。`;
+                    color = "#1a5276";
+                } else {
+                    role = "謂語"; evidence = "成語位於句末，前方無明顯及物動詞管轄，直接充當謂語描述主語的狀態或性質。";
+                    color = "#1e8449";
+                }
             }
 
             // ── 規則 8：兜底 ──
